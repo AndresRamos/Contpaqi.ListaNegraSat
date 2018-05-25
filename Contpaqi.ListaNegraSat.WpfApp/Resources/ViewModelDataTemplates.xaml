@@ -1,0 +1,12 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Contpaqi.ListaNegraSat.WpfApp.Resources"
+                    xmlns:viewModels="clr-namespace:Contpaqi.ListaNegraSat.WpfApp.ViewModels"
+                    xmlns:views="clr-namespace:Contpaqi.ListaNegraSat.WpfApp.Views">
+    <DataTemplate DataType="{x:Type viewModels:SeleccionarEmpresaViewModel}">
+        <views:SeleccionarEmpresaView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:ContribuyentesIncumplidosViewModel}">
+        <views:ContribuyentesIncumplidosView />
+    </DataTemplate>
+</ResourceDictionary>
