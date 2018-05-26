@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 using Contpaqi.ListaNegraSat.WpfApp.Models;
 using Contpaqi.Sdk;
 using Contpaqi.Sdk.Extras.Interfaces;
-using Contpaqi.Sdk.Extras.Modelos;
 using Contpaqi.Sdk.Extras.Repositorios;
 
 namespace Contpaqi.ListaNegraSat.WpfApp.DAL
@@ -53,13 +49,15 @@ namespace Contpaqi.ListaNegraSat.WpfApp.DAL
             _errorContpaqiSdkRepositorio.ResultadoSdk = _sdk.fLeeDatoCteProv("CTIPOCLIENTE", tipoCliente, 7);
             _errorContpaqiSdkRepositorio.ResultadoSdk = _sdk.fLeeDatoCteProv("CESTATUS", estatus, 7);
             _errorContpaqiSdkRepositorio.ResultadoSdk = _sdk.fLeeDatoCteProv("CIDCLIENTEPROVEEDOR", id, 12);
-            var clienteProveedor = new ClienteContpaq(); ;
-            clienteProveedor.Codigo = codigo.ToString();
-            clienteProveedor.RazonSocial = razonSocial.ToString();
-            clienteProveedor.Rfc = rfc.ToString();
-            clienteProveedor.Tipo = int.Parse(tipoCliente.ToString());
-            clienteProveedor.Estatus = int.Parse(estatus.ToString());
-            clienteProveedor.Id = int.Parse(id.ToString());
+            var clienteProveedor = new ClienteContpaq
+            {
+                Codigo = codigo.ToString(),
+                RazonSocial = razonSocial.ToString(),
+                Rfc = rfc.ToString(),
+                Tipo = int.Parse(tipoCliente.ToString()),
+                Estatus = int.Parse(estatus.ToString()),
+                Id = int.Parse(id.ToString())
+            };
             return clienteProveedor;
         }
     }

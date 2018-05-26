@@ -94,10 +94,14 @@
     <Compile Include="Models\ApplicationConfiguration.cs" />
     <Compile Include="Models\ClienteContpaq.cs" />
     <Compile Include="Models\Contribuyente.cs" />
+    <Compile Include="ViewModels\AcercaDeViewModel.cs" />
     <Compile Include="ViewModels\ContribuyentesIncumplidosViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\SeleccionarEmpresaViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
+    <Compile Include="Views\AcercaDeView.xaml.cs">
+      <DependentUpon>AcercaDeView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ContribuyentesIncumplidosView.xaml.cs">
       <DependentUpon>ContribuyentesIncumplidosView.xaml</DependentUpon>
     </Compile>
@@ -117,6 +121,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Resources\ViewModelDataTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AcercaDeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -155,6 +163,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Logos\AR_LOGO01.jpg" />
+    <Resource Include="Logos\AR_LOGO03.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

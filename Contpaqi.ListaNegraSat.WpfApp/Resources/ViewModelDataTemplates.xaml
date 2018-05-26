@@ -9,4 +9,7 @@
     <DataTemplate DataType="{x:Type viewModels:ContribuyentesIncumplidosViewModel}">
         <views:ContribuyentesIncumplidosView />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:AcercaDeViewModel}">
+        <views:AcercaDeView />
+    </DataTemplate>
 </ResourceDictionary>

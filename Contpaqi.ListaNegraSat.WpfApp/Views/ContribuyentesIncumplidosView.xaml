@@ -17,12 +17,14 @@
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <Grid Margin="5">
+        <Grid>
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition />
             </Grid.RowDefinitions>
             <GroupBox Header="Contribuyentes Incumplidos SAT"
+                      BorderThickness="2"
                       Margin="5">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -32,31 +34,44 @@
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="25*" />
-                        <ColumnDefinition Width="57*" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Button Grid.Column="1"
                             Content="Cargar"
                             Command="{Binding CargarCommand}"
                             Width="100"
                             HorizontalAlignment="Left"
-                            Margin="4.556,5,0,5.333"
-                            Grid.ColumnSpan="2" />
+                            Margin="5"
+                            Style="{DynamicResource SquareButtonStyle}" />
                     <Label Grid.Row="1"
                            Grid.Column="0"
                            Content="Filtro:"
                            FontWeight="Bold"
-                           Margin="5,4.667,5.444,5.333" />
+                           Margin="5" />
                     <TextBox Grid.Row="1"
                              Grid.Column="1"
                              Text="{Binding Filtro, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              controls:TextBoxHelper.Watermark="Filtro"
                              controls:TextBoxHelper.ClearTextButton="True"
-                             Margin="4.556,4.667,5.444,5.333"
-                             Grid.ColumnSpan="2" />
+                             Margin="5" />
                 </Grid>
             </GroupBox>
-            <ListView Grid.Row="1"
+            <StackPanel Grid.Row="1"
+                        Orientation="Horizontal">
+                <Label Content="Total:"
+                       FontWeight="Bold"
+                       Margin="5" />
+                <TextBlock Text="{Binding ContribuyentesCount}"
+                           VerticalAlignment="Center"
+                           Margin="5" />
+                <Label Content="Total Filtro:"
+                       FontWeight="Bold"
+                       Margin="5" />
+                <TextBlock Text="{Binding ContribuyentesCollectionView.Count}"
+                           VerticalAlignment="Center"
+                           Margin="5" />
+            </StackPanel>
+            <ListView Grid.Row="2"
                       ItemsSource="{Binding ContribuyentesCollectionView}"
                       SelectedItem="{Binding ContribuyenteSatSeleccionado}"
                       Style="{StaticResource VirtualisedMetroListView}"
@@ -79,20 +94,25 @@
                     <GridView>
                         <GridViewColumn Header="RFC"
                                         DisplayMemberBinding="{Binding Rfc}" />
-                        <GridViewColumn Header="Nombre"
+                        <GridViewColumn Header="Razon Social"
                                         DisplayMemberBinding="{Binding RazonSocial}" />
+                        <GridViewColumn Header="Tipo Persona"
+                                        DisplayMemberBinding="{Binding TipoPersona}" />
+                        <GridViewColumn Header="Supuesto"
+                                        DisplayMemberBinding="{Binding Supuesto}" />
                     </GridView>
                 </ListView.View>
             </ListView>
         </Grid>
-        <Grid Grid.Column="1"
-              Margin="5">
+        <Grid Grid.Column="1">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <GroupBox Header="Contribuyentes Incumplidos Contpaq"
+                      BorderThickness="2"
                       Margin="5">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -109,7 +129,8 @@
                             Command="{Binding CargarContpaqCommand}"
                             Width="100"
                             HorizontalAlignment="Left"
-                            Margin="5" />
+                            Margin="5"
+                            Style="{DynamicResource SquareButtonStyle}" />
                     <Label Grid.Row="1"
                            Grid.Column="0"
                            Content="Filtro:"
@@ -123,7 +144,22 @@
                              Margin="5" />
                 </Grid>
             </GroupBox>
-            <ListView Grid.Row="1"
+            <StackPanel Grid.Row="1"
+                        Orientation="Horizontal">
+                <Label Content="Total:"
+                       FontWeight="Bold"
+                       Margin="5" />
+                <TextBlock Text="{Binding ContribuyentesContpaqCount}"
+                           VerticalAlignment="Center"
+                           Margin="5" />
+                <Label Content="Total Filtro:"
+                       FontWeight="Bold"
+                       Margin="5" />
+                <TextBlock Text="{Binding ContribuyentesContpaqCollectionView.Count}"
+                           VerticalAlignment="Center"
+                           Margin="5" />
+            </StackPanel>
+            <ListView Grid.Row="2"
                       ItemsSource="{Binding ContribuyentesContpaqCollectionView}"
                       SelectedItem="{Binding ClienteContpaqSeleccionado}"
                       Style="{StaticResource VirtualisedMetroListView}"
@@ -146,19 +182,23 @@
                     <GridView>
                         <GridViewColumn Header="RFC"
                                         DisplayMemberBinding="{Binding Rfc}" />
-                        <GridViewColumn Header="Nombre"
+                        <GridViewColumn Header="Codigo"
+                                        DisplayMemberBinding="{Binding Codigo}" />
+                        <GridViewColumn Header="Razon Social"
                                         DisplayMemberBinding="{Binding RazonSocial}" />
+                        <GridViewColumn Header="Tipo"
+                                        DisplayMemberBinding="{Binding Tipo}" />
                     </GridView>
                 </ListView.View>
             </ListView>
-            <StackPanel Grid.Row="2"
+            <StackPanel Grid.Row="3"
                         Orientation="Horizontal">
                 <Button Content="Exportar"
                         Command="{Binding ExportarContribuyentesContpaqCommand}"
                         Margin="5"
-                        Width="100" />
+                        Width="100"
+                        Style="{StaticResource AccentedSquareButtonStyle}" />
             </StackPanel>
         </Grid>
     </Grid>
-
 </UserControl>

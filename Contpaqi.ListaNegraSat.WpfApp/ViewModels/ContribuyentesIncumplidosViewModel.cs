@@ -76,6 +76,10 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
             set => Set(() => ContribuyentesContpaqCollectionView, ref _contribuyentesContpaqCollectionView, value);
         }
 
+        public int ContribuyentesCount => Contribuyentes.Count;
+
+        public int ContribuyentesContpaqCount => ContribuyentesContpaq.Count;
+
         public List<Contribuyente> Contribuyentes
         {
             get => _contribuyentes;
@@ -168,7 +172,7 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
             {
                 return _copiarRfcContribuyenteSatCommand ?? (_copiarRfcContribuyenteSatCommand = new RelayCommand(
                            () => { Clipboard.SetText(ContribuyenteSatSeleccionado.Rfc); },
-                           () => ClienteContpaqSeleccionado != null));
+                           () => ContribuyenteSatSeleccionado != null));
             }
         }
 
@@ -185,16 +189,23 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
         public void Load()
         {
             Contribuyentes.Clear();
-            using (var excelPackage = new ExcelPackage(new FileInfo(@"C:\Users\gerar\Downloads\globalIncumplidos.xlsx")))
+            using (var excelPackage = new ExcelPackage(new FileInfo(@"C:\Users\gerar\Downloads\Listado_Completo_69.xlsx")))
             {
                 var worksheet = excelPackage.Workbook.Worksheets.First();
                 var rows = worksheet.Dimension.End.Row;
                 for (var i = 2; i <= rows; i++)
                 {
+                    if (worksheet.Cells[i, 1].Value == null)
+                    {
+                        continue;
+                    }
+
                     var contribuyente = new Contribuyente
                     {
                         Rfc = worksheet.Cells[i, 1].Value.ToString(),
-                        RazonSocial = worksheet.Cells[i, 2].Value.ToString()
+                        RazonSocial = worksheet.Cells[i, 2].Value.ToString(),
+                        TipoPersona = worksheet.Cells[i, 3].Value.ToString(),
+                        Supuesto = worksheet.Cells[i, 4].Value.ToString()
                     };
 
                     Contribuyentes.Add(contribuyente);
@@ -202,6 +213,7 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
             }
 
             ContribuyentesCollectionView.Refresh();
+            RaisePropertyChanged(nameof(ContribuyentesCount));
         }
 
         public void LoadClientesContpaq()
@@ -210,6 +222,7 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
             var clientesContpaq = rep.TraerClientes();
             ContribuyentesContpaq.AddRange(clientesContpaq.Where(c => Contribuyentes.Any(con => con.Rfc == c.Rfc)));
             ContribuyentesContpaqCollectionView.Refresh();
+            RaisePropertyChanged(nameof(ContribuyentesContpaqCount));
         }
 
         private bool ContribuyentesCollectionViewFilter(object obj)
@@ -235,6 +248,7 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
             var contribuyente = obj as ClienteContpaq;
 
             return contribuyente.Rfc.IndexOf(FiltroContpaq, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                   contribuyente.Codigo.IndexOf(FiltroContpaq, StringComparison.OrdinalIgnoreCase) >= 0 ||
                    contribuyente.RazonSocial.IndexOf(FiltroContpaq, StringComparison.OrdinalIgnoreCase) >= 0;
         }
 

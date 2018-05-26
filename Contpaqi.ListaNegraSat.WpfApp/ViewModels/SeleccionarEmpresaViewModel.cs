@@ -12,13 +12,9 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
     public class SeleccionarEmpresaViewModel : ViewModelBase
     {
         private readonly ApplicationConfiguration _applicationConfiguration;
-
         private RelayCommand _cancelarCommand;
-
         private ObservableCollection<Empresa> _empresas = new ObservableCollection<Empresa>();
-
         private Empresa _empresaSeleccionada;
-
         private RelayCommand _seleccionarEmpresaCommand;
 
         public SeleccionarEmpresaViewModel(ApplicationConfiguration applicationConfiguration)
