@@ -97,12 +97,12 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
                 return _terminarSdkCommand ?? (_terminarSdkCommand = new RelayCommand(
                            () =>
                            {
-                               _applicationConfiguration.ContpaqiSdk.fTerminaSDK();
-                               _applicationConfiguration.SdkInicializado = false;
                                if (CerrarEmpresaCommand.CanExecute(null))
                                {
                                    CerrarEmpresaCommand.Execute(null);
                                }
+                               _applicationConfiguration.ContpaqiSdk.fTerminaSDK();
+                               _applicationConfiguration.SdkInicializado = false;
                            },
                            () => _applicationConfiguration.SdkInicializado));
             }
@@ -158,20 +158,19 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
                 return _buscarActualizacionCommand ?? (_buscarActualizacionCommand = new RelayCommand(
                            async () =>
                            {
-                               string version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
                                string currentverstion;
                                try
                                {
-                                   currentverstion = new WebClient().DownloadString("https://arsoftware.blob.core.windows.net/crm/currentVersion.txt");
+                                   currentverstion = new WebClient().DownloadString("https://arsoftware.blob.core.windows.net/arsoftwaredownloads/ListaNegraSat/currentVersion.txt");
                                }
                                catch (Exception ex)
                                {
                                    await _dialogCoordinator.ShowMessageAsync(this,
                                        "Error",
-                                       $"There was an error trying to check for updates. Please try later. Error: {ex}");
+                                       $"Hubo un error tratando de buscar actualizaciones. Intente mas tarde. Error: {ex}");
                                    return;
                                }
-                               var version1 = new Version(version);
+                               var version1 = Assembly.GetExecutingAssembly().GetName().Version;
                                var version2 = new Version(currentverstion);
                                var result = version1.CompareTo(version2);
                                if (result > 0)
@@ -182,34 +181,34 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
                                {
                                    var dialogResult = await _dialogCoordinator.ShowMessageAsync(
                                        this,
-                                       "Update Available",
-                                       "There's an update available. Do you want to download?",
+                                       "Actualizacion Disponible",
+                                       $"Hay una actualizacion ({currentverstion}) disponible. Desea descargarla?",
                                        MessageDialogStyle.AffirmativeAndNegative);
                                    if (dialogResult == MessageDialogResult.Affirmative)
                                    {
                                        var saveFileDialog = new SaveFileDialog
                                        {
                                            Filter = "zip | (*.zip)",
-                                           FileName = $"CrmInstaller_{version2}.zip"
+                                           FileName = $"ListaNegraSat_{version2}.zip"
                                        };
                                        if (saveFileDialog.ShowDialog() == true)
                                        {
                                            using (var webClient = new WebClient())
                                            {
-                                               var url = "https://arsoftware.blob.core.windows.net/crm/Release.zip";
+                                               var url = "https://arsoftware.blob.core.windows.net/arsoftwaredownloads/ListaNegraSat/Release.zip";
                                                webClient.DownloadFile(url, saveFileDialog.FileName);
                                            }
                                        }
                                        await _dialogCoordinator.ShowMessageAsync(this,
-                                           "Update Downloaded",
-                                           "Please close the application before updating application.");
+                                           "Actualizacion Descargada",
+                                           "Cierre la aplicacion antes de correr el instalador.");
                                    }
                                }
                                else
                                {
                                    await _dialogCoordinator.ShowMessageAsync(this,
-                                       "No Updates",
-                                       "You're already running the latest version.");
+                                       "No Hay Actualizaciones Disponibles",
+                                       "Ya esta instalada la ultima version del progrma.");
                                }
                            },
                            () => true));

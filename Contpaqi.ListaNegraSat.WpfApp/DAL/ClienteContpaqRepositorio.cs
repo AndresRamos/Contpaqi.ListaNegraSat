@@ -18,9 +18,9 @@ namespace Contpaqi.ListaNegraSat.WpfApp.DAL
             _errorContpaqiSdkRepositorio = new ErrorContpaqiSdkRepositorio(sdk);
         }
 
-        public List<ClienteContpaq> TraerClientes()
+        public List<ContribuyenteContpaq> TraerClientes()
         {
-            var clientesList = new List<ClienteContpaq>();
+            var clientesList = new List<ContribuyenteContpaq>();
             _errorContpaqiSdkRepositorio.ResultadoSdk = _sdk.fPosPrimerCteProv();
 
             clientesList.Add(LeerDatosClienteProveedorActual());
@@ -35,7 +35,7 @@ namespace Contpaqi.ListaNegraSat.WpfApp.DAL
             return clientesList;
         }
 
-        private ClienteContpaq LeerDatosClienteProveedorActual()
+        private ContribuyenteContpaq LeerDatosClienteProveedorActual()
         {
             var codigo = new StringBuilder(Constantes.kLongCodigo);
             var razonSocial = new StringBuilder(Constantes.kLongNombre);
@@ -49,7 +49,7 @@ namespace Contpaqi.ListaNegraSat.WpfApp.DAL
             _errorContpaqiSdkRepositorio.ResultadoSdk = _sdk.fLeeDatoCteProv("CTIPOCLIENTE", tipoCliente, 7);
             _errorContpaqiSdkRepositorio.ResultadoSdk = _sdk.fLeeDatoCteProv("CESTATUS", estatus, 7);
             _errorContpaqiSdkRepositorio.ResultadoSdk = _sdk.fLeeDatoCteProv("CIDCLIENTEPROVEEDOR", id, 12);
-            var clienteProveedor = new ClienteContpaq
+            var clienteProveedor = new ContribuyenteContpaq
             {
                 Codigo = codigo.ToString(),
                 RazonSocial = razonSocial.ToString(),

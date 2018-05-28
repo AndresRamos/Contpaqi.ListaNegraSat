@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using Contpaqi.ListaNegraSat.WpfApp.DAL;
@@ -22,11 +23,11 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
         private RelayCommand _cargarCommand;
         private RelayCommand _cargarContpaqCommand;
         private bool _cargoContribuyentesSat;
-        private ClienteContpaq _clienteContpaqSeleccionado;
+        private ContribuyenteContpaq _contribuyenteContpaqSeleccionado;
         private List<Contribuyente> _contribuyentes = new List<Contribuyente>();
         private Contribuyente _contribuyenteSatSeleccionado;
         private ListCollectionView _contribuyentesCollectionView;
-        private List<ClienteContpaq> _contribuyentesContpaq = new List<ClienteContpaq>();
+        private List<ContribuyenteContpaq> _contribuyentesContpaq = new List<ContribuyenteContpaq>();
         private ListCollectionView _contribuyentesContpaqCollectionView;
         private RelayCommand _copiarRfcContribuyenteContpaqCommand;
         private RelayCommand _copiarRfcContribuyenteSatCommand;
@@ -86,7 +87,7 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
             set => Set(() => Contribuyentes, ref _contribuyentes, value);
         }
 
-        public List<ClienteContpaq> ContribuyentesContpaq
+        public List<ContribuyenteContpaq> ContribuyentesContpaq
         {
             get => _contribuyentesContpaq;
             set => Set(() => ContribuyentesContpaq, ref _contribuyentesContpaq, value);
@@ -98,10 +99,10 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
             set => Set(() => ContribuyenteSatSeleccionado, ref _contribuyenteSatSeleccionado, value);
         }
 
-        public ClienteContpaq ClienteContpaqSeleccionado
+        public ContribuyenteContpaq ContribuyenteContpaqSeleccionado
         {
-            get => _clienteContpaqSeleccionado;
-            set => Set(() => ClienteContpaqSeleccionado, ref _clienteContpaqSeleccionado, value);
+            get => _contribuyenteContpaqSeleccionado;
+            set => Set(() => ContribuyenteContpaqSeleccionado, ref _contribuyenteContpaqSeleccionado, value);
         }
 
         public RelayCommand CargarCommand
@@ -109,10 +110,18 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
             get
             {
                 return _cargarCommand ?? (_cargarCommand = new RelayCommand(
-                           () =>
+                           async () =>
                            {
+                               var progressDialogController = await _dialogCoordinator.ShowProgressAsync(
+                                   this,
+                                   "Cargando Contribuyentes SAT",
+                                   "Cargando contribuyentes SAT.");
+                               await Task.Delay(1000);
+
                                Load();
                                _cargoContribuyentesSat = true;
+
+                               await progressDialogController.CloseAsync();
                            },
                            () => true));
             }
@@ -123,7 +132,18 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
             get
             {
                 return _cargarContpaqCommand ?? (_cargarContpaqCommand = new RelayCommand(
-                           () => { LoadClientesContpaq(); },
+                           async () =>
+                           {
+                               var progressDialogController = await _dialogCoordinator.ShowProgressAsync(
+                                   this,
+                                   "Cargando Contribuyentes SAT",
+                                   "Cargando contribuyentes SAT.");
+                               await Task.Delay(1000);
+
+                               LoadClientesContpaq();
+
+                               await progressDialogController.CloseAsync();
+                           },
                            () => _applicationConfiguration.SdkInicializado &&
                                  _applicationConfiguration.EmpresaAbierta &&
                                  _cargoContribuyentesSat));
@@ -181,15 +201,16 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
             get
             {
                 return _copiarRfcContribuyenteContpaqCommand ?? (_copiarRfcContribuyenteContpaqCommand = new RelayCommand(
-                           () => { Clipboard.SetText(ClienteContpaqSeleccionado.Rfc); },
-                           () => ClienteContpaqSeleccionado != null));
+                           () => { Clipboard.SetText(ContribuyenteContpaqSeleccionado.Rfc); },
+                           () => ContribuyenteContpaqSeleccionado != null));
             }
         }
 
         public void Load()
         {
             Contribuyentes.Clear();
-            using (var excelPackage = new ExcelPackage(new FileInfo(@"C:\Users\gerar\Downloads\Listado_Completo_69.xlsx")))
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Listado_Completo_69.xlsx");
+            using (var excelPackage = new ExcelPackage(new FileInfo(path)))
             {
                 var worksheet = excelPackage.Workbook.Worksheets.First();
                 var rows = worksheet.Dimension.End.Row;
@@ -221,6 +242,12 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
             var rep = new ClienteContpaqRepositorio(_applicationConfiguration.ContpaqiSdk);
             var clientesContpaq = rep.TraerClientes();
             ContribuyentesContpaq.AddRange(clientesContpaq.Where(c => Contribuyentes.Any(con => con.Rfc == c.Rfc)));
+            foreach (var contribuyenteContpaq in ContribuyentesContpaq)
+            {
+                var contribuyenteSat = Contribuyentes.First(c => c.Rfc == contribuyenteContpaq.Rfc);
+                contribuyenteContpaq.Supuesto = contribuyenteSat.Supuesto;
+                contribuyenteContpaq.TipoPersona = contribuyenteSat.TipoPersona;
+            }
             ContribuyentesContpaqCollectionView.Refresh();
             RaisePropertyChanged(nameof(ContribuyentesContpaqCount));
         }
@@ -245,7 +272,7 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
                 return true;
             }
 
-            var contribuyente = obj as ClienteContpaq;
+            var contribuyente = obj as ContribuyenteContpaq;
 
             return contribuyente.Rfc.IndexOf(FiltroContpaq, StringComparison.OrdinalIgnoreCase) >= 0 ||
                    contribuyente.Codigo.IndexOf(FiltroContpaq, StringComparison.OrdinalIgnoreCase) >= 0 ||
@@ -260,7 +287,7 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
             if (saveFileDialog.ShowDialog() == true)
             {
                 var ruta = saveFileDialog.FileName;
-                File.WriteAllLines(ruta, ContribuyentesContpaq.Select(c => $"{c.Rfc}|{c.Codigo}|{c.RazonSocial}"));
+                File.WriteAllLines(ruta, ContribuyentesContpaq.Select(c => $"{c.Rfc}|{c.Codigo}|{c.RazonSocial}|{c.Supuesto}|{c.TipoPersona}"));
                 return saveFileDialog.FileName;
             }
             return null;
@@ -280,12 +307,20 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
                     worksheet.Cells[1, 1].Value = "RFC";
                     worksheet.Cells[1, 2].Value = "Codigo";
                     worksheet.Cells[1, 3].Value = "Razon Social";
+                    worksheet.Cells[1, 4].Value = "Supuesto";
+                    worksheet.Cells[1, 5].Value = "Tipo Persona";
+                    worksheet.Cells[1, 6].Value = "Tipo";
+                    worksheet.Cells[1, 7].Value = "Estatus";
                     var i = 2;
                     foreach (var clienteContpaq in ContribuyentesContpaq)
                     {
                         worksheet.Cells[i, 1].Value = clienteContpaq.Rfc;
                         worksheet.Cells[i, 2].Value = clienteContpaq.Codigo;
                         worksheet.Cells[i, 3].Value = clienteContpaq.RazonSocial;
+                        worksheet.Cells[i, 4].Value = clienteContpaq.Supuesto;
+                        worksheet.Cells[i, 5].Value = clienteContpaq.TipoPersona;
+                        worksheet.Cells[i, 6].Value = clienteContpaq.Tipo;
+                        worksheet.Cells[i, 7].Value = clienteContpaq.Estatus;
                         i++;
                     }
                     worksheet.Cells.AutoFitColumns();

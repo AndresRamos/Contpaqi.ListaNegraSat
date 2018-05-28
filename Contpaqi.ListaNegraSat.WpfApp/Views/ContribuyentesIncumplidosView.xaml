@@ -161,7 +161,7 @@
             </StackPanel>
             <ListView Grid.Row="2"
                       ItemsSource="{Binding ContribuyentesContpaqCollectionView}"
-                      SelectedItem="{Binding ClienteContpaqSeleccionado}"
+                      SelectedItem="{Binding ContribuyenteContpaqSeleccionado}"
                       Style="{StaticResource VirtualisedMetroListView}"
                       SelectionMode="Single"
                       Margin="5">
@@ -186,8 +186,14 @@
                                         DisplayMemberBinding="{Binding Codigo}" />
                         <GridViewColumn Header="Razon Social"
                                         DisplayMemberBinding="{Binding RazonSocial}" />
+                        <GridViewColumn Header="Supuesto"
+                                        DisplayMemberBinding="{Binding Supuesto}" />
+                        <GridViewColumn Header="Tipo Persona"
+                                        DisplayMemberBinding="{Binding TipoPersona}" />
                         <GridViewColumn Header="Tipo"
                                         DisplayMemberBinding="{Binding Tipo}" />
+                        <GridViewColumn Header="Estatus"
+                                        DisplayMemberBinding="{Binding Estatus}" />
                     </GridView>
                 </ListView.View>
             </ListView>
