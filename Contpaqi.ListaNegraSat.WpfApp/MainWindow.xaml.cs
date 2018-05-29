@@ -44,7 +44,7 @@ namespace Contpaqi.ListaNegraSat.WpfApp
             window.Content = viewModel;
             Messenger.Default.Register<CloseViewMessage>(window, message =>
             {
-                if (message.Sender == viewModel)
+                if (message.Sender == window.Content as ViewModelBase)
                 {
                     window.Close();
                 }

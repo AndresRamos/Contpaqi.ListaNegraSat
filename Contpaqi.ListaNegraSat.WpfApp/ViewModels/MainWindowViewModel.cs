@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
 using System.Net;
 using System.Reflection;
 using Contpaqi.ListaNegraSat.WpfApp.Helpers;
@@ -21,6 +23,7 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
         private readonly IDialogCoordinator _dialogCoordinator;
         private RelayCommand _abrirAcercaDeCommand;
         private RelayCommand _abrirEmpresaCommand;
+        private RelayCommand _abrirManualDeUsuarioCommand;
         private RelayCommand _buscarActualizacionCommand;
         private RelayCommand _cerrarEmpresaCommand;
         private ViewModelBase _currentMainView;
@@ -175,7 +178,6 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
                                var result = version1.CompareTo(version2);
                                if (result > 0)
                                {
-                                   return;
                                }
                                else if (result < 0)
                                {
@@ -210,6 +212,20 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
                                        "No Hay Actualizaciones Disponibles",
                                        "Ya esta instalada la ultima version del progrma.");
                                }
+                           },
+                           () => true));
+            }
+        }
+
+        public RelayCommand AbrirManualDeUsuarioCommand
+        {
+            get
+            {
+                return _abrirManualDeUsuarioCommand ?? (_abrirManualDeUsuarioCommand = new RelayCommand(
+                           () =>
+                           {
+                               var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ManualListaNegraSatContpaqi.pdf");
+                               Process.Start(path);
                            },
                            () => true));
             }

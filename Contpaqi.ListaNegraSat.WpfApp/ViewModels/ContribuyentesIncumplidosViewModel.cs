@@ -136,8 +136,8 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
                            {
                                var progressDialogController = await _dialogCoordinator.ShowProgressAsync(
                                    this,
-                                   "Cargando Contribuyentes SAT",
-                                   "Cargando contribuyentes SAT.");
+                                   "Cargando Contribuyentes CONTPAQI",
+                                   "Cargando contribuyentes CONTPAQI.");
                                await Task.Delay(1000);
 
                                LoadClientesContpaq();
