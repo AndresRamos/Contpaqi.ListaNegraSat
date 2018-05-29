@@ -12,4 +12,10 @@
     <DataTemplate DataType="{x:Type viewModels:AcercaDeViewModel}">
         <views:AcercaDeView />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:Articulo69BViewModel}">
+        <views:Articulo69BView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewModels:Articulo69ViewModel}">
+        <views:Articulo69View />
+    </DataTemplate>
 </ResourceDictionary>

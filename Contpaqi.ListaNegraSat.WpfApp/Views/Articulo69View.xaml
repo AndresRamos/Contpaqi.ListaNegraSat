@@ -1,0 +1,228 @@
+﻿<UserControl x:Class="Contpaqi.ListaNegraSat.WpfApp.Views.Articulo69View"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             xmlns:dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+             xmlns:viewModels="clr-namespace:Contpaqi.ListaNegraSat.WpfApp.ViewModels"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Contpaqi.ListaNegraSat.WpfApp.Views"
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance Type=viewModels:Articulo69ViewModel}"
+             dialog:DialogParticipation.Register="{Binding}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Expander Grid.Row="0"
+                  Grid.Column="0"
+                  Grid.ColumnSpan="2"
+                  Header="Artículo 69, último párrafo del CFF"
+                  IsExpanded="True"
+                  Margin="5"
+                  BorderThickness="2">
+            <TextBlock Text="El Servicio de Administración Tributaria publicará en su página de Internet el nombre, denominación o razón social y clave del registro federal de contribuyentes de aquéllos que se ubiquen en alguno de los supuestos a los que se refiere el párrafo anterior. Los contribuyentes que estuvieran inconformes con la publicación de sus datos, podrán llevar a cabo el procedimiento de aclaración que el Servicio de Administración Tributaria determine mediante reglas de carácter general, en el cual podrán aportar las pruebas que a su derecho convenga. La autoridad fiscal deberá resolver el procedimiento en un plazo de tres días, contados a partir del día siguiente al que se reciba la solicitud correspondiente y, en caso de aclararse dicha situación, el Servicio de Administración Tributaria procederá a eliminar la información publicada que corresponda."
+                       TextWrapping="Wrap"
+                       Margin="5" />
+        </Expander>
+        <Grid Grid.Row="1"
+              Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <GroupBox Grid.Row="0"
+                      Header="Contribuyentes Incumplidos SAT"
+                      BorderThickness="2"
+                      Margin="5">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="1"
+                            Content="Cargar"
+                            Command="{Binding CargarCommand}"
+                            Width="100"
+                            HorizontalAlignment="Left"
+                            Margin="5"
+                            Style="{DynamicResource SquareButtonStyle}" />
+                    <Label Grid.Row="1"
+                           Grid.Column="0"
+                           Content="Filtro:"
+                           FontWeight="Bold"
+                           Margin="5" />
+                    <TextBox Grid.Row="1"
+                             Grid.Column="1"
+                             Text="{Binding Filtro, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             controls:TextBoxHelper.Watermark="Filtro"
+                             controls:TextBoxHelper.ClearTextButton="True"
+                             Margin="5" />
+                </Grid>
+            </GroupBox>
+            <StackPanel Grid.Row="1"
+                        Orientation="Horizontal">
+                <Label Content="Total:"
+                       FontWeight="Bold"
+                       Margin="5" />
+                <TextBlock Text="{Binding ContribuyentesCount}"
+                           VerticalAlignment="Center"
+                           Margin="5" />
+                <Label Content="Total Filtro:"
+                       FontWeight="Bold"
+                       Margin="5" />
+                <TextBlock Text="{Binding ContribuyentesCollectionView.Count}"
+                           VerticalAlignment="Center"
+                           Margin="5" />
+            </StackPanel>
+            <ListView Grid.Row="2"
+                      ItemsSource="{Binding ContribuyentesCollectionView}"
+                      SelectedItem="{Binding ContribuyenteSatSeleccionado}"
+                      Style="{StaticResource VirtualisedMetroListView}"
+                      SelectionMode="Single"
+                      Margin="5">
+                <ListView.Resources>
+                    <ContextMenu x:Key="ItemContextMenu">
+                        <MenuItem Header="Copiar RFC"
+                                  Command="{Binding Path=DataContext.CopiarRfcContribuyenteSatCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}}" />
+                    </ContextMenu>
+                </ListView.Resources>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListViewItem}"
+                           BasedOn="{StaticResource MetroListViewItem}">
+                        <Setter Property="ContextMenu"
+                                Value="{StaticResource ItemContextMenu}" />
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="RFC"
+                                        DisplayMemberBinding="{Binding Rfc}" />
+                        <GridViewColumn Header="Razon Social"
+                                        DisplayMemberBinding="{Binding RazonSocial}" />
+                        <GridViewColumn Header="Tipo Persona"
+                                        DisplayMemberBinding="{Binding TipoPersona}" />
+                        <GridViewColumn Header="Supuesto"
+                                        DisplayMemberBinding="{Binding Supuesto}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+        <Grid Grid.Row="1"
+              Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <GroupBox Header="Contribuyentes Incumplidos Contpaq"
+                      BorderThickness="2"
+                      Margin="5">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="1"
+                            Content="Cargar"
+                            Command="{Binding CargarContpaqCommand}"
+                            Width="100"
+                            HorizontalAlignment="Left"
+                            Margin="5"
+                            Style="{DynamicResource SquareButtonStyle}" />
+                    <Label Grid.Row="1"
+                           Grid.Column="0"
+                           Content="Filtro:"
+                           FontWeight="Bold"
+                           Margin="5" />
+                    <TextBox Grid.Row="1"
+                             Grid.Column="1"
+                             Text="{Binding FiltroContpaq, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             controls:TextBoxHelper.Watermark="Filtro"
+                             controls:TextBoxHelper.ClearTextButton="True"
+                             Margin="5" />
+                </Grid>
+            </GroupBox>
+            <StackPanel Grid.Row="1"
+                        Orientation="Horizontal">
+                <Label Content="Total:"
+                       FontWeight="Bold"
+                       Margin="5" />
+                <TextBlock Text="{Binding ContribuyentesContpaqCount}"
+                           VerticalAlignment="Center"
+                           Margin="5" />
+                <Label Content="Total Filtro:"
+                       FontWeight="Bold"
+                       Margin="5" />
+                <TextBlock Text="{Binding ContribuyentesContpaqCollectionView.Count}"
+                           VerticalAlignment="Center"
+                           Margin="5" />
+            </StackPanel>
+            <ListView Grid.Row="2"
+                      ItemsSource="{Binding ContribuyentesContpaqCollectionView}"
+                      SelectedItem="{Binding ContribuyenteContpaqSeleccionado}"
+                      Style="{StaticResource VirtualisedMetroListView}"
+                      SelectionMode="Single"
+                      Margin="5">
+                <ListView.Resources>
+                    <ContextMenu x:Key="ItemContextMenu">
+                        <MenuItem Header="Copiar RFC"
+                                  Command="{Binding Path=DataContext.CopiarRfcContribuyenteContpaqCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}}" />
+                    </ContextMenu>
+                </ListView.Resources>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListViewItem}"
+                           BasedOn="{StaticResource MetroListViewItem}">
+                        <Setter Property="ContextMenu"
+                                Value="{StaticResource ItemContextMenu}" />
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="RFC"
+                                        DisplayMemberBinding="{Binding Rfc}" />
+                        <GridViewColumn Header="Codigo"
+                                        DisplayMemberBinding="{Binding Codigo}" />
+                        <GridViewColumn Header="Razon Social"
+                                        DisplayMemberBinding="{Binding RazonSocial}" />
+                        <GridViewColumn Header="Supuesto"
+                                        DisplayMemberBinding="{Binding Supuesto}" />
+                        <GridViewColumn Header="Tipo Persona"
+                                        DisplayMemberBinding="{Binding TipoPersona}" />
+                        <GridViewColumn Header="Tipo"
+                                        DisplayMemberBinding="{Binding Tipo}" />
+                        <GridViewColumn Header="Estatus"
+                                        DisplayMemberBinding="{Binding Estatus}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <StackPanel Grid.Row="3"
+                        Orientation="Horizontal">
+                <Button Content="Exportar"
+                        Command="{Binding ExportarContribuyentesContpaqCommand}"
+                        Margin="5"
+                        Width="100"
+                        Style="{StaticResource AccentedSquareButtonStyle}" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

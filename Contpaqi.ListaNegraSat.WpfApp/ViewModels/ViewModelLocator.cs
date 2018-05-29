@@ -14,6 +14,8 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
             SimpleIoc.Default.Register<SeleccionarEmpresaViewModel>();
             SimpleIoc.Default.Register<ContribuyentesIncumplidosViewModel>();
             SimpleIoc.Default.Register<AcercaDeViewModel>();
+            SimpleIoc.Default.Register<Articulo69BViewModel>();
+            SimpleIoc.Default.Register<Articulo69ViewModel>();
         }
 
         public MainWindowViewModel MainWindowVm => SimpleIoc.Default.GetInstance<MainWindowViewModel>();
