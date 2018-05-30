@@ -568,6 +568,12 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_8ED1D80BD84089E2361A962ED01CBC57"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_AF6E4E90BFD847108375240A1705999C"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -989,12 +995,6 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_F27448CB3D19F344B2F0669930F259A1"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_8ED1D80BD84089E2361A962ED01CBC57"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -3422,15 +3422,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Contpaqi Lista Negra Sat"
-        "ProductCode" = "8:{727265E8-BC8C-4D3B-BDF8-C56209197DFA}"
-        "PackageCode" = "8:{1EA59F2A-25BD-4800-80C6-0141D3472400}"
+        "ProductCode" = "8:{B993DAA8-C120-412F-9C43-4F9B6ED6E817}"
+        "PackageCode" = "8:{45A0DF3C-37EB-446F-882D-8FA3C5F0F21C}"
         "UpgradeCode" = "8:{C53E40D6-B6BA-4D0D-BFAB-F2CE5D3760B0}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.0.3"
+        "ProductVersion" = "8:1.0.4"
         "Manufacturer" = "8:AR Software"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:https://www.arsoft.net/"
