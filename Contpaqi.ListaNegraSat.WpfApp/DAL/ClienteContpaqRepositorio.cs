@@ -54,8 +54,10 @@ namespace Contpaqi.ListaNegraSat.WpfApp.DAL
                 Codigo = codigo.ToString(),
                 RazonSocial = razonSocial.ToString(),
                 Rfc = rfc.ToString(),
-                Tipo = int.Parse(tipoCliente.ToString()),
-                Estatus = int.Parse(estatus.ToString()),
+                Tipo = int.Parse(tipoCliente.ToString()) == 1 ? TipoContribuyenteEnum.Cliente :
+                    int.Parse(tipoCliente.ToString()) == 2 ? TipoContribuyenteEnum.ClienteProveedor :
+                    int.Parse(tipoCliente.ToString()) == 3 ? TipoContribuyenteEnum.Proveedor : TipoContribuyenteEnum.Cliente,
+                EstaActivo = int.Parse(estatus.ToString()) == 1,
                 Id = int.Parse(id.ToString())
             };
             return clienteProveedor;

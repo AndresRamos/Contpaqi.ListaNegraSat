@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Contpaqi.ListaNegraSat.WpfApp.Messages;
 using Contpaqi.ListaNegraSat.WpfApp.Models;
@@ -6,6 +7,7 @@ using Contpaqi.Sdk.Extras.Modelos;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
+using SDKCONTPAQNGLib;
 
 namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
 {
@@ -72,11 +74,45 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
         private void LoadEmpresas()
         {
             Empresas.Clear();
-            var empresas = _applicationConfiguration.ContpaqiSdkUnidadTrabajo.EmpresaRepositorio.TraerEmpresas();
+
+            List<Empresa> empresas;
+            if (_applicationConfiguration.SistemaElegido == SistemaContpaqEnum.Contabilidad)
+            {
+                empresas = GetEmpresasContaqbilidad();
+            }
+            else
+            {
+                empresas = _applicationConfiguration.ContpaqiSdkUnidadTrabajo.EmpresaRepositorio.TraerEmpresas();
+            }
+
             foreach (var empresa in empresas.OrderBy(e => e.Nombre))
             {
                 Empresas.Add(empresa);
             }
+        }
+
+        private List<Empresa> GetEmpresasContaqbilidad()
+        {
+            List<Empresa> e = new List<Empresa>();
+            TSdkListaEmpresas empresas = new TSdkListaEmpresas();
+            var result = empresas.buscaPrimero();
+            if (result == 1)
+            {
+                var empresa = new Empresa();
+                empresa.Nombre = empresas.Nombre;
+                empresa.Ruta = empresas.NombreBDD;
+                e.Add(empresa);
+            }
+
+            while (empresas.buscaSiguiente() == 1)
+            {
+                var empresa = new Empresa();
+                empresa.Nombre = empresas.Nombre;
+                empresa.Ruta = empresas.NombreBDD;
+                e.Add(empresa);
+            }
+
+            return e;
         }
     }
 }

@@ -10,12 +10,12 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
         {
             SimpleIoc.Default.Register(() => new ApplicationConfiguration());
             SimpleIoc.Default.Register(() => DialogCoordinator.Instance);
-            SimpleIoc.Default.Register<MainWindowViewModel>();
-            SimpleIoc.Default.Register<SeleccionarEmpresaViewModel>();
-            SimpleIoc.Default.Register<ContribuyentesIncumplidosViewModel>();
             SimpleIoc.Default.Register<AcercaDeViewModel>();
             SimpleIoc.Default.Register<Articulo69BViewModel>();
             SimpleIoc.Default.Register<Articulo69ViewModel>();
+            SimpleIoc.Default.Register<ContribuyentesIncumplidosViewModel>();
+            SimpleIoc.Default.Register<MainWindowViewModel>();
+            SimpleIoc.Default.Register<SeleccionarEmpresaViewModel>();
         }
 
         public MainWindowViewModel MainWindowVm => SimpleIoc.Default.GetInstance<MainWindowViewModel>();

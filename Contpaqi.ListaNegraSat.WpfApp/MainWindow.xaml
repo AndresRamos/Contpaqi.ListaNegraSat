@@ -62,12 +62,15 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                     </Grid>
                 </ItemsPanelTemplate>
             </StatusBar.ItemsPanel>
             <StatusBarItem Grid.Column="0">
-                <TextBlock Text="Aplicacion desarrollada por AR Software (www.arsoft.net)" />
+                <TextBlock Text="Aplicacion desarrollada por AR Software (www.arsoft.net). Soluciones a la medida especializados en los sistemas de Contpaqi." />
             </StatusBarItem>
             <StatusBarItem Grid.Column="1">
                 <TextBlock Text="Empresa:" />
@@ -90,6 +93,13 @@
                 <TextBlock Text="{Binding ApplicationConfiguration.SdkInicializado, Source={StaticResource Locator}}" />
             </StatusBarItem>
             <Separator Grid.Column="9" />
+            <StatusBarItem Grid.Column="10">
+                <TextBlock Text="Sistema Contpaqi:" />
+            </StatusBarItem>
+            <StatusBarItem Grid.Column="11">
+                <TextBlock Text="{Binding ApplicationConfiguration.SistemaElegido, Source={StaticResource Locator}}" />
+            </StatusBarItem>
+            <Separator Grid.Column="12" />
         </StatusBar>
 
     </Grid>

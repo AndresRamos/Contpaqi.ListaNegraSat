@@ -120,6 +120,8 @@
     <Compile Include="Models\ApplicationConfiguration.cs" />
     <Compile Include="Models\ContribuyenteContpaq.cs" />
     <Compile Include="Models\Contribuyente.cs" />
+    <Compile Include="Models\SistemaContpaqEnum.cs" />
+    <Compile Include="Models\TipoContribuyenteEnum.cs" />
     <Compile Include="ViewModels\AcercaDeViewModel.cs" />
     <Compile Include="ViewModels\Articulo69BViewModel.cs" />
     <Compile Include="ViewModels\Articulo69ViewModel.cs" />
@@ -221,6 +223,17 @@
   <ItemGroup>
     <Resource Include="Logos\AR_LOGO01.jpg" />
     <Resource Include="Logos\AR_LOGO03.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="SDKCONTPAQNGLib">
+      <Guid>{4A6A81F3-B2B3-448C-A557-A005091BE801}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

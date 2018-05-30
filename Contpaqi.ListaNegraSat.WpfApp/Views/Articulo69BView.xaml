@@ -205,8 +205,8 @@
                                         DisplayMemberBinding="{Binding Supuesto}" />
                         <GridViewColumn Header="Tipo"
                                         DisplayMemberBinding="{Binding Tipo}" />
-                        <GridViewColumn Header="Estatus"
-                                        DisplayMemberBinding="{Binding Estatus}" />
+                        <GridViewColumn Header="Esta Activo"
+                                        DisplayMemberBinding="{Binding EstaActivo}" />
                     </GridView>
                 </ListView.View>
             </ListView>

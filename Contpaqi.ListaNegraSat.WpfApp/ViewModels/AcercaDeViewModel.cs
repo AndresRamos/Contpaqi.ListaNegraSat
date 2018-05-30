@@ -75,7 +75,7 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
             Version = version.ToString();
 
             var companyInfo = new StringBuilder();
-            companyInfo.AppendLine("Desarrollos a la medida para los sistemas de Contpaqi.");
+            companyInfo.AppendLine("Soluciones a la medida especializados en los sistemas de Contpaqi.");
             companyInfo.AppendLine("www.arsoft.net");
             CompanyInfo = companyInfo.ToString();
         }

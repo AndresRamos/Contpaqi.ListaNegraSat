@@ -2,6 +2,7 @@
 using Contpaqi.Sdk.Extras.Modelos;
 using Contpaqi.Sdk.Extras.Repositorios;
 using GalaSoft.MvvmLight;
+using SDKCONTPAQNGLib;
 
 namespace Contpaqi.ListaNegraSat.WpfApp.Models
 {
@@ -12,6 +13,7 @@ namespace Contpaqi.ListaNegraSat.WpfApp.Models
         private Empresa _empresa;
         private bool _empresaAbierta;
         private bool _sdkInicializado;
+        private SistemaContpaqEnum _sistemaElegido;
 
         public IContpaqiSdk ContpaqiSdk
         {
@@ -41,6 +43,20 @@ namespace Contpaqi.ListaNegraSat.WpfApp.Models
         {
             get => _empresaAbierta;
             set => Set(() => EmpresaAbierta, ref _empresaAbierta, value);
+        }
+
+        public SistemaContpaqEnum SistemaElegido
+        {
+            get => _sistemaElegido;
+            set => Set(() => SistemaElegido, ref _sistemaElegido, value);
+        }
+
+        private TSdkSesion _sdkSesion;
+
+        public TSdkSesion SdkSesion
+        {
+            get => _sdkSesion;
+            set => Set(() => SdkSesion, ref _sdkSesion, value);
         }
     }
 }

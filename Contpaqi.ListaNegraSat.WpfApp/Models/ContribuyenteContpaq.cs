@@ -5,12 +5,12 @@ namespace Contpaqi.ListaNegraSat.WpfApp.Models
     public class ContribuyenteContpaq : ViewModelBase
     {
         private string _codigo;
-        private int _estatus;
+        private bool _estaActivo;
         private int _id;
         private string _razonSocial;
         private string _rfc;
         private string _supuesto;
-        private int _tipo;
+        private TipoContribuyenteEnum _tipo;
         private string _tipoPersona;
 
         public int Id
@@ -37,16 +37,16 @@ namespace Contpaqi.ListaNegraSat.WpfApp.Models
             set => Set(() => RazonSocial, ref _razonSocial, value);
         }
 
-        public int Tipo
+        public TipoContribuyenteEnum Tipo
         {
             get => _tipo;
             set => Set(() => Tipo, ref _tipo, value);
         }
 
-        public int Estatus
+        public bool EstaActivo
         {
-            get => _estatus;
-            set => Set(() => Estatus, ref _estatus, value);
+            get => _estaActivo;
+            set => Set(() => EstaActivo, ref _estaActivo, value);
         }
 
         public string TipoPersona

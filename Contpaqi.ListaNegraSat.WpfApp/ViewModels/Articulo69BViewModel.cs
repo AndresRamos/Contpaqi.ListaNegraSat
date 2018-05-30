@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
@@ -14,6 +13,7 @@ using GalaSoft.MvvmLight.CommandWpf;
 using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Win32;
 using OfficeOpenXml;
+using SDKCONTPAQNGLib;
 
 namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
 {
@@ -240,7 +240,17 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
         public void LoadClientesContpaq()
         {
             var rep = new ClienteContpaqRepositorio(_applicationConfiguration.ContpaqiSdk);
-            var clientesContpaq = rep.TraerClientes();
+
+            List<ContribuyenteContpaq> clientesContpaq;
+
+            if (_applicationConfiguration.SistemaElegido == SistemaContpaqEnum.Contabilidad)
+            {
+                clientesContpaq = GetClientesContabilidad();
+            }
+            else
+            {
+                clientesContpaq = rep.TraerClientes();
+            }
             ContribuyentesContpaq.AddRange(clientesContpaq.Where(c => Contribuyentes.Any(con => con.Rfc == c.Rfc)));
             foreach (var contribuyenteContpaq in ContribuyentesContpaq)
             {
@@ -318,7 +328,7 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
                         worksheet.Cells[i, 3].Value = clienteContpaq.RazonSocial;
                         worksheet.Cells[i, 4].Value = clienteContpaq.Supuesto;
                         worksheet.Cells[i, 5].Value = clienteContpaq.Tipo;
-                        worksheet.Cells[i, 6].Value = clienteContpaq.Estatus;
+                        worksheet.Cells[i, 6].Value = clienteContpaq.EstaActivo;
                         i++;
                     }
                     worksheet.Cells.AutoFitColumns();
@@ -327,6 +337,102 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
                 return saveFileDialog.FileName;
             }
             return null;
+        }
+
+        private List<ContribuyenteContpaq> GetClientesContabilidad()
+        {
+            var lista = new List<ContribuyenteContpaq>();
+            var clientes = new TSdkCliente();
+            clientes.setSesion(_applicationConfiguration.SdkSesion);
+            var result = clientes.consultaPorRFC_buscaPrimero();
+            if (result == 1)
+            {
+                var contribuyente = new ContribuyenteContpaq();
+                contribuyente.Rfc = clientes.RFC;
+                contribuyente.RazonSocial = clientes.Nombre;
+                contribuyente.Codigo = clientes.Codigo;
+                contribuyente.Id = clientes.Id;
+                contribuyente.EstaActivo = clientes.EsBaja == 0;
+                if (clientes.EsProveedor == 1)
+                {
+                    contribuyente.Tipo = TipoContribuyenteEnum.ClienteProveedor;
+                }
+                else
+                {
+                    contribuyente.Tipo = TipoContribuyenteEnum.Cliente;
+                }
+                lista.Add(contribuyente);
+            }
+
+            while (clientes.consultaPorRFC_buscaSiguiente() == 1)
+            {
+                var contribuyente = new ContribuyenteContpaq();
+                contribuyente.Rfc = clientes.RFC;
+                contribuyente.RazonSocial = clientes.Nombre;
+                contribuyente.Codigo = clientes.Codigo;
+                contribuyente.Id = clientes.Id;
+                contribuyente.EstaActivo = clientes.EsBaja == 0;
+                if (clientes.EsProveedor == 1)
+                {
+                    contribuyente.Tipo = TipoContribuyenteEnum.ClienteProveedor;
+                }
+                else
+                {
+                    contribuyente.Tipo = TipoContribuyenteEnum.Cliente;
+                }
+                lista.Add(contribuyente);
+            }
+
+            var proveedores = new TSdkProveedor();
+            proveedores.setSesion(_applicationConfiguration.SdkSesion);
+            proveedores.iniciarInfo();
+
+            result = proveedores.consultaPorNumero_buscaUltimo();
+            var idUltimo = proveedores.Id;
+            result = proveedores.consultaPorNumero_buscaPrimero();
+            if (result == 1)
+            {
+                var contribuyente = new ContribuyenteContpaq();
+                contribuyente.Rfc = proveedores.RFC;
+                contribuyente.RazonSocial = proveedores.Nombre;
+                contribuyente.Codigo = proveedores.Codigo;
+                contribuyente.Id = proveedores.Id;
+                contribuyente.EstaActivo = proveedores.EsBaja == 0;
+                if (proveedores.EsCliente == 1)
+                {
+                    contribuyente.Tipo = TipoContribuyenteEnum.ClienteProveedor;
+                }
+                else
+                {
+                    contribuyente.Tipo = TipoContribuyenteEnum.Proveedor;
+                }
+                lista.Add(contribuyente);
+            }
+
+            while (proveedores.consultaPorNumero_buscaSiguiente() == 1)
+            {
+                var contribuyente = new ContribuyenteContpaq();
+                contribuyente.Rfc = proveedores.RFC;
+                contribuyente.RazonSocial = proveedores.Nombre;
+                contribuyente.Codigo = proveedores.Codigo;
+                contribuyente.Id = proveedores.Id;
+                contribuyente.EstaActivo = proveedores.EsBaja == 0;
+                if (proveedores.EsCliente == 1)
+                {
+                    contribuyente.Tipo = TipoContribuyenteEnum.ClienteProveedor;
+                }
+                else
+                {
+                    contribuyente.Tipo = TipoContribuyenteEnum.Proveedor;
+                }
+                lista.Add(contribuyente);
+                if (proveedores.Id == idUltimo)
+                {
+                    break;
+                }
+            }
+
+            return lista;
         }
     }
 }

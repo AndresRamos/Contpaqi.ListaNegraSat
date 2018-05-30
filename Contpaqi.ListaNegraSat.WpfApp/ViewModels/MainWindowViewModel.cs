@@ -14,6 +14,7 @@ using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
 using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Win32;
+using SDKCONTPAQNGLib;
 
 namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
 {
@@ -60,30 +61,44 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
                                        AffirmativeButtonText = "Factura Electronica",
                                        NegativeButtonText = "Adminpaq",
                                        FirstAuxiliaryButtonText = "Comercial Premium",
-                                       SecondAuxiliaryButtonText = "Cancelar",
+                                       SecondAuxiliaryButtonText = "Contabilidad",
                                        DefaultButtonFocus = MessageDialogResult.SecondAuxiliary
                                    });
 
                                switch (messageDialogResult)
                                {
                                    case MessageDialogResult.Affirmative:
+                                       _applicationConfiguration.SistemaElegido = SistemaContpaqEnum.FacturaElectronica;
                                        _applicationConfiguration.ContpaqiSdk = new FacturaElectronicaSdkExtended();
                                        break;
                                    case MessageDialogResult.Negative:
+                                       _applicationConfiguration.SistemaElegido = SistemaContpaqEnum.Adminpaq;
                                        _applicationConfiguration.ContpaqiSdk = new AdminpaqSdkExtended();
                                        break;
                                    case MessageDialogResult.FirstAuxiliary:
+                                       _applicationConfiguration.SistemaElegido = SistemaContpaqEnum.Comercial;
                                        _applicationConfiguration.ContpaqiSdk = new ComercialSdkExtended();
                                        break;
                                    case MessageDialogResult.SecondAuxiliary:
-                                       _applicationConfiguration.ContpaqiSdk = null;
-                                       return;
+                                       _applicationConfiguration.SistemaElegido = SistemaContpaqEnum.Contabilidad;
+                                       _applicationConfiguration.SdkSesion = new TSdkSesion();
+                                       break;
                                }
 
-                               _applicationConfiguration.ContpaqiSdkUnidadTrabajo = new ContpaqiSdkUnidadTrabajo(_applicationConfiguration.ContpaqiSdk);
-                               _applicationConfiguration.ContpaqiSdkUnidadTrabajo.ErrorContpaqiSdkRepositorio.ResultadoSdk = _applicationConfiguration.ContpaqiSdk.InicializarSDK();
+                               if (_applicationConfiguration.SistemaElegido == SistemaContpaqEnum.Contabilidad)
+                               {
+                                   _applicationConfiguration.SdkSesion.iniciaConexion();
+                                   _applicationConfiguration.SdkSesion.firmaUsuario();
+                               }
+                               else
+                               {
+                                   _applicationConfiguration.ContpaqiSdkUnidadTrabajo = new ContpaqiSdkUnidadTrabajo(_applicationConfiguration.ContpaqiSdk);
+                                   _applicationConfiguration.ContpaqiSdkUnidadTrabajo.ErrorContpaqiSdkRepositorio.ResultadoSdk = _applicationConfiguration.ContpaqiSdk.InicializarSDK();
+                               }
+
                                _applicationConfiguration.SdkInicializado = true;
                                FloatingPointReset.Action();
+
                                if (AbrirEmpresaCommand.CanExecute(null))
                                {
                                    AbrirEmpresaCommand.Execute(null);
@@ -104,7 +119,16 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
                                {
                                    CerrarEmpresaCommand.Execute(null);
                                }
-                               _applicationConfiguration.ContpaqiSdk.fTerminaSDK();
+
+                               if (_applicationConfiguration.SistemaElegido == SistemaContpaqEnum.Contabilidad)
+                               {
+                                   _applicationConfiguration.SdkSesion.finalizaConexion();
+                               }
+                               else
+                               {
+                                   _applicationConfiguration.ContpaqiSdk.fTerminaSDK();
+                               }
+
                                _applicationConfiguration.SdkInicializado = false;
                            },
                            () => _applicationConfiguration.SdkInicializado));
@@ -132,7 +156,15 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
                 return _cerrarEmpresaCommand ?? (_cerrarEmpresaCommand = new RelayCommand(
                            () =>
                            {
-                               _applicationConfiguration.ContpaqiSdk.fCierraEmpresa();
+                               if (_applicationConfiguration.SistemaElegido == SistemaContpaqEnum.Contabilidad)
+                               {
+                                   _applicationConfiguration.SdkSesion.cierraEmpresa();
+                               }
+                               else
+                               {
+                                   _applicationConfiguration.ContpaqiSdk.fCierraEmpresa();
+                               }
+
                                _applicationConfiguration.EmpresaAbierta = false;
                                _applicationConfiguration.Empresa = null;
                            },
@@ -238,7 +270,15 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
 
         private void AbrirEmpresaContpaq(Empresa empresa)
         {
-            _applicationConfiguration.ContpaqiSdkUnidadTrabajo.ErrorContpaqiSdkRepositorio.ResultadoSdk = _applicationConfiguration.ContpaqiSdk.fAbreEmpresa(empresa.Ruta);
+            if (_applicationConfiguration.SistemaElegido == SistemaContpaqEnum.Contabilidad)
+            {
+                _applicationConfiguration.SdkSesion.abreEmpresa(empresa.Ruta);
+            }
+            else
+            {
+                _applicationConfiguration.ContpaqiSdkUnidadTrabajo.ErrorContpaqiSdkRepositorio.ResultadoSdk = _applicationConfiguration.ContpaqiSdk.fAbreEmpresa(empresa.Ruta);
+            }
+
             _applicationConfiguration.Empresa = empresa;
             _applicationConfiguration.EmpresaAbierta = true;
         }
