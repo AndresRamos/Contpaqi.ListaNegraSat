@@ -1,4 +1,6 @@
-﻿using Contpaqi.Sdk.Extras.Interfaces;
+﻿using System;
+using System.IO;
+using Contpaqi.Sdk.Extras.Interfaces;
 using Contpaqi.Sdk.Extras.Modelos;
 using Contpaqi.Sdk.Extras.Repositorios;
 using GalaSoft.MvvmLight;
@@ -13,6 +15,7 @@ namespace Contpaqi.ListaNegraSat.WpfApp.Models
         private Empresa _empresa;
         private bool _empresaAbierta;
         private bool _sdkInicializado;
+        private TSdkSesion _sdkSesion;
         private SistemaContpaqEnum _sistemaElegido;
 
         public IContpaqiSdk ContpaqiSdk
@@ -51,12 +54,14 @@ namespace Contpaqi.ListaNegraSat.WpfApp.Models
             set => Set(() => SistemaElegido, ref _sistemaElegido, value);
         }
 
-        private TSdkSesion _sdkSesion;
-
         public TSdkSesion SdkSesion
         {
             get => _sdkSesion;
             set => Set(() => SdkSesion, ref _sdkSesion, value);
         }
+
+        public string RutaArchivo69 => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Listado_Completo_69.csv");
+
+        public string RutaArchivo69B => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Listado_Completo_69-B.csv");
     }
 }

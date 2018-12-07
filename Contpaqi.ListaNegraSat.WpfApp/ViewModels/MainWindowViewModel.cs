@@ -52,7 +52,8 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
                 return _iniciarSdkCommand ?? (_iniciarSdkCommand = new RelayCommand(
                            async () =>
                            {
-                               var messageDialogResult = await _dialogCoordinator.ShowMessageAsync(this,
+                               var messageDialogResult = await _dialogCoordinator.ShowMessageAsync(
+                                   this,
                                    "Iniciar SDK",
                                    "Con que sistema quiere trabajar?",
                                    MessageDialogStyle.AffirmativeAndNegativeAndDoubleAuxiliary,
@@ -83,6 +84,10 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
                                        _applicationConfiguration.SistemaElegido = SistemaContpaqEnum.Contabilidad;
                                        _applicationConfiguration.SdkSesion = new TSdkSesion();
                                        break;
+                                   case MessageDialogResult.Canceled:
+                                       break;
+                                   default:
+                                       throw new ArgumentOutOfRangeException();
                                }
 
                                if (_applicationConfiguration.SistemaElegido == SistemaContpaqEnum.Contabilidad)
@@ -94,10 +99,10 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
                                {
                                    _applicationConfiguration.ContpaqiSdkUnidadTrabajo = new ContpaqiSdkUnidadTrabajo(_applicationConfiguration.ContpaqiSdk);
                                    _applicationConfiguration.ContpaqiSdkUnidadTrabajo.ErrorContpaqiSdkRepositorio.ResultadoSdk = _applicationConfiguration.ContpaqiSdk.InicializarSDK();
+                                   FloatingPointReset.Action();
                                }
 
                                _applicationConfiguration.SdkInicializado = true;
-                               FloatingPointReset.Action();
 
                                if (AbrirEmpresaCommand.CanExecute(null))
                                {
@@ -205,6 +210,7 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
                                        $"Hubo un error tratando de buscar actualizaciones. Intente mas tarde. Error: {ex}");
                                    return;
                                }
+
                                var version1 = Assembly.GetExecutingAssembly().GetName().Version;
                                var version2 = new Version(currentverstion);
                                var result = version1.CompareTo(version2);
@@ -233,6 +239,7 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
                                                webClient.DownloadFile(url, saveFileDialog.FileName);
                                            }
                                        }
+
                                        await _dialogCoordinator.ShowMessageAsync(this,
                                            "Actualizacion Descargada",
                                            "Cierre la aplicacion antes de correr el instalador.");

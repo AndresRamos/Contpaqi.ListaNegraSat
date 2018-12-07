@@ -1,21 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using Contpaqi.ListaNegraSat.WpfApp.ViewModels;
 using GalaSoft.MvvmLight.Ioc;
+using GalaSoft.MvvmLight.Threading;
 
 namespace Contpaqi.ListaNegraSat.WpfApp
 {
     /// <summary>
-    /// Interaction logic for App.xaml
+    ///     Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application
     {
-        #region Overrides of Application
+        static App()
+        {
+            DispatcherHelper.Initialize();
+        }
 
         protected override void OnExit(ExitEventArgs e)
         {
@@ -27,7 +25,5 @@ namespace Contpaqi.ListaNegraSat.WpfApp
 
             base.OnExit(e);
         }
-
-        #endregion
     }
 }

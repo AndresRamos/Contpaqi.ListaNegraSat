@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Data;
 using Contpaqi.ListaNegraSat.WpfApp.DAL;
 using Contpaqi.ListaNegraSat.WpfApp.Models;
+using CsvHelper;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using MahApps.Metro.Controls.Dialogs;
@@ -21,6 +22,7 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
     {
         private readonly ApplicationConfiguration _applicationConfiguration;
         private readonly IDialogCoordinator _dialogCoordinator;
+        private RelayCommand _abrirArchivoCsvCommand;
         private RelayCommand _cargarCommand;
         private RelayCommand _cargarContpaqCommand;
         private bool _cargoContribuyentesSat;
@@ -36,14 +38,19 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
         private string _filtro;
         private string _filtroContpaq;
 
-        public Articulo69ViewModel(IDialogCoordinator dialogCoordinator, ApplicationConfiguration applicationConfiguration)
+        public Articulo69ViewModel(IDialogCoordinator dialogCoordinator,
+            ApplicationConfiguration applicationConfiguration)
         {
             _dialogCoordinator = dialogCoordinator;
             _applicationConfiguration = applicationConfiguration;
-            _contribuyentesCollectionView = new ListCollectionView(_contribuyentes);
-            _contribuyentesCollectionView.Filter = ContribuyentesCollectionViewFilter;
-            _contribuyentesContpaqCollectionView = new ListCollectionView(_contribuyentesContpaq);
-            _contribuyentesContpaqCollectionView.Filter = ContribuyentesContpaqCollectionViewFilter;
+            _contribuyentesCollectionView = new ListCollectionView(_contribuyentes)
+            {
+                Filter = ContribuyentesCollectionViewFilter
+            };
+            _contribuyentesContpaqCollectionView = new ListCollectionView(_contribuyentesContpaq)
+            {
+                Filter = ContribuyentesContpaqCollectionViewFilter
+            };
         }
 
         public string Filtro
@@ -110,19 +117,38 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
         {
             get
             {
-                return _cargarCommand ?? (_cargarCommand = new RelayCommand(
-                           async () =>
+                return _cargarCommand ?? (_cargarCommand = new RelayCommand(async () =>
                            {
-                               var progressDialogController = await _dialogCoordinator.ShowProgressAsync(
-                                   this,
+                               var progressDialogController = await _dialogCoordinator.ShowProgressAsync(this,
                                    "Cargando Contribuyentes SAT",
                                    "Cargando contribuyentes SAT.");
                                await Task.Delay(1000);
 
-                               Load();
+                               LoadFile();
+
                                _cargoContribuyentesSat = true;
 
                                await progressDialogController.CloseAsync();
+                           },
+                           () => true));
+            }
+        }
+
+        public RelayCommand AbrirArchivoCsvCommand
+        {
+            get
+            {
+                return _abrirArchivoCsvCommand ?? (_abrirArchivoCsvCommand = new RelayCommand(
+                           async () =>
+                           {
+                               try
+                               {
+                                   Process.Start(_applicationConfiguration.RutaArchivo69);
+                               }
+                               catch (Exception exception)
+                               {
+                                   await _dialogCoordinator.ShowMessageAsync(this, "Error", exception.Message);
+                               }
                            },
                            () => true));
             }
@@ -132,11 +158,9 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
         {
             get
             {
-                return _cargarContpaqCommand ?? (_cargarContpaqCommand = new RelayCommand(
-                           async () =>
+                return _cargarContpaqCommand ?? (_cargarContpaqCommand = new RelayCommand(async () =>
                            {
-                               var progressDialogController = await _dialogCoordinator.ShowProgressAsync(
-                                   this,
+                               var progressDialogController = await _dialogCoordinator.ShowProgressAsync(this,
                                    "Cargando Contribuyentes CONTPAQI",
                                    "Cargando contribuyentes CONTPAQI.");
                                await Task.Delay(1000);
@@ -155,35 +179,34 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
         {
             get
             {
-                return _exportarContribuyentesContpaqCommand ?? (_exportarContribuyentesContpaqCommand = new RelayCommand(
-                           async () =>
-                           {
-                               var messageDialogResult = await _dialogCoordinator.ShowMessageAsync(
-                                   this,
-                                   "Exportar Contribuyentes Incumplidos Contpaq",
-                                   "En que formato desea exportar?",
-                                   MessageDialogStyle.AffirmativeAndNegative,
-                                   new MetroDialogSettings
+                return _exportarContribuyentesContpaqCommand ?? (_exportarContribuyentesContpaqCommand =
+                           new RelayCommand(async () =>
+                               {
+                                   var messageDialogResult = await _dialogCoordinator.ShowMessageAsync(this,
+                                       "Exportar Contribuyentes Incumplidos Contpaq",
+                                       "En que formato desea exportar?",
+                                       MessageDialogStyle.AffirmativeAndNegative,
+                                       new MetroDialogSettings
+                                       {
+                                           AffirmativeButtonText = "TXT", NegativeButtonText = "EXCEL"
+                                       });
+                                   string ruta = null;
+                                   switch (messageDialogResult)
                                    {
-                                       AffirmativeButtonText = "TXT",
-                                       NegativeButtonText = "EXCEL"
-                                   });
-                               string ruta = null;
-                               switch (messageDialogResult)
-                               {
-                                   case MessageDialogResult.Affirmative:
-                                       ruta = ExportarTxt();
-                                       break;
-                                   case MessageDialogResult.Negative:
-                                       ruta = ExportarExcel();
-                                       break;
-                               }
-                               if (ruta != null)
-                               {
-                                   Process.Start(ruta);
-                               }
-                           },
-                           () => ContribuyentesContpaq.Count > 0));
+                                       case MessageDialogResult.Affirmative:
+                                           ruta = ExportarTxt();
+                                           break;
+                                       case MessageDialogResult.Negative:
+                                           ruta = ExportarExcel();
+                                           break;
+                                   }
+
+                                   if (ruta != null)
+                                   {
+                                       Process.Start(ruta);
+                                   }
+                               },
+                               () => ContribuyentesContpaq.Count > 0));
             }
         }
 
@@ -191,9 +214,9 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
         {
             get
             {
-                return _copiarRfcContribuyenteSatCommand ?? (_copiarRfcContribuyenteSatCommand = new RelayCommand(
-                           () => { Clipboard.SetText(ContribuyenteSatSeleccionado.Rfc); },
-                           () => ContribuyenteSatSeleccionado != null));
+                return _copiarRfcContribuyenteSatCommand ?? (_copiarRfcContribuyenteSatCommand =
+                           new RelayCommand(() => Clipboard.SetText(ContribuyenteSatSeleccionado.Rfc),
+                               () => ContribuyenteSatSeleccionado != null));
             }
         }
 
@@ -201,57 +224,52 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
         {
             get
             {
-                return _copiarRfcContribuyenteContpaqCommand ?? (_copiarRfcContribuyenteContpaqCommand = new RelayCommand(
-                           () => { Clipboard.SetText(ContribuyenteContpaqSeleccionado.Rfc); },
-                           () => ContribuyenteContpaqSeleccionado != null));
+                return _copiarRfcContribuyenteContpaqCommand ?? (_copiarRfcContribuyenteContpaqCommand =
+                           new RelayCommand(() => Clipboard.SetText(ContribuyenteContpaqSeleccionado.Rfc),
+                               () => ContribuyenteContpaqSeleccionado != null));
             }
         }
 
-        public void Load()
+        private void LoadFile()
         {
             Contribuyentes.Clear();
-            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Listado_Completo_69.xlsx");
-            using (var excelPackage = new ExcelPackage(new FileInfo(path)))
+
+            using (TextReader reader = File.OpenText(_applicationConfiguration.RutaArchivo69))
             {
-                var worksheet = excelPackage.Workbook.Worksheets.First();
-                var rows = worksheet.Dimension.End.Row;
-                for (var i = 2; i <= rows; i++)
+                var csvReader = new CsvReader(reader);
+
+                csvReader.Read();
+
+                while (csvReader.Read())
                 {
-                    if (worksheet.Cells[i, 1].Value == null)
+                    if (string.IsNullOrEmpty(csvReader.GetField(0)))
                     {
                         continue;
                     }
 
                     var contribuyente = new Contribuyente
                     {
-                        Rfc = worksheet.Cells[i, 1].Value.ToString(),
-                        RazonSocial = worksheet.Cells[i, 2].Value.ToString(),
-                        TipoPersona = worksheet.Cells[i, 3].Value.ToString(),
-                        Supuesto = worksheet.Cells[i, 4].Value.ToString()
+                        Rfc = csvReader.GetField(0),
+                        RazonSocial = csvReader.GetField(1),
+                        TipoPersona = csvReader.GetField(2),
+                        Supuesto = csvReader.GetField(3)
                     };
 
                     Contribuyentes.Add(contribuyente);
                 }
-            }
 
-            ContribuyentesCollectionView.Refresh();
-            RaisePropertyChanged(nameof(ContribuyentesCount));
+                ContribuyentesCollectionView.Refresh();
+                RaisePropertyChanged(nameof(ContribuyentesCount));
+            }
         }
 
-        public void LoadClientesContpaq()
+        private void LoadClientesContpaq()
         {
             var rep = new ClienteContpaqRepositorio(_applicationConfiguration.ContpaqiSdk);
 
-            List<ContribuyenteContpaq> clientesContpaq;
-
-            if (_applicationConfiguration.SistemaElegido == SistemaContpaqEnum.Contabilidad)
-            {
-                clientesContpaq = GetClientesContabilidad();
-            }
-            else
-            {
-                clientesContpaq = rep.TraerClientes();
-            }
+            var clientesContpaq = _applicationConfiguration.SistemaElegido == SistemaContpaqEnum.Contabilidad
+                ? GetClientesContabilidad()
+                : rep.TraerClientes();
 
             ContribuyentesContpaq.AddRange(clientesContpaq.Where(c => Contribuyentes.Any(con => con.Rfc == c.Rfc)));
             foreach (var contribuyenteContpaq in ContribuyentesContpaq)
@@ -260,21 +278,26 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
                 contribuyenteContpaq.Supuesto = contribuyenteSat.Supuesto;
                 contribuyenteContpaq.TipoPersona = contribuyenteSat.TipoPersona;
             }
+
             ContribuyentesContpaqCollectionView.Refresh();
             RaisePropertyChanged(nameof(ContribuyentesContpaqCount));
         }
 
         private bool ContribuyentesCollectionViewFilter(object obj)
         {
+            if (obj is null)
+            {
+                throw new ArgumentNullException(nameof(obj));
+            }
+
             if (string.IsNullOrEmpty(Filtro))
             {
                 return true;
             }
 
-            var contribuyente = obj as Contribuyente;
-
-            return contribuyente.Rfc.IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                   contribuyente.RazonSocial.IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0;
+            return obj is Contribuyente contribuyente &&
+                   (contribuyente.Rfc.IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    contribuyente.RazonSocial.IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0);
         }
 
         private bool ContribuyentesContpaqCollectionViewFilter(object obj)
@@ -284,32 +307,37 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
                 return true;
             }
 
-            var contribuyente = obj as ContribuyenteContpaq;
-
-            return contribuyente.Rfc.IndexOf(FiltroContpaq, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                   contribuyente.Codigo.IndexOf(FiltroContpaq, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                   contribuyente.RazonSocial.IndexOf(FiltroContpaq, StringComparison.OrdinalIgnoreCase) >= 0;
+            return obj is ContribuyenteContpaq contribuyente &&
+                   (contribuyente.Rfc.IndexOf(FiltroContpaq, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    contribuyente.Codigo.IndexOf(FiltroContpaq, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    contribuyente.RazonSocial.IndexOf(FiltroContpaq, StringComparison.OrdinalIgnoreCase) >= 0);
         }
 
         private string ExportarTxt()
         {
-            var saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "txt | .txt";
-            saveFileDialog.FileName = "ContribuyentesIncumplidosContpaq.txt";
-            if (saveFileDialog.ShowDialog() == true)
+            var saveFileDialog = new SaveFileDialog
             {
-                var ruta = saveFileDialog.FileName;
-                File.WriteAllLines(ruta, ContribuyentesContpaq.Select(c => $"{c.Rfc}|{c.Codigo}|{c.RazonSocial}|{c.Supuesto}|{c.TipoPersona}"));
-                return saveFileDialog.FileName;
+                Filter = "txt | .txt",
+                FileName = "ContribuyentesIncumplidosContpaq.txt"
+            };
+            if (saveFileDialog.ShowDialog() != true)
+            {
+                return null;
             }
-            return null;
+
+            var ruta = saveFileDialog.FileName;
+            File.WriteAllLines(ruta,
+                ContribuyentesContpaq.Select(c => $"{c.Rfc}|{c.Codigo}|{c.RazonSocial}|{c.Supuesto}|{c.TipoPersona}"));
+            return saveFileDialog.FileName;
         }
 
         private string ExportarExcel()
         {
-            var saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "Excel | .xlsx";
-            saveFileDialog.FileName = "ContribuyentesIncumplidosContpaq.xlsx";
+            var saveFileDialog = new SaveFileDialog
+            {
+                Filter = "Excel | .xlsx",
+                FileName = "ContribuyentesIncumplidosContpaq.xlsx"
+            };
             if (saveFileDialog.ShowDialog() == true)
             {
                 var ruta = saveFileDialog.FileName;
@@ -335,11 +363,14 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
                         worksheet.Cells[i, 7].Value = clienteContpaq.EstaActivo;
                         i++;
                     }
+
                     worksheet.Cells.AutoFitColumns();
                     excelpackage.Save();
                 }
+
                 return saveFileDialog.FileName;
             }
+
             return null;
         }
 
@@ -351,39 +382,35 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
             var result = clientes.consultaPorRFC_buscaPrimero();
             if (result == 1)
             {
-                var contribuyente = new ContribuyenteContpaq();
-                contribuyente.Rfc = clientes.RFC;
-                contribuyente.RazonSocial = clientes.Nombre;
-                contribuyente.Codigo = clientes.Codigo;
-                contribuyente.Id = clientes.Id;
-                contribuyente.EstaActivo = clientes.EsBaja == 0;
-                if (clientes.EsProveedor == 1)
+                var contribuyente = new ContribuyenteContpaq
                 {
-                    contribuyente.Tipo = TipoContribuyenteEnum.ClienteProveedor;
-                }
-                else
-                {
-                    contribuyente.Tipo = TipoContribuyenteEnum.Cliente;
-                }
+                    Rfc = clientes.RFC,
+                    RazonSocial = clientes.Nombre,
+                    Codigo = clientes.Codigo,
+                    Id = clientes.Id,
+                    EstaActivo = clientes.EsBaja == 0,
+                    Tipo = clientes.EsProveedor == 1
+                        ? TipoContribuyenteEnum.ClienteProveedor
+                        : TipoContribuyenteEnum.Cliente
+                };
+
                 lista.Add(contribuyente);
             }
 
             while (clientes.consultaPorRFC_buscaSiguiente() == 1)
             {
-                var contribuyente = new ContribuyenteContpaq();
-                contribuyente.Rfc = clientes.RFC;
-                contribuyente.RazonSocial = clientes.Nombre;
-                contribuyente.Codigo = clientes.Codigo;
-                contribuyente.Id = clientes.Id;
-                contribuyente.EstaActivo = clientes.EsBaja == 0;
-                if (clientes.EsProveedor == 1)
+                var contribuyente = new ContribuyenteContpaq
                 {
-                    contribuyente.Tipo = TipoContribuyenteEnum.ClienteProveedor;
-                }
-                else
-                {
-                    contribuyente.Tipo = TipoContribuyenteEnum.Cliente;
-                }
+                    Rfc = clientes.RFC,
+                    RazonSocial = clientes.Nombre,
+                    Codigo = clientes.Codigo,
+                    Id = clientes.Id,
+                    EstaActivo = clientes.EsBaja == 0,
+                    Tipo = clientes.EsProveedor == 1
+                        ? TipoContribuyenteEnum.ClienteProveedor
+                        : TipoContribuyenteEnum.Cliente
+                };
+
                 lista.Add(contribuyente);
             }
 
@@ -391,44 +418,40 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
             proveedores.setSesion(_applicationConfiguration.SdkSesion);
             proveedores.iniciarInfo();
 
-            result = proveedores.consultaPorNumero_buscaUltimo();
+            proveedores.consultaPorNumero_buscaUltimo();
             var idUltimo = proveedores.Id;
             result = proveedores.consultaPorNumero_buscaPrimero();
             if (result == 1)
             {
-                var contribuyente = new ContribuyenteContpaq();
-                contribuyente.Rfc = proveedores.RFC;
-                contribuyente.RazonSocial = proveedores.Nombre;
-                contribuyente.Codigo = proveedores.Codigo;
-                contribuyente.Id = proveedores.Id;
-                contribuyente.EstaActivo = proveedores.EsBaja == 0;
-                if (proveedores.EsCliente == 1)
+                var contribuyente = new ContribuyenteContpaq
                 {
-                    contribuyente.Tipo = TipoContribuyenteEnum.ClienteProveedor;
-                }
-                else
-                {
-                    contribuyente.Tipo = TipoContribuyenteEnum.Proveedor;
-                }
+                    Rfc = proveedores.RFC,
+                    RazonSocial = proveedores.Nombre,
+                    Codigo = proveedores.Codigo,
+                    Id = proveedores.Id,
+                    EstaActivo = proveedores.EsBaja == 0,
+                    Tipo = proveedores.EsCliente == 1
+                        ? TipoContribuyenteEnum.ClienteProveedor
+                        : TipoContribuyenteEnum.Proveedor
+                };
+
                 lista.Add(contribuyente);
             }
 
             while (proveedores.consultaPorNumero_buscaSiguiente() == 1)
             {
-                var contribuyente = new ContribuyenteContpaq();
-                contribuyente.Rfc = proveedores.RFC;
-                contribuyente.RazonSocial = proveedores.Nombre;
-                contribuyente.Codigo = proveedores.Codigo;
-                contribuyente.Id = proveedores.Id;
-                contribuyente.EstaActivo = proveedores.EsBaja == 0;
-                if (proveedores.EsCliente == 1)
+                var contribuyente = new ContribuyenteContpaq
                 {
-                    contribuyente.Tipo = TipoContribuyenteEnum.ClienteProveedor;
-                }
-                else
-                {
-                    contribuyente.Tipo = TipoContribuyenteEnum.Proveedor;
-                }
+                    Rfc = proveedores.RFC,
+                    RazonSocial = proveedores.Nombre,
+                    Codigo = proveedores.Codigo,
+                    Id = proveedores.Id,
+                    EstaActivo = proveedores.EsBaja == 0,
+                    Tipo = proveedores.EsCliente == 1
+                        ? TipoContribuyenteEnum.ClienteProveedor
+                        : TipoContribuyenteEnum.Proveedor
+                };
+
                 lista.Add(contribuyente);
                 if (proveedores.Id == idUltimo)
                 {

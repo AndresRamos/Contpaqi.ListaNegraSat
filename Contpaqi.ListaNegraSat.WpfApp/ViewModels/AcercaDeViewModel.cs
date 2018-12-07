@@ -8,6 +8,7 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
     public class AcercaDeViewModel : ViewModelBase
     {
         private string _company;
+        private string _companyInfo;
         private string _copyright;
         private string _description;
         private string _product;
@@ -48,18 +49,17 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
             set => Set(() => Version, ref _version, value);
         }
 
-        public void ShowView()
-        {
-            MessengerInstance.Send(new ShowViewMessage(this));
-        }
-
-        private string _companyInfo;
-
         public string CompanyInfo
         {
             get => _companyInfo;
             set => Set(() => CompanyInfo, ref _companyInfo, value);
         }
+
+        public void ShowView()
+        {
+            MessengerInstance.Send(new ShowViewMessage(this));
+        }
+
         private void GetAseemblyInfo()
         {
             var product = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyProductAttribute), true)[0] as AssemblyProductAttribute;

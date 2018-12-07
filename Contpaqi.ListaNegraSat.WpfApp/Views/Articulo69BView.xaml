@@ -7,6 +7,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Contpaqi.ListaNegraSat.WpfApp.Views"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="800"
@@ -28,9 +29,10 @@
                   IsExpanded="True"
                   BorderThickness="2"
                   Margin="5">
-            <TextBlock Text="Cuando la autoridad fiscal detecte que un contribuyente ha estado emitiendo comprobantes sin contar con los activos, personal, infraestructura o capacidad material, directa o indirectamente, para prestar los servicios o producir, comercializar o entregar los bienes que amparan tales comprobantes, o bien, que dichos contribuyentes se encuentren no localizados, se presumirá la inexistencia de las operaciones amparadas en tales comprobantes."
-                       TextWrapping="Wrap"
-                       Margin="5" />
+            <TextBlock
+                Text="Cuando la autoridad fiscal detecte que un contribuyente ha estado emitiendo comprobantes sin contar con los activos, personal, infraestructura o capacidad material, directa o indirectamente, para prestar los servicios o producir, comercializar o entregar los bienes que amparan tales comprobantes, o bien, que dichos contribuyentes se encuentren no localizados, se presumirá la inexistencia de las operaciones amparadas en tales comprobantes."
+                TextWrapping="Wrap"
+                Margin="5" />
         </Expander>
         <Grid Grid.Row="1"
               Grid.Column="0">
@@ -44,21 +46,32 @@
                       Margin="5">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <Button Grid.Column="1"
-                            Content="Cargar"
-                            Command="{Binding CargarCommand}"
-                            Width="100"
-                            HorizontalAlignment="Left"
-                            Margin="5"
-                            Style="{DynamicResource SquareButtonStyle}" />
+                    <StackPanel Grid.Row="0"
+                                Grid.Column="1"
+                                Orientation="Horizontal">
+                        <Button Content="{iconPacks:FontAwesome Kind=SyncSolid}"
+                                ToolTip="Cargar"
+                                Command="{Binding CargarCommand}"
+                                Width="100"
+                                HorizontalAlignment="Left"
+                                Margin="5"
+                                Style="{DynamicResource SquareButtonStyle}" />
+                        <Button Content="{iconPacks:FontAwesome Kind=FileAltSolid}"
+                                ToolTip="Abrir Archivo"
+                                Command="{Binding AbrirArchivoCsvCommand}"
+                                Width="100"
+                                HorizontalAlignment="Left"
+                                Margin="5"
+                                Style="{DynamicResource SquareButtonStyle}" />
+                    </StackPanel>
                     <Label Grid.Row="1"
                            Grid.Column="0"
                            Content="Filtro:"
@@ -124,7 +137,6 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition />
-                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <GroupBox Header="Contribuyentes Incumplidos Contpaq"
                       BorderThickness="2"
@@ -133,19 +145,25 @@
                     <Grid.RowDefinitions>
                         <RowDefinition />
                         <RowDefinition />
-                        <RowDefinition />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <Button Grid.Column="1"
-                            Content="Cargar"
-                            Command="{Binding CargarContpaqCommand}"
-                            Width="100"
-                            HorizontalAlignment="Left"
-                            Margin="5"
-                            Style="{DynamicResource SquareButtonStyle}" />
+                    <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
+                        <Button Content="{iconPacks:FontAwesome Kind=SyncSolid}"
+                                ToolTip="Cargar"
+                                Command="{Binding CargarContpaqCommand}"
+                                Width="100"
+                                Margin="5"
+                                Style="{DynamicResource SquareButtonStyle}" />
+                        <Button Content="{iconPacks:FontAwesome Kind=FileExcelSolid}"
+                                ToolTip="Exportar"
+                                Command="{Binding ExportarContribuyentesContpaqCommand}"
+                                Margin="5"
+                                Width="100"
+                                Style="{StaticResource SquareButtonStyle}" />
+                    </StackPanel>
                     <Label Grid.Row="1"
                            Grid.Column="0"
                            Content="Filtro:"
@@ -210,14 +228,6 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-            <StackPanel Grid.Row="3"
-                        Orientation="Horizontal">
-                <Button Content="Exportar"
-                        Command="{Binding ExportarContribuyentesContpaqCommand}"
-                        Margin="5"
-                        Width="100"
-                        Style="{StaticResource AccentedSquareButtonStyle}" />
-            </StackPanel>
         </Grid>
     </Grid>
 </UserControl>

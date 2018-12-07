@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Windows.Data;
 using Contpaqi.ListaNegraSat.WpfApp.Messages;
 using Contpaqi.ListaNegraSat.WpfApp.Models;
 using Contpaqi.Sdk.Extras.Modelos;
@@ -15,17 +16,37 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
     {
         private readonly ApplicationConfiguration _applicationConfiguration;
         private RelayCommand _cancelarCommand;
-        private ObservableCollection<Empresa> _empresas = new ObservableCollection<Empresa>();
+        private List<Empresa> _empresas = new List<Empresa>();
+        private ICollectionView _empresasCollectionView;
         private Empresa _empresaSeleccionada;
+        private string _filtro;
         private RelayCommand _seleccionarEmpresaCommand;
 
         public SeleccionarEmpresaViewModel(ApplicationConfiguration applicationConfiguration)
         {
             _applicationConfiguration = applicationConfiguration;
+            _empresasCollectionView = CollectionViewSource.GetDefaultView(_empresas);
+            _empresasCollectionView.Filter = EmpresasCollectionViewFilter;
             LoadEmpresas();
         }
 
-        public ObservableCollection<Empresa> Empresas
+        public string Filtro
+        {
+            get => _filtro;
+            set
+            {
+                Set(() => Filtro, ref _filtro, value);
+                EmpresasCollectionView.Refresh();
+            }
+        }
+
+        public ICollectionView EmpresasCollectionView
+        {
+            get => _empresasCollectionView;
+            set => Set(() => EmpresasCollectionView, ref _empresasCollectionView, value);
+        }
+
+        public List<Empresa> Empresas
         {
             get => _empresas;
             set => Set(() => Empresas, ref _empresas, value);
@@ -61,12 +82,17 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
             }
         }
 
+        private bool EmpresasCollectionViewFilter(object obj)
+        {
+            return true;
+        }
+
         public void ShowView()
         {
             MessengerInstance.Send(new ShowViewMessage(this));
         }
 
-        public void CloseView()
+        private void CloseView()
         {
             MessengerInstance.Send(new CloseViewMessage(this));
         }
@@ -75,44 +101,42 @@ namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
         {
             Empresas.Clear();
 
-            List<Empresa> empresas;
-            if (_applicationConfiguration.SistemaElegido == SistemaContpaqEnum.Contabilidad)
-            {
-                empresas = GetEmpresasContaqbilidad();
-            }
-            else
-            {
-                empresas = _applicationConfiguration.ContpaqiSdkUnidadTrabajo.EmpresaRepositorio.TraerEmpresas();
-            }
+            var empresas = _applicationConfiguration.SistemaElegido == SistemaContpaqEnum.Contabilidad
+                ? GetEmpresasContaqbilidad()
+                : _applicationConfiguration.ContpaqiSdkUnidadTrabajo.EmpresaRepositorio.TraerEmpresas();
 
-            foreach (var empresa in empresas.OrderBy(e => e.Nombre))
-            {
-                Empresas.Add(empresa);
-            }
+            Empresas.AddRange(empresas.OrderBy(e => e.Nombre));
+            EmpresasCollectionView.Refresh();
         }
 
         private List<Empresa> GetEmpresasContaqbilidad()
         {
-            List<Empresa> e = new List<Empresa>();
-            TSdkListaEmpresas empresas = new TSdkListaEmpresas();
-            var result = empresas.buscaPrimero();
+            var empresas = new List<Empresa>();
+
+            var sdkListaEmpresas = new TSdkListaEmpresas();
+
+            var result = sdkListaEmpresas.buscaPrimero();
             if (result == 1)
             {
-                var empresa = new Empresa();
-                empresa.Nombre = empresas.Nombre;
-                empresa.Ruta = empresas.NombreBDD;
-                e.Add(empresa);
+                var empresa = new Empresa
+                {
+                    Nombre = sdkListaEmpresas.Nombre,
+                    Ruta = sdkListaEmpresas.NombreBDD
+                };
+                empresas.Add(empresa);
+
+                while (sdkListaEmpresas.buscaSiguiente() == 1)
+                {
+                    empresa = new Empresa
+                    {
+                        Nombre = sdkListaEmpresas.Nombre,
+                        Ruta = sdkListaEmpresas.NombreBDD
+                    };
+                    empresas.Add(empresa);
+                }
             }
 
-            while (empresas.buscaSiguiente() == 1)
-            {
-                var empresa = new Empresa();
-                empresa.Nombre = empresas.Nombre;
-                empresa.Ruta = empresas.NombreBDD;
-                e.Add(empresa);
-            }
-
-            return e;
+            return empresas;
         }
     }
 }

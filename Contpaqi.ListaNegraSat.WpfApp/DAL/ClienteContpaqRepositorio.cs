@@ -32,6 +32,7 @@ namespace Contpaqi.ListaNegraSat.WpfApp.DAL
                     break;
                 }
             }
+
             return clientesList;
         }
 

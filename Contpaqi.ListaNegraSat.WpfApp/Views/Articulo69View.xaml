@@ -7,6 +7,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Contpaqi.ListaNegraSat.WpfApp.Views"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="800"
@@ -28,9 +29,10 @@
                   IsExpanded="True"
                   Margin="5"
                   BorderThickness="2">
-            <TextBlock Text="El Servicio de Administración Tributaria publicará en su página de Internet el nombre, denominación o razón social y clave del registro federal de contribuyentes de aquéllos que se ubiquen en alguno de los supuestos a los que se refiere el párrafo anterior. Los contribuyentes que estuvieran inconformes con la publicación de sus datos, podrán llevar a cabo el procedimiento de aclaración que el Servicio de Administración Tributaria determine mediante reglas de carácter general, en el cual podrán aportar las pruebas que a su derecho convenga. La autoridad fiscal deberá resolver el procedimiento en un plazo de tres días, contados a partir del día siguiente al que se reciba la solicitud correspondiente y, en caso de aclararse dicha situación, el Servicio de Administración Tributaria procederá a eliminar la información publicada que corresponda."
-                       TextWrapping="Wrap"
-                       Margin="5" />
+            <TextBlock
+                Text="El Servicio de Administración Tributaria publicará en su página de Internet el nombre, denominación o razón social y clave del registro federal de contribuyentes de aquéllos que se ubiquen en alguno de los supuestos a los que se refiere el párrafo anterior. Los contribuyentes que estuvieran inconformes con la publicación de sus datos, podrán llevar a cabo el procedimiento de aclaración que el Servicio de Administración Tributaria determine mediante reglas de carácter general, en el cual podrán aportar las pruebas que a su derecho convenga. La autoridad fiscal deberá resolver el procedimiento en un plazo de tres días, contados a partir del día siguiente al que se reciba la solicitud correspondiente y, en caso de aclararse dicha situación, el Servicio de Administración Tributaria procederá a eliminar la información publicada que corresponda."
+                TextWrapping="Wrap"
+                Margin="5" />
         </Expander>
         <Grid Grid.Row="1"
               Grid.Column="0">
@@ -45,21 +47,31 @@
                       Margin="5">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <Button Grid.Column="1"
-                            Content="Cargar"
-                            Command="{Binding CargarCommand}"
-                            Width="100"
-                            HorizontalAlignment="Left"
-                            Margin="5"
-                            Style="{DynamicResource SquareButtonStyle}" />
+                    <StackPanel Grid.Row="0"
+                                Grid.Column="1"
+                                Orientation="Horizontal">
+                        <Button Content="{iconPacks:FontAwesome Kind=SyncSolid}"
+                                ToolTip="Cargar"
+                                Command="{Binding CargarCommand}"
+                                Width="100"
+                                Margin="5"
+                                Style="{DynamicResource SquareButtonStyle}" />
+                        <Button Content="{iconPacks:FontAwesome Kind=FileAltSolid}"
+                                ToolTip="Abrir Archivo"
+                                Command="{Binding AbrirArchivoCsvCommand}"
+                                Width="100"
+                                HorizontalAlignment="Left"
+                                Margin="5"
+                                Style="{DynamicResource SquareButtonStyle}" />
+                    </StackPanel>
                     <Label Grid.Row="1"
                            Grid.Column="0"
                            Content="Filtro:"
@@ -127,7 +139,6 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition />
-                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <GroupBox Header="Contribuyentes Incumplidos Contpaq"
                       BorderThickness="2"
@@ -142,13 +153,20 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <Button Grid.Column="1"
-                            Content="Cargar"
-                            Command="{Binding CargarContpaqCommand}"
-                            Width="100"
-                            HorizontalAlignment="Left"
-                            Margin="5"
-                            Style="{DynamicResource SquareButtonStyle}" />
+                    <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
+                        <Button Content="{iconPacks:FontAwesome Kind=SyncSolid}"
+                                ToolTip="Cargar"
+                                Command="{Binding CargarContpaqCommand}"
+                                Width="100"
+                                Margin="5"
+                                Style="{DynamicResource SquareButtonStyle}" />
+                        <Button Content="{iconPacks:FontAwesome Kind=FileExcelSolid}"
+                                ToolTip="Exportar"
+                                Command="{Binding ExportarContribuyentesContpaqCommand}"
+                                Margin="5"
+                                Width="100"
+                                Style="{StaticResource SquareButtonStyle}" />
+                    </StackPanel>
                     <Label Grid.Row="1"
                            Grid.Column="0"
                            Content="Filtro:"
@@ -215,14 +233,6 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-            <StackPanel Grid.Row="3"
-                        Orientation="Horizontal">
-                <Button Content="Exportar"
-                        Command="{Binding ExportarContribuyentesContpaqCommand}"
-                        Margin="5"
-                        Width="100"
-                        Style="{StaticResource AccentedSquareButtonStyle}" />
-            </StackPanel>
         </Grid>
     </Grid>
 </UserControl>

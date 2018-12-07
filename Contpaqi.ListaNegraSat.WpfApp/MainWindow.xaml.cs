@@ -1,17 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows;
 using Contpaqi.ListaNegraSat.WpfApp.Messages;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
@@ -19,10 +6,7 @@ using MahApps.Metro.Controls;
 
 namespace Contpaqi.ListaNegraSat.WpfApp
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : MetroWindow
+    public partial class MainWindow
     {
         public MainWindow()
         {
@@ -32,23 +16,20 @@ namespace Contpaqi.ListaNegraSat.WpfApp
 
         private void RegisterMessages()
         {
-            Messenger.Default.Register<ShowViewMessage>(this, message =>
-            {
-                OpenView(message.ViewModel);
-            });
+            Messenger.Default.Register<ShowViewMessage>(this, message => { OpenView(message.ViewModel); });
         }
 
         private void OpenView(ViewModelBase viewModel)
         {
-            var window = new MetroWindow();
-            window.Content = viewModel;
-            Messenger.Default.Register<CloseViewMessage>(window, message =>
-            {
-                if (message.Sender == window.Content as ViewModelBase)
+            var window = new MetroWindow {Content = viewModel};
+            Messenger.Default.Register<CloseViewMessage>(window,
+                message =>
                 {
-                    window.Close();
-                }
-            });
+                    if (message.Sender == window.Content as ViewModelBase)
+                    {
+                        window.Close();
+                    }
+                });
             window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             window.Owner = this;
             window.ShowDialog();
