@@ -1,0 +1,85 @@
+﻿<controls:MetroWindow x:Class="ListaNegraSat.Presentation.WpfApp.Views.Configuracion.EditarConfiguracionAplicacionView"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:local="clr-namespace:ListaNegraSat.Presentation.WpfApp.Views.Configuracion"
+                      xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      xmlns:dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+                      xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro.Platform"
+                      xmlns:viewModels="clr-namespace:ListaNegraSat.Presentation.WpfApp.ViewModels.Configuracion"
+                      mc:Ignorable="d"
+                      WindowStartupLocation="CenterScreen"
+                      Width="700"
+                      Height="500"
+                      d:DataContext="{d:DesignInstance Type=viewModels:EditarConfiguracionAplicacionViewModel, IsDesignTimeCreatable=False}"
+                      cal:Bind.AtDesignTime="True"
+                      dialog:DialogParticipation.Register="{Binding}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0"
+                   Text="{Binding DisplayName}"
+                   FontWeight="Bold"
+                   FontSize="20"
+                   VerticalAlignment="Center"
+                   Margin="5" />
+        <StackPanel Grid.Row="1"
+                    Orientation="Horizontal">
+            <Button Content="Guardar"
+                    cal:Message.Attach="GuardarConfiguracionAsync"
+                    Width="150"
+                    VerticalContentAlignment="Center"
+                    Margin="5"
+                    Style="{StaticResource MahApps.Styles.Button.Square.Accent}" />
+            <Button Content="Cancelar"
+                    cal:Message.Attach="Cancelar"
+                    Width="150"
+                    VerticalContentAlignment="Center"
+                    Margin="5"
+                    Style="{StaticResource MahApps.Styles.Button.Square}" />
+        </StackPanel>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0"
+                   Grid.Column="0"
+                   Content="Contpaqi Contabilidad ConnectionString:"
+                   HorizontalAlignment="Right"
+                   FontWeight="Bold"
+                   VerticalAlignment="Center"
+                   Margin="5" />
+            <TextBox Grid.Row="0"
+                     Grid.Column="1"
+                     Text="{Binding ContpaqiContabilidadConnectionString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"
+                     VerticalAlignment="Center"
+                     Margin="5"
+                     controls:TextBoxHelper.ClearTextButton="True" />
+            <Label Grid.Row="1"
+                   Grid.Column="0"
+                   Content="Contpaqi ADD ConnectionString:"
+                   FontWeight="Bold"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Right"
+                   Margin="5" />
+            <TextBox Grid.Row="1"
+                     Grid.Column="1"
+                     Text="{Binding ContpaqiAddConnetionString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"
+                     VerticalAlignment="Center"
+                     Margin="5"
+                     controls:TextBoxHelper.ClearTextButton="True" />
+        </Grid>
+    </Grid>
+</controls:MetroWindow>

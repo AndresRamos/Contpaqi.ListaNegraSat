@@ -1,83 +1,72 @@
-﻿using System.Reflection;
-using System.Text;
-using Contpaqi.ListaNegraSat.WpfApp.Messages;
-using GalaSoft.MvvmLight;
+﻿using System;
+using System.Reflection;
+using Caliburn.Micro;
 
-namespace Contpaqi.ListaNegraSat.WpfApp.ViewModels
+namespace ListaNegraSat.Presentation.WpfApp.ViewModels
 {
-    public class AcercaDeViewModel : ViewModelBase
+    public sealed class AcercaDeViewModel : Screen
     {
-        private string _company;
-        private string _companyInfo;
-        private string _copyright;
-        private string _description;
-        private string _product;
-        private string _version;
-
         public AcercaDeViewModel()
         {
-            GetAseemblyInfo();
+            DisplayName = "Acerca De";
         }
 
-        public string Product
+        public static string Company
         {
-            get => _product;
-            set => Set(() => Product, ref _product, value);
+            get { return GetExecutingAssemblyAttribute<AssemblyCompanyAttribute>(a => a.Company); }
         }
 
-        public string Description
+        public static string Product
         {
-            get => _description;
-            set => Set(() => Description, ref _description, value);
+            get { return GetExecutingAssemblyAttribute<AssemblyProductAttribute>(a => a.Product); }
         }
 
-        public string Company
+        public static string Copyright
         {
-            get => _company;
-            set => Set(() => Company, ref _company, value);
+            get { return GetExecutingAssemblyAttribute<AssemblyCopyrightAttribute>(a => a.Copyright); }
         }
 
-        public string Copyright
+        public static string Trademark
         {
-            get => _copyright;
-            set => Set(() => Copyright, ref _copyright, value);
+            get { return GetExecutingAssemblyAttribute<AssemblyTrademarkAttribute>(a => a.Trademark); }
         }
 
-        public string Version
+        public static string Title
         {
-            get => _version;
-            set => Set(() => Version, ref _version, value);
+            get { return GetExecutingAssemblyAttribute<AssemblyTitleAttribute>(a => a.Title); }
         }
 
-        public string CompanyInfo
+        public static string Description
         {
-            get => _companyInfo;
-            set => Set(() => CompanyInfo, ref _companyInfo, value);
+            get { return GetExecutingAssemblyAttribute<AssemblyDescriptionAttribute>(a => a.Description); }
         }
 
-        public void ShowView()
+        public static string Configuration
         {
-            MessengerInstance.Send(new ShowViewMessage(this));
+            get { return GetExecutingAssemblyAttribute<AssemblyDescriptionAttribute>(a => a.Description); }
         }
 
-        private void GetAseemblyInfo()
+        public static string FileVersion
         {
-            var product = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyProductAttribute), true)[0] as AssemblyProductAttribute;
-            var description = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyDescriptionAttribute), true)[0] as AssemblyDescriptionAttribute;
-            var company = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCompanyAttribute), true)[0] as AssemblyCompanyAttribute;
-            var copyright = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCopyrightAttribute), true)[0] as AssemblyCopyrightAttribute;
-            var version = Assembly.GetExecutingAssembly().GetName().Version;
+            get { return GetExecutingAssemblyAttribute<AssemblyFileVersionAttribute>(a => a.Version); }
+        }
 
-            Product = product.Product;
-            Description = description.Description;
-            Company = company.Company;
-            Copyright = copyright.Copyright;
-            Version = version.ToString();
+        public static Version Version => Assembly.GetExecutingAssembly().GetName().Version;
+        public static string VersionFull => Version.ToString();
+        public static string VersionMajor => Version.Major.ToString();
+        public static string VersionMinor => Version.Minor.ToString();
+        public static string VersionBuild => Version.Build.ToString();
+        public static string VersionRevision => Version.Revision.ToString();
 
-            var companyInfo = new StringBuilder();
-            companyInfo.AppendLine("Soluciones a la medida especializados en los sistemas de Contpaqi.");
-            companyInfo.AppendLine("www.arsoft.net");
-            CompanyInfo = companyInfo.ToString();
+        public string Email => "andres@arsoft.net";
+        public string Website => "https://www.arsoft.net/";
+        public string Facebook => "https://www.facebook.com/AndresRamosSoftware/";
+        public string Twitter => "https://twitter.com/ar_software";
+
+        private static string GetExecutingAssemblyAttribute<T>(Func<T, string> value) where T : Attribute
+        {
+            var attribute = (T) Attribute.GetCustomAttribute(Assembly.GetExecutingAssembly(), typeof(T));
+            return value.Invoke(attribute);
         }
     }
 }
