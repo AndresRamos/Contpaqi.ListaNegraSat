@@ -8,9 +8,9 @@ namespace ListaNegraSat.Presentation.WpfApp.Models
 {
     public class ConfiguracionAplicacion : PropertyChangedBase
     {
+        private string _contpaqiAddConnetionString;
         private string _contpaqiContabilidadConnectionString;
         private EmpresaContabilidadDto _empresaContabilidad;
-        private string _contpaqiAddConnetionString;
 
         public string RutaArchivoListadoCompleto => Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Listado_Completo_69-B.csv");
 
@@ -34,7 +34,11 @@ namespace ListaNegraSat.Presentation.WpfApp.Models
             get => _contpaqiAddConnetionString;
             private set
             {
-                if (value == _contpaqiAddConnetionString) return;
+                if (value == _contpaqiAddConnetionString)
+                {
+                    return;
+                }
+
                 _contpaqiAddConnetionString = value;
                 NotifyOfPropertyChange(() => ContpaqiAddConnetionString);
             }

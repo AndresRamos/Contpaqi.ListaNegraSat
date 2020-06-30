@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListaNegraSat.Infrastructur
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListaNegraSat.Presentation.WpfApp", "ListaNegraSat.Presentation.WpfApp\ListaNegraSat.Presentation.WpfApp.csproj", "{99D6B22B-6C70-401E-90E0-799D7DD9A987}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ListaNegraSat.Publishing.WpfAppInstaller", "ListaNegraSat.Publishing.WpfAppInstaller\ListaNegraSat.Publishing.WpfAppInstaller.vdproj", "{BC50E443-4F73-4378-B297-847628207FD2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{99D6B22B-6C70-401E-90E0-799D7DD9A987}.Release|Any CPU.Build.0 = Release|Any CPU
 		{99D6B22B-6C70-401E-90E0-799D7DD9A987}.Release|x86.ActiveCfg = Release|x86
 		{99D6B22B-6C70-401E-90E0-799D7DD9A987}.Release|x86.Build.0 = Release|x86
+		{BC50E443-4F73-4378-B297-847628207FD2}.Debug|Any CPU.ActiveCfg = Debug
+		{BC50E443-4F73-4378-B297-847628207FD2}.Debug|x86.ActiveCfg = Debug
+		{BC50E443-4F73-4378-B297-847628207FD2}.Release|Any CPU.ActiveCfg = Release
+		{BC50E443-4F73-4378-B297-847628207FD2}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -68,6 +74,7 @@ Global
 		{865572E8-A507-4354-A5DF-DE405AFA8F88} = {56678BD9-8165-4006-9991-A3A0B80FA750}
 		{69BAA75B-0B8D-423F-B388-F7EB49714CFD} = {56678BD9-8165-4006-9991-A3A0B80FA750}
 		{99D6B22B-6C70-401E-90E0-799D7DD9A987} = {77DCF702-D264-4DFF-A6AD-A7491D8019E4}
+		{BC50E443-4F73-4378-B297-847628207FD2} = {2CB347E2-82CA-437E-BCA6-2D69D3019755}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {73E6ACE7-CF2E-4E90-9C12-DF72B839B93E}

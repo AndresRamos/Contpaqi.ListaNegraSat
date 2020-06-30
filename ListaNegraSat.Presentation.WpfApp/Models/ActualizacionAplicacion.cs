@@ -39,17 +39,13 @@ namespace ListaNegraSat.Presentation.WpfApp.Models
             {
                 var version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
-                var container = new BlobContainerClient(new Uri("https://arsoftware.blob.core.windows.net/arsoftwaredownloads/ListaNegraSat/"));
-
+                var container = new BlobContainerClient(new Uri("https://arsoftware.blob.core.windows.net/arsoftwaredownloads/"));
                 var blobClient = container.GetBlobClient(@"ListaNegraSat\CurrentVersion.txt");
-
-                //var currentVersionBlob = container.GetBlockBlobReference(@"FlujoIva\CurrentVersion.txt");
 
                 string currentverstion;
                 using (var memoryStream = new MemoryStream())
                 {
                     await blobClient.DownloadToAsync(memoryStream);
-                    //await currentVersionBlob.DownloadToStreamAsync(memoryStream);
                     currentverstion = Encoding.UTF8.GetString(memoryStream.ToArray());
                 }
 
@@ -66,6 +62,10 @@ namespace ListaNegraSat.Presentation.WpfApp.Models
                 {
                     Mensaje = $"Ya esta corriendo la ultima version disponible (version: {VersionActual}).";
                 }
+                else
+                {
+                    Mensaje = $"Esta corriendo una verion mas reciente que la que esta en el servicio de actualizaciones. (version: {VersionActual}).";
+                }
             }
             catch (Exception e)
             {
@@ -75,7 +75,7 @@ namespace ListaNegraSat.Presentation.WpfApp.Models
 
         public async Task DescargarActualizacionAsync(string fileName)
         {
-            var container = new BlobContainerClient(new Uri("https://arsoftware.blob.core.windows.net/arsoftwaredownloads/ListaNegraSat/"));
+            var container = new BlobContainerClient(new Uri("https://arsoftware.blob.core.windows.net/arsoftwaredownloads/"));
             var blobClient = container.GetBlobClient(@"ListaNegraSat\Release.zip");
             await blobClient.DownloadToAsync(fileName);
         }

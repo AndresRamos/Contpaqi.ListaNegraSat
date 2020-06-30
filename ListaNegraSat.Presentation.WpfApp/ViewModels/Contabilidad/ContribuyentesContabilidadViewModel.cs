@@ -175,6 +175,11 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Contabilidad
 
             try
             {
+                if (string.IsNullOrWhiteSpace(_configuracionAplicacion.ContpaqiContabilidadConnectionString))
+                {
+                    throw new InvalidOperationException("El connection string de Contabilidad esta vacio. Debe de asignarlo en la configuracion de aplicacion.");
+                }
+
                 var seleccionarEmpresaContabilidadViewModel = IoC.Get<SeleccionarEmpresaContabilidadViewModel>();
                 await seleccionarEmpresaContabilidadViewModel.InicializarAsync();
                 _windowManager.ShowDialog(seleccionarEmpresaContabilidadViewModel);
@@ -211,9 +216,11 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Contabilidad
 
         public async Task ExportarFiltroExcelAsync()
         {
-            var saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "Excel | *.xlsx";
-            saveFileDialog.FileName = "Contribuyentes.xlsx";
+            var saveFileDialog = new SaveFileDialog
+            {
+                Filter = "Excel | *.xlsx",
+                FileName = "Contribuyentes.xlsx"
+            };
             if (saveFileDialog.ShowDialog() != true)
             {
                 return;
@@ -255,6 +262,11 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Contabilidad
 
             try
             {
+                if (string.IsNullOrWhiteSpace(_configuracionAplicacion.ContpaqiAddConnetionString))
+                {
+                    throw new InvalidOperationException("El connection string del ADD esta vacio. Debe de asignarlo en la configuracion de aplicacion.");
+                }
+
                 var comprobantesListaViewModel = IoC.Get<ComprobantesListaViewModel>();
                 comprobantesListaViewModel.Inicializar(await _mediator.Send(new BuscarComprobantesPorRfcEmitdoQuery(ContribuyenteSeleccionado.Rfc)));
                 _windowManager.ShowWindow(comprobantesListaViewModel);
