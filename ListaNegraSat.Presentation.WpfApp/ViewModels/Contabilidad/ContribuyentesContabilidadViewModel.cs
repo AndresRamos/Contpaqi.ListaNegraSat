@@ -190,7 +190,7 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Contabilidad
 
                 _configuracionAplicacion.SetEmpresaContabilidad(seleccionarEmpresaContabilidadViewModel.EmpresaSeleccionada);
 
-                var listado = await _mediator.Send(new BuscarContribuyentesContabilidadQuery(_configuracionAplicacion.RutaArchivoListadoCompleto));
+                var listado = await _mediator.Send(new BuscarContribuyentesContabilidadQuery(_configuracionAplicacion.GetRutaArchivoListadoCompleto()));
                 DisplayName = $"Contribuyentes Contabilidad - {listado.Version}";
 
                 Contribuyentes.Clear();

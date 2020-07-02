@@ -43,15 +43,16 @@
                     Style="{StaticResource MahApps.Styles.Button.Square}" />
         </StackPanel>
         <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
             <Label Grid.Row="0"
                    Grid.Column="0"
                    Content="Contpaqi Contabilidad ConnectionString:"
@@ -80,6 +81,27 @@
                      VerticalAlignment="Center"
                      Margin="5"
                      controls:TextBoxHelper.ClearTextButton="True" />
+            <Label Grid.Row="2"
+                   Grid.Column="0"
+                   Content="Ruta Archivo Listado Completo:"
+                   FontWeight="Bold"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Right"
+                   Margin="5" />
+            <TextBox Grid.Row="2"
+                     Grid.Column="1"
+                     Text="{Binding RutaArchivoListadoCompleto, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"
+                     VerticalAlignment="Center"
+                     Margin="5"
+                     controls:TextBoxHelper.ClearTextButton="True" />
+            <Button Grid.Row="2"
+                    Grid.Column="2"
+                    Content="Buscar"
+                    cal:Message.Attach="BuscarArchivoListadoCompletoAsync"
+                    VerticalAlignment="Center"
+                    Width="100"
+                    Margin="5" />
         </Grid>
     </Grid>
 </controls:MetroWindow>

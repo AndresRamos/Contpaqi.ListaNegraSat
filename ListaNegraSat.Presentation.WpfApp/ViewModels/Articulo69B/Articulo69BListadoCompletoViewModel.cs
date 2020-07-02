@@ -164,7 +164,7 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Articulo69B
             await Task.Delay(1000);
             try
             {
-                var listado = await _mediator.Send(new BuscarContribuyentes69BQuery(_configuracionAplicacion.RutaArchivoListadoCompleto));
+                var listado = await _mediator.Send(new BuscarContribuyentes69BQuery(_configuracionAplicacion.GetRutaArchivoListadoCompleto()));
                 DisplayName = $"Articulo 69-B Listado Completo - {listado.Version}";
 
                 Contribuyentes.Clear();
@@ -190,9 +190,7 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Articulo69B
 
         public async Task ExportarFiltroExcelAsync()
         {
-            var saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "Excel | *.xlsx";
-            saveFileDialog.FileName = "Contribuyentes.xlsx";
+            var saveFileDialog = new SaveFileDialog {Filter = "Excel | *.xlsx", FileName = "Contribuyentes.xlsx"};
             if (saveFileDialog.ShowDialog() != true)
             {
                 return;

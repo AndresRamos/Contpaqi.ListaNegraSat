@@ -4,6 +4,7 @@ using Caliburn.Micro;
 using ListaNegraSat.Presentation.WpfApp.Models;
 using ListaNegraSat.Presentation.WpfApp.Properties;
 using MahApps.Metro.Controls.Dialogs;
+using Microsoft.Win32;
 
 namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Configuracion
 {
@@ -11,8 +12,9 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Configuracion
     {
         private readonly ConfiguracionAplicacion _configuracionAplicacion;
         private readonly IDialogCoordinator _dialogCoordinator;
-        private string _contpaqiContabilidadConnectionString;
         private string _contpaqiAddConnetionString;
+        private string _contpaqiContabilidadConnectionString;
+        private string _rutaArchivoListadoCompleto;
 
         public EditarConfiguracionAplicacionViewModel(ConfiguracionAplicacion configuracionAplicacion, IDialogCoordinator dialogCoordinator)
         {
@@ -23,7 +25,7 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Configuracion
 
         public string ContpaqiContabilidadConnectionString
         {
-            get => _contpaqiContabilidadConnectionString; 
+            get => _contpaqiContabilidadConnectionString;
             set
             {
                 if (value == _contpaqiContabilidadConnectionString)
@@ -41,9 +43,28 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Configuracion
             get => _contpaqiAddConnetionString;
             set
             {
-                if (value == _contpaqiAddConnetionString) return;
+                if (value == _contpaqiAddConnetionString)
+                {
+                    return;
+                }
+
                 _contpaqiAddConnetionString = value;
                 NotifyOfPropertyChange(() => ContpaqiAddConnetionString);
+            }
+        }
+
+        public string RutaArchivoListadoCompleto
+        {
+            get => _rutaArchivoListadoCompleto;
+            set
+            {
+                if (value == _rutaArchivoListadoCompleto)
+                {
+                    return;
+                }
+
+                _rutaArchivoListadoCompleto = value;
+                NotifyOfPropertyChange(() => RutaArchivoListadoCompleto);
             }
         }
 
@@ -51,7 +72,9 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Configuracion
         {
             ContpaqiContabilidadConnectionString = Settings.Default.ContpaqiContabilidadConnectionString;
             ContpaqiAddConnetionString = Settings.Default.ContpaqiAddConnetionString;
+            RutaArchivoListadoCompleto = Settings.Default.RutaArchivoListadoCompleto;
         }
+
 
         public async Task GuardarConfiguracionAsync()
         {
@@ -63,6 +86,7 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Configuracion
             {
                 Settings.Default.ContpaqiContabilidadConnectionString = ContpaqiContabilidadConnectionString;
                 Settings.Default.ContpaqiAddConnetionString = ContpaqiAddConnetionString;
+                Settings.Default.RutaArchivoListadoCompleto = RutaArchivoListadoCompleto;
                 Settings.Default.Save();
                 _configuracionAplicacion.CargarConfiguracion();
             }
@@ -79,6 +103,22 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Configuracion
         public void Cancelar()
         {
             TryClose();
+        }
+
+        public async Task BuscarArchivoListadoCompletoAsync()
+        {
+            try
+            {
+                var openFileDialog = new OpenFileDialog {Filter = "CSV | *.csv"};
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    RutaArchivoListadoCompleto = openFileDialog.FileName;
+                }
+            }
+            catch (Exception e)
+            {
+                await _dialogCoordinator.ShowMessageAsync(this, "Error", e.ToString());
+            }
         }
     }
 }

@@ -46,5 +46,17 @@ namespace ListaNegraSat.Presentation.WpfApp.Properties {
                 this["ContpaqiAddConnetionString"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string RutaArchivoListadoCompleto {
+            get {
+                return ((string)(this["RutaArchivoListadoCompleto"]));
+            }
+            set {
+                this["RutaArchivoListadoCompleto"] = value;
+            }
+        }
     }
 }

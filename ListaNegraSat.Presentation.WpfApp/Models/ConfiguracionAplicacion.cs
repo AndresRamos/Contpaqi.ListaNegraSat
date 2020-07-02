@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Reflection;
 using Caliburn.Micro;
 using ListaNegraSat.Core.Application.Empresas.Models;
@@ -8,11 +9,10 @@ namespace ListaNegraSat.Presentation.WpfApp.Models
 {
     public class ConfiguracionAplicacion : PropertyChangedBase
     {
+        private static readonly string RutaArchivoListadoCompleto = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? throw new InvalidOperationException(), "Listado_Completo_69-B.csv");
         private string _contpaqiAddConnetionString;
         private string _contpaqiContabilidadConnectionString;
         private EmpresaContabilidadDto _empresaContabilidad;
-
-        public string RutaArchivoListadoCompleto => Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Listado_Completo_69-B.csv");
 
         public string ContpaqiContabilidadConnectionString
         {
@@ -68,6 +68,18 @@ namespace ListaNegraSat.Presentation.WpfApp.Models
         public void SetEmpresaContabilidad(EmpresaContabilidadDto empresaContabilidad)
         {
             EmpresaContabilidad = empresaContabilidad;
+        }
+
+        public string GetRutaArchivoListadoCompleto()
+        {
+            var ruta = Settings.Default.RutaArchivoListadoCompleto;
+
+            if (!string.IsNullOrWhiteSpace(ruta) && File.Exists(ruta))
+            {
+                return ruta;
+            }
+
+            return RutaArchivoListadoCompleto;
         }
     }
 }
