@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.SqlClient;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using ListaNegraSat.Presentation.WpfApp.Models;
@@ -75,7 +76,6 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Configuracion
             RutaArchivoListadoCompleto = Settings.Default.RutaArchivoListadoCompleto;
         }
 
-
         public async Task GuardarConfiguracionAsync()
         {
             var progressDialogController = await _dialogCoordinator.ShowProgressAsync(this, "Guardando Configuracion", "Guardando configuracion.");
@@ -113,6 +113,22 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Configuracion
                 if (openFileDialog.ShowDialog() == true)
                 {
                     RutaArchivoListadoCompleto = openFileDialog.FileName;
+                }
+            }
+            catch (Exception e)
+            {
+                await _dialogCoordinator.ShowMessageAsync(this, "Error", e.ToString());
+            }
+        }
+
+        public async Task ProbarConnectionStringAsync(string connectionString)
+        {
+            try
+            {
+                using (var connection = new SqlConnection(connectionString))
+                {
+                    await connection.OpenAsync();
+                    await _dialogCoordinator.ShowMessageAsync(this, "Conexion Exitosa", "La conexion se abrio exitosamente.");
                 }
             }
             catch (Exception e)

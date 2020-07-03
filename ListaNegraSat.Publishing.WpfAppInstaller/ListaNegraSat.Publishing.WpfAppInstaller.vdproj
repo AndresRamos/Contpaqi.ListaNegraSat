@@ -2738,6 +2738,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
         "Release"
@@ -2762,6 +2770,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
     }
@@ -4129,7 +4145,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:ListaNegraSat.Infrastructure.ContpaqiAdd, Version=1.0.6.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:ListaNegraSat.Infrastructure.ContpaqiAdd, Version=1.0.7.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_2E969C58AD824F34468BD9A7DA3E5F69"
@@ -4160,7 +4176,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:ListaNegraSat.Infrastructure.ContpaqiContabilidad, Version=1.0.6.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:ListaNegraSat.Infrastructure.ContpaqiContabilidad, Version=1.0.7.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_31A50273CD3552B5BB469FAB653F82F4"
@@ -4191,7 +4207,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:ListaNegraSat.Core.Application, Version=1.0.6.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:ListaNegraSat.Core.Application, Version=1.0.7.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_343167C065797A321888C7D3E7018C65"
@@ -8284,15 +8300,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:AR Software - Lista Negra SAT"
-        "ProductCode" = "8:{DB570C9B-AB39-4026-B6BE-4EC9C4177F64}"
-        "PackageCode" = "8:{74EC87DF-1184-48D5-ABD4-C4AAB9F99476}"
+        "ProductCode" = "8:{B8546FA9-03A6-48D0-9FC2-99F183656BF6}"
+        "PackageCode" = "8:{6D524C5B-4110-4FA5-B63C-18C1433501DA}"
         "UpgradeCode" = "8:{567B76A9-BCF5-4743-915C-8C623F70325D}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.0.7"
+        "ProductVersion" = "8:1.0.8"
         "Manufacturer" = "8:AR Software"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"

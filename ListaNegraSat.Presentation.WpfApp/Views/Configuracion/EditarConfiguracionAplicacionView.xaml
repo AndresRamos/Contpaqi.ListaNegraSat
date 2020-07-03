@@ -62,11 +62,19 @@
                    Margin="5" />
             <TextBox Grid.Row="0"
                      Grid.Column="1"
+                     x:Name="ContpaqiContabilidadConnectionStringTextBox"
                      Text="{Binding ContpaqiContabilidadConnectionString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"
                      VerticalAlignment="Center"
                      Margin="5"
                      controls:TextBoxHelper.ClearTextButton="True" />
+            <Button Grid.Row="0"
+                    Grid.Column="2"
+                    Content="Probar"
+                    cal:Message.Attach="ProbarConnectionStringAsync(ContpaqiContabilidadConnectionStringTextBox)"
+                    VerticalAlignment="Center"
+                    Margin="5"
+                    Width="100" />
             <Label Grid.Row="1"
                    Grid.Column="0"
                    Content="Contpaqi ADD ConnectionString:"
@@ -76,11 +84,19 @@
                    Margin="5" />
             <TextBox Grid.Row="1"
                      Grid.Column="1"
+                     x:Name="ContpaqiAddConnetionStringTextBox"
                      Text="{Binding ContpaqiAddConnetionString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"
                      VerticalAlignment="Center"
                      Margin="5"
                      controls:TextBoxHelper.ClearTextButton="True" />
+            <Button Grid.Row="1"
+                    Grid.Column="2"
+                    Content="Probar"
+                    cal:Message.Attach="ProbarConnectionStringAsync(ContpaqiAddConnetionStringTextBox)"
+                    VerticalAlignment="Center"
+                    Margin="5"
+                    Width="100" />
             <Label Grid.Row="2"
                    Grid.Column="0"
                    Content="Ruta Archivo Listado Completo:"
