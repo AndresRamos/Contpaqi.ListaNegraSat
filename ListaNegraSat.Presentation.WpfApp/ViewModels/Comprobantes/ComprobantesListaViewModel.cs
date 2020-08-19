@@ -10,7 +10,6 @@ using Caliburn.Micro;
 using ListaNegraSat.Core.Application.Cfdis.Models;
 using ListaNegraSat.Presentation.WpfApp.ViewModels.Expedientes;
 using MahApps.Metro.Controls.Dialogs;
-using MediatR;
 using Microsoft.Win32;
 using OfficeOpenXml;
 

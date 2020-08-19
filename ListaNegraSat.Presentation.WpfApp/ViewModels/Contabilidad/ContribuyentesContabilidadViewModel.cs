@@ -21,7 +21,7 @@ using OfficeOpenXml;
 
 namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Contabilidad
 {
-    public class ContribuyentesContabilidadViewModel : Screen
+    public sealed class ContribuyentesContabilidadViewModel : Screen
     {
         private readonly ConfiguracionAplicacion _configuracionAplicacion;
         private readonly IDialogCoordinator _dialogCoordinator;
@@ -70,7 +70,7 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Contabilidad
             get => _situacionFiltroSeleccionada;
             set
             {
-                if (value == _situacionFiltroSeleccionada)
+                if (Equals(value, _situacionFiltroSeleccionada))
                 {
                     return;
                 }
@@ -101,7 +101,6 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Contabilidad
                 RaiseGuards();
             }
         }
-
 
         public int DefinitivosTotal
         {
@@ -304,23 +303,23 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Contabilidad
                                      contribuyente.ListadoSituacion?.IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0;
 
             bool senteciaResult;
-            if (SituacionFiltroSeleccionada == SituacionEnumeration.Todo)
+            if (Equals(SituacionFiltroSeleccionada, SituacionEnumeration.Todo))
             {
                 senteciaResult = true;
             }
-            else if (SituacionFiltroSeleccionada == SituacionEnumeration.Definitivos)
+            else if (Equals(SituacionFiltroSeleccionada, SituacionEnumeration.Definitivos))
             {
                 senteciaResult = contribuyente.ListadoSituacion == SituacionEnumeration.Definitivos.Name;
             }
-            else if (SituacionFiltroSeleccionada == SituacionEnumeration.Desvirtuados)
+            else if (Equals(SituacionFiltroSeleccionada, SituacionEnumeration.Desvirtuados))
             {
                 senteciaResult = contribuyente.ListadoSituacion == SituacionEnumeration.Desvirtuados.Name;
             }
-            else if (SituacionFiltroSeleccionada == SituacionEnumeration.Presuntos)
+            else if (Equals(SituacionFiltroSeleccionada, SituacionEnumeration.Presuntos))
             {
                 senteciaResult = contribuyente.ListadoSituacion == SituacionEnumeration.Presuntos.Name;
             }
-            else if (SituacionFiltroSeleccionada == SituacionEnumeration.SentenciaFavorable)
+            else if (Equals(SituacionFiltroSeleccionada, SituacionEnumeration.SentenciaFavorable))
             {
                 senteciaResult = contribuyente.ListadoSituacion == SituacionEnumeration.SentenciaFavorable.Name;
             }

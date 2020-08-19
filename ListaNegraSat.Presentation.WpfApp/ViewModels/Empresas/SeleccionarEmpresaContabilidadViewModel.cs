@@ -9,7 +9,7 @@ using MediatR;
 
 namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Empresas
 {
-    public class SeleccionarEmpresaContabilidadViewModel : Screen
+    public sealed class SeleccionarEmpresaContabilidadViewModel : Screen
     {
         private readonly IMediator _mediator;
         private EmpresaContabilidadDto _empresaSeleccionada;

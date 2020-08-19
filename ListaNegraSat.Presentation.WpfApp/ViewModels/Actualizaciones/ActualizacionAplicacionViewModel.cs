@@ -5,7 +5,7 @@ using Microsoft.Win32;
 
 namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Actualizaciones
 {
-    public class ActualizacionAplicacionViewModel : Screen
+    public sealed class ActualizacionAplicacionViewModel : Screen
     {
         private ActualizacionAplicacion _actualizacionAplicacion = new ActualizacionAplicacion();
         private bool _isDescargando;
