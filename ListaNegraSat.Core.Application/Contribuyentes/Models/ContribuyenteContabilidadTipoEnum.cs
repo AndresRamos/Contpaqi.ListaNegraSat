@@ -1,9 +1,8 @@
-﻿namespace ListaNegraSat.Core.Application.Contribuyentes.Models
+﻿namespace ListaNegraSat.Core.Application.Contribuyentes.Models;
+
+public enum ContribuyenteContabilidadTipoEnum
 {
-    public enum ContribuyenteContabilidadTipoEnum
-    {
-        Cliente,
-        Proveedor,
-        ClienteProveedor
-    }
+    Cliente,
+    Proveedor,
+    ClienteProveedor
 }

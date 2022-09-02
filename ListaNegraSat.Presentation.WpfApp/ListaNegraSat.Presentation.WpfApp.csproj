@@ -5,11 +5,6 @@
 		<UseWPF>true</UseWPF>
 		<ApplicationIcon>AR_LOGO03.ico</ApplicationIcon>
 	</PropertyGroup>
-	<PropertyGroup>
-	</PropertyGroup>
-	<ItemGroup>
-	  <AdditionalFiles Remove="C:\Users\gerar\.nuget\packages\microsoft.dotnet.upgradeassistant.extensions.default.analyzers\0.4.336902\build\\WebTypeReplacements.typemap" />
-	</ItemGroup>
 	<ItemGroup>
 		<Resource Include="Logos\AR_LOGO03.ico" />
 		<Resource Include="AR_LOGO03.ico" />
@@ -36,16 +31,16 @@
 		<ProjectReference Include="..\ListaNegraSat.Core.Application\ListaNegraSat.Core.Application.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Compile Update="Properties\Settings.Designer.cs">
-	    <DesignTimeSharedInput>True</DesignTimeSharedInput>
-	    <AutoGen>True</AutoGen>
-	    <DependentUpon>Settings.settings</DependentUpon>
-	  </Compile>
+		<Compile Update="Properties\Settings.Designer.cs">
+			<DesignTimeSharedInput>True</DesignTimeSharedInput>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Settings.settings</DependentUpon>
+		</Compile>
 	</ItemGroup>
 	<ItemGroup>
-	  <None Update="Properties\Settings.settings">
-	    <Generator>SettingsSingleFileGenerator</Generator>
-	    <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-	  </None>
+		<None Update="Properties\Settings.settings">
+			<Generator>SettingsSingleFileGenerator</Generator>
+			<LastGenOutput>Settings.Designer.cs</LastGenOutput>
+		</None>
 	</ItemGroup>
 </Project>

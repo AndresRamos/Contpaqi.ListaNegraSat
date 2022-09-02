@@ -2,140 +2,140 @@
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 using Caliburn.Micro;
-using ListaNegraSat.Presentation.WpfApp.Models;
+using ListaNegraSat.Core.Application.Common;
 using ListaNegraSat.Presentation.WpfApp.Properties;
 using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Win32;
 
-namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Configuracion
+namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Configuracion;
+
+public sealed class EditarConfiguracionAplicacionViewModel : Screen
 {
-    public sealed class EditarConfiguracionAplicacionViewModel : Screen
+    private readonly ConfiguracionAplicacion _configuracionAplicacion;
+    private readonly IDialogCoordinator _dialogCoordinator;
+    private string _contpaqiAddConnetionString;
+    private string _contpaqiContabilidadConnectionString;
+    private string _rutaArchivoListadoCompleto;
+
+    public EditarConfiguracionAplicacionViewModel(ConfiguracionAplicacion configuracionAplicacion, IDialogCoordinator dialogCoordinator)
     {
-        private readonly ConfiguracionAplicacion _configuracionAplicacion;
-        private readonly IDialogCoordinator _dialogCoordinator;
-        private string _contpaqiAddConnetionString;
-        private string _contpaqiContabilidadConnectionString;
-        private string _rutaArchivoListadoCompleto;
+        _configuracionAplicacion = configuracionAplicacion;
+        _dialogCoordinator = dialogCoordinator;
+        DisplayName = "Editar Configuracion De Aplicacion";
+    }
 
-        public EditarConfiguracionAplicacionViewModel(ConfiguracionAplicacion configuracionAplicacion, IDialogCoordinator dialogCoordinator)
+    public string ContpaqiContabilidadConnectionString
+    {
+        get => _contpaqiContabilidadConnectionString;
+        set
         {
-            _configuracionAplicacion = configuracionAplicacion;
-            _dialogCoordinator = dialogCoordinator;
-            DisplayName = "Editar Configuracion De Aplicacion";
-        }
-
-        public string ContpaqiContabilidadConnectionString
-        {
-            get => _contpaqiContabilidadConnectionString;
-            set
+            if (value == _contpaqiContabilidadConnectionString)
             {
-                if (value == _contpaqiContabilidadConnectionString)
-                {
-                    return;
-                }
-
-                _contpaqiContabilidadConnectionString = value;
-                NotifyOfPropertyChange(() => ContpaqiContabilidadConnectionString);
+                return;
             }
+
+            _contpaqiContabilidadConnectionString = value;
+            NotifyOfPropertyChange(() => ContpaqiContabilidadConnectionString);
         }
+    }
 
-        public string ContpaqiAddConnetionString
+    public string ContpaqiAddConnetionString
+    {
+        get => _contpaqiAddConnetionString;
+        set
         {
-            get => _contpaqiAddConnetionString;
-            set
+            if (value == _contpaqiAddConnetionString)
             {
-                if (value == _contpaqiAddConnetionString)
-                {
-                    return;
-                }
-
-                _contpaqiAddConnetionString = value;
-                NotifyOfPropertyChange(() => ContpaqiAddConnetionString);
+                return;
             }
+
+            _contpaqiAddConnetionString = value;
+            NotifyOfPropertyChange(() => ContpaqiAddConnetionString);
         }
+    }
 
-        public string RutaArchivoListadoCompleto
+    public string RutaArchivoListadoCompleto
+    {
+        get => _rutaArchivoListadoCompleto;
+        set
         {
-            get => _rutaArchivoListadoCompleto;
-            set
+            if (value == _rutaArchivoListadoCompleto)
             {
-                if (value == _rutaArchivoListadoCompleto)
-                {
-                    return;
-                }
-
-                _rutaArchivoListadoCompleto = value;
-                NotifyOfPropertyChange(() => RutaArchivoListadoCompleto);
+                return;
             }
+
+            _rutaArchivoListadoCompleto = value;
+            NotifyOfPropertyChange(() => RutaArchivoListadoCompleto);
         }
+    }
 
-        public void Inicializar()
+    public void Inicializar()
+    {
+        ContpaqiContabilidadConnectionString = Settings.Default.ContpaqiContabilidadConnectionString;
+        ContpaqiAddConnetionString = Settings.Default.ContpaqiAddConnetionString;
+        RutaArchivoListadoCompleto = Settings.Default.RutaArchivoListadoCompleto;
+    }
+
+    public async Task GuardarConfiguracionAsync()
+    {
+        ProgressDialogController progressDialogController =
+            await _dialogCoordinator.ShowProgressAsync(this, "Guardando Configuracion", "Guardando configuracion.");
+        progressDialogController.SetIndeterminate();
+        await Task.Delay(1000);
+
+        try
         {
-            ContpaqiContabilidadConnectionString = Settings.Default.ContpaqiContabilidadConnectionString;
-            ContpaqiAddConnetionString = Settings.Default.ContpaqiAddConnetionString;
-            RutaArchivoListadoCompleto = Settings.Default.RutaArchivoListadoCompleto;
+            Settings.Default.ContpaqiContabilidadConnectionString = ContpaqiContabilidadConnectionString;
+            Settings.Default.ContpaqiAddConnetionString = ContpaqiAddConnetionString;
+            Settings.Default.RutaArchivoListadoCompleto = RutaArchivoListadoCompleto;
+            Settings.Default.Save();
+            _configuracionAplicacion.CargarConfiguracion(Settings.Default.ContpaqiContabilidadConnectionString,
+                Settings.Default.ContpaqiAddConnetionString);
         }
-
-        public async Task GuardarConfiguracionAsync()
+        catch (Exception e)
         {
-            ProgressDialogController progressDialogController =
-                await _dialogCoordinator.ShowProgressAsync(this, "Guardando Configuracion", "Guardando configuracion.");
-            progressDialogController.SetIndeterminate();
-            await Task.Delay(1000);
-
-            try
-            {
-                Settings.Default.ContpaqiContabilidadConnectionString = ContpaqiContabilidadConnectionString;
-                Settings.Default.ContpaqiAddConnetionString = ContpaqiAddConnetionString;
-                Settings.Default.RutaArchivoListadoCompleto = RutaArchivoListadoCompleto;
-                Settings.Default.Save();
-                _configuracionAplicacion.CargarConfiguracion();
-            }
-            catch (Exception e)
-            {
-                await _dialogCoordinator.ShowMessageAsync(this, "Error", e.ToString());
-            }
-            finally
-            {
-                await progressDialogController.CloseAsync();
-            }
+            await _dialogCoordinator.ShowMessageAsync(this, "Error", e.ToString());
         }
-
-        public async Task CancelarAsync()
+        finally
         {
-            await TryCloseAsync();
+            await progressDialogController.CloseAsync();
         }
+    }
 
-        public async Task BuscarArchivoListadoCompletoAsync()
+    public async Task CancelarAsync()
+    {
+        await TryCloseAsync();
+    }
+
+    public async Task BuscarArchivoListadoCompletoAsync()
+    {
+        try
         {
-            try
+            var openFileDialog = new OpenFileDialog { Filter = "CSV | *.csv" };
+            if (openFileDialog.ShowDialog() == true)
             {
-                var openFileDialog = new OpenFileDialog { Filter = "CSV | *.csv" };
-                if (openFileDialog.ShowDialog() == true)
-                {
-                    RutaArchivoListadoCompleto = openFileDialog.FileName;
-                }
-            }
-            catch (Exception e)
-            {
-                await _dialogCoordinator.ShowMessageAsync(this, "Error", e.ToString());
+                RutaArchivoListadoCompleto = openFileDialog.FileName;
             }
         }
-
-        public async Task ProbarConnectionStringAsync(string connectionString)
+        catch (Exception e)
         {
-            try
+            await _dialogCoordinator.ShowMessageAsync(this, "Error", e.ToString());
+        }
+    }
+
+    public async Task ProbarConnectionStringAsync(string connectionString)
+    {
+        try
+        {
+            using (var connection = new SqlConnection(connectionString))
             {
-                using (var connection = new SqlConnection(connectionString))
-                {
-                    await connection.OpenAsync();
-                    await _dialogCoordinator.ShowMessageAsync(this, "Conexion Exitosa", "La conexion se abrio exitosamente.");
-                }
+                await connection.OpenAsync();
+                await _dialogCoordinator.ShowMessageAsync(this, "Conexion Exitosa", "La conexion se abrio exitosamente.");
             }
-            catch (Exception e)
-            {
-                await _dialogCoordinator.ShowMessageAsync(this, "Error", e.ToString());
-            }
+        }
+        catch (Exception e)
+        {
+            await _dialogCoordinator.ShowMessageAsync(this, "Error", e.ToString());
         }
     }
 }

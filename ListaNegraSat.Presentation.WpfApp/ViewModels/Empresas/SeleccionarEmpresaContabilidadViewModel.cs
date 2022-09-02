@@ -7,99 +7,98 @@ using ListaNegraSat.Core.Application.Empresas.Models;
 using ListaNegraSat.Core.Application.Empresas.Queries.BuscarEmpresasContabilidad;
 using MediatR;
 
-namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Empresas
+namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Empresas;
+
+public sealed class SeleccionarEmpresaContabilidadViewModel : Screen
 {
-    public sealed class SeleccionarEmpresaContabilidadViewModel : Screen
+    private readonly IMediator _mediator;
+    private EmpresaContabilidadDto _empresaSeleccionada;
+    private string _filtro;
+
+    public SeleccionarEmpresaContabilidadViewModel(IMediator mediator)
     {
-        private readonly IMediator _mediator;
-        private EmpresaContabilidadDto _empresaSeleccionada;
-        private string _filtro;
+        _mediator = mediator;
+        DisplayName = "Seleccionar Empresa Contabilidad";
+        EmpresasView = CollectionViewSource.GetDefaultView(Empresas);
+        EmpresasView.Filter = EmpresasView_Filter;
+    }
 
-        public SeleccionarEmpresaContabilidadViewModel(IMediator mediator)
+    public string Filtro
+    {
+        get => _filtro;
+        set
         {
-            _mediator = mediator;
-            DisplayName = "Seleccionar Empresa Contabilidad";
-            EmpresasView = CollectionViewSource.GetDefaultView(Empresas);
-            EmpresasView.Filter = EmpresasView_Filter;
-        }
-
-        public string Filtro
-        {
-            get => _filtro;
-            set
+            if (value == _filtro)
             {
-                if (value == _filtro)
-                {
-                    return;
-                }
-
-                _filtro = value;
-                NotifyOfPropertyChange(() => Filtro);
-                EmpresasView.Refresh();
-            }
-        }
-
-        public BindableCollection<EmpresaContabilidadDto> Empresas { get; } = new BindableCollection<EmpresaContabilidadDto>();
-
-        public ICollectionView EmpresasView { get; }
-
-        public EmpresaContabilidadDto EmpresaSeleccionada
-        {
-            get => _empresaSeleccionada;
-            set
-            {
-                if (Equals(value, _empresaSeleccionada))
-                {
-                    return;
-                }
-
-                _empresaSeleccionada = value;
-                NotifyOfPropertyChange(() => EmpresaSeleccionada);
-                RaiseGuards();
-            }
-        }
-
-        public bool SeleccionoEmpresa { get; private set; }
-
-        public bool CanSeleccionar => EmpresaSeleccionada != null;
-
-        public async Task InicializarAsync()
-        {
-            await CargarEmpresasAsync();
-        }
-
-        private async Task CargarEmpresasAsync()
-        {
-            Empresas.Clear();
-            Empresas.AddRange(await _mediator.Send(new BuscarEmpresasContabilidadQuery()));
-        }
-
-        public async Task SeleccionarAsync()
-        {
-            SeleccionoEmpresa = true;
-            await TryCloseAsync();
-        }
-
-        public async Task CancelarAsync()
-        {
-            SeleccionoEmpresa = false;
-            await TryCloseAsync();
-        }
-
-        public void RaiseGuards()
-        {
-            NotifyOfPropertyChange(() => CanSeleccionar);
-        }
-
-        private bool EmpresasView_Filter(object obj)
-        {
-            var empresa = obj as EmpresaContabilidadDto;
-            if (empresa == null)
-            {
-                throw new ArgumentNullException(nameof(empresa));
+                return;
             }
 
-            return string.IsNullOrWhiteSpace(Filtro) || empresa.Nombre.IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0;
+            _filtro = value;
+            NotifyOfPropertyChange(() => Filtro);
+            EmpresasView.Refresh();
         }
+    }
+
+    public BindableCollection<EmpresaContabilidadDto> Empresas { get; } = new();
+
+    public ICollectionView EmpresasView { get; }
+
+    public EmpresaContabilidadDto EmpresaSeleccionada
+    {
+        get => _empresaSeleccionada;
+        set
+        {
+            if (Equals(value, _empresaSeleccionada))
+            {
+                return;
+            }
+
+            _empresaSeleccionada = value;
+            NotifyOfPropertyChange(() => EmpresaSeleccionada);
+            RaiseGuards();
+        }
+    }
+
+    public bool SeleccionoEmpresa { get; private set; }
+
+    public bool CanSeleccionar => EmpresaSeleccionada != null;
+
+    public async Task InicializarAsync()
+    {
+        await CargarEmpresasAsync();
+    }
+
+    private async Task CargarEmpresasAsync()
+    {
+        Empresas.Clear();
+        Empresas.AddRange(await _mediator.Send(new BuscarEmpresasContabilidadQuery()));
+    }
+
+    public async Task SeleccionarAsync()
+    {
+        SeleccionoEmpresa = true;
+        await TryCloseAsync();
+    }
+
+    public async Task CancelarAsync()
+    {
+        SeleccionoEmpresa = false;
+        await TryCloseAsync();
+    }
+
+    public void RaiseGuards()
+    {
+        NotifyOfPropertyChange(() => CanSeleccionar);
+    }
+
+    private bool EmpresasView_Filter(object obj)
+    {
+        var empresa = obj as EmpresaContabilidadDto;
+        if (empresa == null)
+        {
+            throw new ArgumentNullException(nameof(empresa));
+        }
+
+        return string.IsNullOrWhiteSpace(Filtro) || empresa.Nombre.IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0;
     }
 }

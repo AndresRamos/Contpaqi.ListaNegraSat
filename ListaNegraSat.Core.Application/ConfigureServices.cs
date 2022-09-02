@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using ListaNegraSat.Presentation.WpfApp.Models;
+using ListaNegraSat.Core.Application.Common;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 

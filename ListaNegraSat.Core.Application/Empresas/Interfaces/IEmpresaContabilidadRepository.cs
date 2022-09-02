@@ -3,10 +3,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using ListaNegraSat.Core.Application.Empresas.Models;
 
-namespace ListaNegraSat.Core.Application.Empresas.Interfaces
+namespace ListaNegraSat.Core.Application.Empresas.Interfaces;
+
+public interface IEmpresaContabilidadRepository
 {
-    public interface IEmpresaContabilidadRepository
-    {
-        Task<IEnumerable<EmpresaContabilidadDto>> BuscarTodasAsync(CancellationToken cancellationToken);
-    }
+    Task<IEnumerable<EmpresaContabilidadDto>> BuscarTodasAsync(CancellationToken cancellationToken);
 }

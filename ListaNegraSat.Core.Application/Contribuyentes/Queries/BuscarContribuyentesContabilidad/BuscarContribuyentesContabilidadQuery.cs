@@ -1,15 +1,14 @@
 ﻿using ListaNegraSat.Core.Application.Contribuyentes.Models;
 using MediatR;
 
-namespace ListaNegraSat.Core.Application.Contribuyentes.Queries.BuscarContribuyentesContabilidad
-{
-    public class BuscarContribuyentesContabilidadQuery : IRequest<BuscarContribuyentesContabilidadResult>
-    {
-        public BuscarContribuyentesContabilidadQuery(string fileName)
-        {
-            FileName = fileName;
-        }
+namespace ListaNegraSat.Core.Application.Contribuyentes.Queries.BuscarContribuyentesContabilidad;
 
-        public string FileName { get; }
+public class BuscarContribuyentesContabilidadQuery : IRequest<BuscarContribuyentesContabilidadResult>
+{
+    public BuscarContribuyentesContabilidadQuery(string fileName)
+    {
+        FileName = fileName;
     }
+
+    public string FileName { get; }
 }

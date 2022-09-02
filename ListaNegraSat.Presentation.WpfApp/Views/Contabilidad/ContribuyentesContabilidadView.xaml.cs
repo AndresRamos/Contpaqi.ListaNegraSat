@@ -1,13 +1,12 @@
-﻿namespace ListaNegraSat.Presentation.WpfApp.Views.Contabilidad
+﻿namespace ListaNegraSat.Presentation.WpfApp.Views.Contabilidad;
+
+/// <summary>
+///     Interaction logic for ContribuyentesContabilidadView.xaml
+/// </summary>
+public partial class ContribuyentesContabilidadView
 {
-    /// <summary>
-    ///     Interaction logic for ContribuyentesContabilidadView.xaml
-    /// </summary>
-    public partial class ContribuyentesContabilidadView
+    public ContribuyentesContabilidadView()
     {
-        public ContribuyentesContabilidadView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

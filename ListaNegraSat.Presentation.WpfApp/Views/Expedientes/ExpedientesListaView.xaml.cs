@@ -1,13 +1,12 @@
-﻿namespace ListaNegraSat.Presentation.WpfApp.Views.Expedientes
+﻿namespace ListaNegraSat.Presentation.WpfApp.Views.Expedientes;
+
+/// <summary>
+///     Interaction logic for ExpedientesListaView.xaml
+/// </summary>
+public partial class ExpedientesListaView
 {
-    /// <summary>
-    ///     Interaction logic for ExpedientesListaView.xaml
-    /// </summary>
-    public partial class ExpedientesListaView
+    public ExpedientesListaView()
     {
-        public ExpedientesListaView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

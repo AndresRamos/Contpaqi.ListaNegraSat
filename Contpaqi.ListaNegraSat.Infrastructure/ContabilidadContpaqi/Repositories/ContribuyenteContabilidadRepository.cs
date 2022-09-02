@@ -7,7 +7,7 @@ using ListaNegraSat.Core.Application.Contribuyentes.Interfaces;
 using ListaNegraSat.Core.Application.Contribuyentes.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace ListaNegraSat.Infrastructure.ContpaqiContabilidad.Repositories;
+namespace Contpaqi.ListaNegraSat.Infrastructure.ContabilidadContpaqi.Repositories;
 
 public class ContribuyenteContabilidadRepository : IContribuyenteContabilidadRepository
 {

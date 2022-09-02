@@ -1,10 +1,9 @@
-﻿namespace ListaNegraSat.Presentation.WpfApp.Views.Comprobantes
+﻿namespace ListaNegraSat.Presentation.WpfApp.Views.Comprobantes;
+
+public partial class ComprobantesListaView
 {
-    public partial class ComprobantesListaView
+    public ComprobantesListaView()
     {
-        public ComprobantesListaView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

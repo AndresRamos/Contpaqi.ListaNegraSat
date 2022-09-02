@@ -8,7 +8,7 @@ using ListaNegraSat.Core.Application.Empresas.Interfaces;
 using ListaNegraSat.Core.Application.Empresas.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace ListaNegraSat.Infrastructure.ContpaqiContabilidad.Repositories;
+namespace Contpaqi.ListaNegraSat.Infrastructure.ContabilidadContpaqi.Repositories;
 
 public class EmpresaContabilidadRepository : IEmpresaContabilidadRepository
 {

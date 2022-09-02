@@ -2,13 +2,13 @@
 using ARSoftware.Contpaqi.Add.Sql.Factories;
 using ARSoftware.Contpaqi.Contabilidad.Sql.Contexts;
 using ARSoftware.Contpaqi.Contabilidad.Sql.Factories;
+using Contpaqi.ListaNegraSat.Infrastructure.AddContpaqi.Repositories;
+using Contpaqi.ListaNegraSat.Infrastructure.ContabilidadContpaqi.Repositories;
 using ListaNegraSat.Core.Application.Cfdis.Interfaces;
+using ListaNegraSat.Core.Application.Common;
 using ListaNegraSat.Core.Application.Contribuyentes.Interfaces;
 using ListaNegraSat.Core.Application.Empresas.Interfaces;
 using ListaNegraSat.Core.Application.Expedientes.Interfaces;
-using ListaNegraSat.Infrastructure.ContpaqiAdd.Repositories;
-using ListaNegraSat.Infrastructure.ContpaqiContabilidad.Repositories;
-using ListaNegraSat.Presentation.WpfApp.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 

@@ -2,9 +2,8 @@
 using ListaNegraSat.Core.Application.Empresas.Models;
 using MediatR;
 
-namespace ListaNegraSat.Core.Application.Empresas.Queries.BuscarEmpresasContabilidad
+namespace ListaNegraSat.Core.Application.Empresas.Queries.BuscarEmpresasContabilidad;
+
+public class BuscarEmpresasContabilidadQuery : IRequest<IEnumerable<EmpresaContabilidadDto>>
 {
-    public class BuscarEmpresasContabilidadQuery : IRequest<IEnumerable<EmpresaContabilidadDto>>
-    {
-    }
 }

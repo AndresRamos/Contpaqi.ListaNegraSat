@@ -1,13 +1,12 @@
-﻿namespace ListaNegraSat.Presentation.WpfApp.Views.Empresas
+﻿namespace ListaNegraSat.Presentation.WpfApp.Views.Empresas;
+
+/// <summary>
+///     Interaction logic for SeleccionarEmpresaContabilidadView.xaml
+/// </summary>
+public partial class SeleccionarEmpresaContabilidadView
 {
-    /// <summary>
-    ///     Interaction logic for SeleccionarEmpresaContabilidadView.xaml
-    /// </summary>
-    public partial class SeleccionarEmpresaContabilidadView
+    public SeleccionarEmpresaContabilidadView()
     {
-        public SeleccionarEmpresaContabilidadView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

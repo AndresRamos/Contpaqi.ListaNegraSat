@@ -8,7 +8,7 @@ using ListaNegraSat.Core.Application.Expedientes.Interfaces;
 using ListaNegraSat.Core.Application.Expedientes.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace ListaNegraSat.Infrastructure.ContpaqiAdd.Repositories;
+namespace Contpaqi.ListaNegraSat.Infrastructure.AddContpaqi.Repositories;
 
 public class ExpedienteAddRepository : IExpedienteAddRepository
 {
