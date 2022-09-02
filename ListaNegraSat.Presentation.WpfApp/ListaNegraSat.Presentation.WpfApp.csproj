@@ -1,245 +1,51 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{99D6B22B-6C70-401E-90E0-799D7DD9A987}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
-    <RootNamespace>ListaNegraSat.Presentation.WpfApp</RootNamespace>
-    <AssemblyName>ListaNegraSat.Presentation.WpfApp</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <WarningLevel>4</WarningLevel>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>AR_LOGO03.ico</ApplicationIcon>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Threading.Tasks" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xaml">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="WindowsBase" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-  </ItemGroup>
-  <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
-    <Compile Include="AppBootstrapper.cs" />
-    <Compile Include="Config\IocContainerConfig.cs" />
-    <Compile Include="Models\ActualizacionAplicacion.cs" />
-    <Compile Include="Models\ConfiguracionAplicacion.cs" />
-    <Compile Include="ViewModels\AcercaDeViewModel.cs" />
-    <Compile Include="ViewModels\Actualizaciones\ActualizacionAplicacionViewModel.cs" />
-    <Compile Include="ViewModels\Articulo69B\Articulo69BListadoCompletoViewModel.cs" />
-    <Compile Include="ViewModels\Comprobantes\ComprobantesListaViewModel.cs" />
-    <Compile Include="ViewModels\Configuracion\EditarConfiguracionAplicacionViewModel.cs" />
-    <Compile Include="ViewModels\Contabilidad\ContribuyentesContabilidadViewModel.cs" />
-    <Compile Include="ViewModels\Empresas\SeleccionarEmpresaContabilidadViewModel.cs" />
-    <Compile Include="ViewModels\Expedientes\ExpedientesListaViewModel.cs" />
-    <Compile Include="ViewModels\ShellViewModel.cs" />
-    <Compile Include="Views\AcercaDeView.xaml.cs">
-      <DependentUpon>AcercaDeView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Actualizaciones\ActualizacionAplicacionView.xaml.cs">
-      <DependentUpon>ActualizacionAplicacionView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Articulo69B\Articulo69BListadoCompletoView.xaml.cs">
-      <DependentUpon>Articulo69BListadoCompletoView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Views\Comprobantes\ComprobantesListaView.xaml.cs">
-      <DependentUpon>ComprobantesListaView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Configuracion\EditarConfiguracionAplicacionView.xaml.cs">
-      <DependentUpon>EditarConfiguracionAplicacionView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Contabilidad\ContribuyentesContabilidadView.xaml.cs">
-      <DependentUpon>ContribuyentesContabilidadView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Empresas\SeleccionarEmpresaContabilidadView.xaml.cs">
-      <DependentUpon>SeleccionarEmpresaContabilidadView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Expedientes\ExpedientesListaView.xaml.cs">
-      <DependentUpon>ExpedientesListaView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ShellView.xaml.cs">
-      <DependentUpon>ShellView.xaml</DependentUpon>
-    </Compile>
-    <Page Include="Views\AcercaDeView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Actualizaciones\ActualizacionAplicacionView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Articulo69B\Articulo69BListadoCompletoView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Comprobantes\ComprobantesListaView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Configuracion\EditarConfiguracionAplicacionView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Contabilidad\ContribuyentesContabilidadView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Empresas\SeleccionarEmpresaContabilidadView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Expedientes\ExpedientesListaView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ShellView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <Resource Include="Logos\AR_LOGO03.ico" />
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <Resource Include="AR_LOGO03.ico" />
-    <Resource Include="Images\AR_LOGO01.jpg" />
-    <Content Include="Listado_Completo_69-B.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Logos\AR_LOGO01.jpg" />
-    <Resource Include="Logos\AR_LOGO03.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Autofac">
-      <Version>6.4.0</Version>
-    </PackageReference>
-    <PackageReference Include="Azure.Storage.Blobs">
-      <Version>12.13.1</Version>
-    </PackageReference>
-    <PackageReference Include="Caliburn.Micro">
-      <Version>4.0.212</Version>
-    </PackageReference>
-    <PackageReference Include="Contpaqi.Sql.ADD.DocumentMetadata">
-      <Version>1.0.1</Version>
-    </PackageReference>
-    <PackageReference Include="Contpaqi.Sql.ADD.OtherMetadata">
-      <Version>1.0.1</Version>
-    </PackageReference>
-    <PackageReference Include="Contpaqi.Sql.Contabilidad.Empresa">
-      <Version>1.0.4</Version>
-    </PackageReference>
-    <PackageReference Include="Contpaqi.Sql.Contabilidad.Generales">
-      <Version>1.0.4</Version>
-    </PackageReference>
-    <PackageReference Include="EPPlus">
-      <Version>4.5.3.3</Version>
-    </PackageReference>
-    <PackageReference Include="MahApps.Metro">
-      <Version>2.4.9</Version>
-    </PackageReference>
-    <PackageReference Include="MediatR">
-      <Version>9.0.0</Version>
-    </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ListaNegraSat.Core.Application\ListaNegraSat.Core.Application.csproj">
-      <Project>{ecf89a7d-f111-4654-b009-b4b8c635bb40}</Project>
-      <Name>ListaNegraSat.Core.Application</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ListaNegraSat.Infrastructure.ContpaqiAdd\ListaNegraSat.Infrastructure.ContpaqiAdd.csproj">
-      <Project>{69baa75b-0b8d-423f-b388-f7eb49714cfd}</Project>
-      <Name>ListaNegraSat.Infrastructure.ContpaqiAdd</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ListaNegraSat.Infrastructure.ContpaqiContabilidad\ListaNegraSat.Infrastructure.ContpaqiContabilidad.csproj">
-      <Project>{865572e8-a507-4354-a5df-de405afa8f88}</Project>
-      <Name>ListaNegraSat.Infrastructure.ContpaqiContabilidad</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net6.0-windows</TargetFramework>
+		<OutputType>WinExe</OutputType>
+		<UseWPF>true</UseWPF>
+		<ApplicationIcon>AR_LOGO03.ico</ApplicationIcon>
+	</PropertyGroup>
+	<PropertyGroup>
+	</PropertyGroup>
+	<ItemGroup>
+	  <AdditionalFiles Remove="C:\Users\gerar\.nuget\packages\microsoft.dotnet.upgradeassistant.extensions.default.analyzers\0.4.336902\build\\WebTypeReplacements.typemap" />
+	</ItemGroup>
+	<ItemGroup>
+		<Resource Include="Logos\AR_LOGO03.ico" />
+		<Resource Include="AR_LOGO03.ico" />
+		<Resource Include="Images\AR_LOGO01.jpg" />
+		<Content Include="Listado_Completo_69-B.csv">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+	<ItemGroup>
+		<Resource Include="Logos\AR_LOGO01.jpg" />
+		<Resource Include="Logos\AR_LOGO03.jpg" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
+		<PackageReference Include="Azure.Storage.Blobs" Version="12.13.1" />
+		<PackageReference Include="Caliburn.Micro" Version="4.0.212" />
+		<PackageReference Include="EPPlus" Version="4.5.3.3" />
+		<PackageReference Include="MahApps.Metro" Version="2.4.9" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+		<PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Contpaqi.ListaNegraSat.Infrastructure\Contpaqi.ListaNegraSat.Infrastructure.csproj" />
+		<ProjectReference Include="..\ListaNegraSat.Core.Application\ListaNegraSat.Core.Application.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Compile Update="Properties\Settings.Designer.cs">
+	    <DesignTimeSharedInput>True</DesignTimeSharedInput>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>Settings.settings</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+	<ItemGroup>
+	  <None Update="Properties\Settings.settings">
+	    <Generator>SettingsSingleFileGenerator</Generator>
+	    <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+	  </None>
+	</ItemGroup>
 </Project>

@@ -2,61 +2,56 @@
 using System.Collections.Generic;
 using System.Windows;
 using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using Caliburn.Micro;
+using Contpaqi.ListaNegraSat.Infrastructure;
+using ListaNegraSat.Core.Application;
 using ListaNegraSat.Presentation.WpfApp.Config;
 using ListaNegraSat.Presentation.WpfApp.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
-namespace ListaNegraSat.Presentation.WpfApp
+namespace ListaNegraSat.Presentation.WpfApp;
+
+public class AppBootstrapper : BootstrapperBase
 {
-    public class AppBootstrapper : BootstrapperBase
+    private readonly IHost _host;
+
+    public AppBootstrapper()
     {
-        private IContainer _container;
-
-        public AppBootstrapper()
-        {
-            Initialize();
-        }
-
-        protected override void Configure()
-        {
-            _container = IocContainerConfig.Configure();
-        }
-
-        protected override object GetInstance(Type service, string key)
-        {
-            object instance;
-
-            if (string.IsNullOrWhiteSpace(key))
+        _host = Host.CreateDefaultBuilder()
+            .UseServiceProviderFactory(new AutofacServiceProviderFactory())
+            .ConfigureServices((context, serviceCollection) =>
             {
-                if (_container.TryResolve(service, out instance))
-                {
-                    return instance;
-                }
-            }
-            else
-            {
-                if (_container.TryResolveNamed(key, service, out instance))
-                {
-                    return instance;
-                }
-            }
+                serviceCollection.AddApplicationServices();
+                serviceCollection.AddInfrastructureServices();
+            })
+            .ConfigureContainer<ContainerBuilder>(containerBuilder => { containerBuilder.AddWpfAppServices(); })
+            .Build();
+        Initialize();
+    }
 
-            throw new Exception(string.Format("Could not locate any instances of contract {0}.", key ?? service.Name));
-        }
+    protected override object GetInstance(Type service, string key)
+    {
+        return _host.Services.GetService(service);
+    }
 
-        protected override IEnumerable<object> GetAllInstances(Type service)
-        {
-            return _container.Resolve(typeof(IEnumerable<>).MakeGenericType(service)) as IEnumerable<object>;
-        }
+    protected override IEnumerable<object> GetAllInstances(Type service)
+    {
+        return _host.Services.GetServices(service);
+    }
 
-        protected override void BuildUp(object instance)
-        {
-            _container.InjectProperties(instance);
-        }
+    // ReSharper disable once AsyncVoidMethod
+    protected override async void OnStartup(object sender, StartupEventArgs e)
+    {
+        await _host.StartAsync();
+        await DisplayRootViewForAsync<ShellViewModel>();
+    }
 
-        protected override async void OnStartup(object sender, StartupEventArgs e)
-        {
-            await DisplayRootViewForAsync<ShellViewModel>();
-        }
+    // ReSharper disable once AsyncVoidMethod
+    protected override async void OnExit(object sender, EventArgs e)
+    {
+        await _host.StopAsync();
+        base.OnExit(sender, e);
     }
 }
