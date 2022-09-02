@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using CsvHelper;
+using CsvHelper.Configuration;
 using ListaNegraSat.Core.Application.Articulos69.Models;
 using MediatR;
 
@@ -13,13 +14,14 @@ namespace ListaNegraSat.Core.Application.Articulos69.Queries.BuscarCancelados
     {
         public Task<IEnumerable<CanceladoDto>> Handle(BuscarCanceladosQuery request, CancellationToken cancellationToken)
         {
+            var config = new CsvConfiguration(CultureInfo.InvariantCulture) { HasHeaderRecord = true };
+
             using (var reader = new StreamReader(request.FileName))
             using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
             {
-                csv.Configuration.HasHeaderRecord = true;
-                csv.Configuration.RegisterClassMap<CanceladoDtoCsvMap>();
+                csv.Context.RegisterClassMap<CanceladoDtoCsvMap>();
 
-                var records = csv.GetRecords<CanceladoDto>();
+                IEnumerable<CanceladoDto> records = csv.GetRecords<CanceladoDto>();
                 return Task.FromResult(records);
             }
         }

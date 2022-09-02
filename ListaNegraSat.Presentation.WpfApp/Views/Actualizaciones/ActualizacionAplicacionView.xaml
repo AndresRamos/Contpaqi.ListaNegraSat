@@ -36,7 +36,7 @@
                     Orientation="Horizontal"
                     HorizontalAlignment="Right">
             <Button Content="Cancelar"
-                    x:Name="CerrarVista"
+                    x:Name="CerrarVistaAsync"
                     Margin="5"
                     Style="{StaticResource MahApps.Styles.Button.Square}"
                     Width="150" />

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using CsvHelper;
+using CsvHelper.Configuration;
 using ListaNegraSat.Core.Application.Articulo69B.Models;
 using MediatR;
 
@@ -16,14 +17,15 @@ namespace ListaNegraSat.Core.Application.Articulo69B.Queries.BuscarContribuyente
         {
             cancellationToken.ThrowIfCancellationRequested();
 
+            var config = new CsvConfiguration(CultureInfo.InvariantCulture) { HasHeaderRecord = true };
+
             using (var reader = new StreamReader(request.RutaArchivo, Encoding.Default))
-            using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+            using (var csv = new CsvReader(reader, config))
             {
-                csv.Configuration.HasHeaderRecord = true;
-                csv.Configuration.RegisterClassMap<Contribuyente69BDtoMap>();
+                csv.Context.RegisterClassMap<Contribuyente69BDtoMap>();
 
                 csv.Read();
-                var version = csv.GetField(0);
+                string version = csv.GetField(0);
                 csv.Read();
 
                 //var version = reader.ReadLine();

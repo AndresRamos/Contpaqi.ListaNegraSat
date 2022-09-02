@@ -61,8 +61,7 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Actualizaciones
             IsDescargando = true;
             var saveFileDialog = new SaveFileDialog
             {
-                Filter = "zip | (*.zip)",
-                FileName = $"Instalador_Trevino_Devolucion_Iva_{ActualizacionAplicacion.VersionNueva}.zip"
+                Filter = "zip | (*.zip)", FileName = $"Instalador_Trevino_Devolucion_Iva_{ActualizacionAplicacion.VersionNueva}.zip"
             };
 
             if (saveFileDialog.ShowDialog() == true)
@@ -71,12 +70,12 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Actualizaciones
             }
 
             IsDescargando = false;
-            TryClose();
+            await TryCloseAsync();
         }
 
-        public void CerrarVista()
+        public async Task CerrarVistaAsync()
         {
-            TryClose();
+            await TryCloseAsync();
         }
 
         private void RaiseGuards()

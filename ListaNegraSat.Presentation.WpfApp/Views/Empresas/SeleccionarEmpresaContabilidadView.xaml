@@ -30,13 +30,13 @@
         <StackPanel Grid.Row="1"
                     Orientation="Horizontal">
             <Button Content="Seleccionar"
-                    cal:Message.Attach="Seleccionar"
+                    cal:Message.Attach="SeleccionarAsync"
                     VerticalAlignment="Center"
                     Width="150"
                     Margin="5"
                     Style="{StaticResource MahApps.Styles.Button.Square.Accent}" />
             <Button Content="Cancelar"
-                    cal:Message.Attach="Cancelar"
+                    cal:Message.Attach="CancelarAsync"
                     VerticalAlignment="Center"
                     Width="150"
                     Margin="5"

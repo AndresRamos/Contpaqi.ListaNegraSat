@@ -78,7 +78,8 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Configuracion
 
         public async Task GuardarConfiguracionAsync()
         {
-            var progressDialogController = await _dialogCoordinator.ShowProgressAsync(this, "Guardando Configuracion", "Guardando configuracion.");
+            ProgressDialogController progressDialogController =
+                await _dialogCoordinator.ShowProgressAsync(this, "Guardando Configuracion", "Guardando configuracion.");
             progressDialogController.SetIndeterminate();
             await Task.Delay(1000);
 
@@ -100,16 +101,16 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Configuracion
             }
         }
 
-        public void Cancelar()
+        public async Task CancelarAsync()
         {
-            TryClose();
+            await TryCloseAsync();
         }
 
         public async Task BuscarArchivoListadoCompletoAsync()
         {
             try
             {
-                var openFileDialog = new OpenFileDialog {Filter = "CSV | *.csv"};
+                var openFileDialog = new OpenFileDialog { Filter = "CSV | *.csv" };
                 if (openFileDialog.ShowDialog() == true)
                 {
                     RutaArchivoListadoCompleto = openFileDialog.FileName;

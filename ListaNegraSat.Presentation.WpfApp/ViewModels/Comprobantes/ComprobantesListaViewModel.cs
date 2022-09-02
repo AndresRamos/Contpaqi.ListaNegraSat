@@ -84,7 +84,7 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Comprobantes
             {
                 var expedientesListaViewModel = IoC.Get<ExpedientesListaViewModel>();
                 await expedientesListaViewModel.CargarExpedientesPorGuidPertenecienteAsync(ComprobanteSeleccionado.GuidDocument);
-                _windowManager.ShowWindow(expedientesListaViewModel);
+                await _windowManager.ShowWindowAsync(expedientesListaViewModel);
             }
             catch (Exception e)
             {
@@ -103,7 +103,8 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Comprobantes
                 return;
             }
 
-            var progressDialogController = await _dialogCoordinator.ShowProgressAsync(this, "Exportando", "Exportando");
+            ProgressDialogController progressDialogController =
+                await _dialogCoordinator.ShowProgressAsync(this, "Exportando", "Exportando");
             progressDialogController.SetIndeterminate();
             await Task.Delay(1000);
 
@@ -111,7 +112,7 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Comprobantes
             {
                 using (var excelPackage = new ExcelPackage(new FileInfo(saveFileDialog.FileName)))
                 {
-                    var excelWorksheet = excelPackage.Workbook.Worksheets.Add("Comprobantes");
+                    ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets.Add("Comprobantes");
 
                     excelWorksheet.Cells.LoadFromCollection(ComprobantesView.Cast<ComprobanteAddDto>(), true);
                     excelWorksheet.Cells.AutoFitColumns(20, 100);

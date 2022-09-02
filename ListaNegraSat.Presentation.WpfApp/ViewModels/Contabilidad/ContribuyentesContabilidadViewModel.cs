@@ -35,7 +35,10 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Contabilidad
         private int _sentenciasFavorablesTotal;
         private SituacionEnumeration _situacionFiltroSeleccionada;
 
-        public ContribuyentesContabilidadViewModel(ConfiguracionAplicacion configuracionAplicacion, IMediator mediator, IDialogCoordinator dialogCoordinator, IWindowManager windowManager)
+        public ContribuyentesContabilidadViewModel(ConfiguracionAplicacion configuracionAplicacion,
+                                                   IMediator mediator,
+                                                   IDialogCoordinator dialogCoordinator,
+                                                   IWindowManager windowManager)
         {
             _configuracionAplicacion = configuracionAplicacion;
             _mediator = mediator;
@@ -63,7 +66,8 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Contabilidad
             }
         }
 
-        public BindableCollection<SituacionEnumeration> SituacionesFiltro { get; } = new BindableCollection<SituacionEnumeration>(Enumeration.GetAll<SituacionEnumeration>());
+        public BindableCollection<SituacionEnumeration> SituacionesFiltro { get; } =
+            new BindableCollection<SituacionEnumeration>(Enumeration.GetAll<SituacionEnumeration>());
 
         public SituacionEnumeration SituacionFiltroSeleccionada
         {
@@ -82,7 +86,8 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Contabilidad
             }
         }
 
-        public BindableCollection<ContribuyenteContabilidadDto> Contribuyentes { get; } = new BindableCollection<ContribuyenteContabilidadDto>();
+        public BindableCollection<ContribuyenteContabilidadDto> Contribuyentes { get; } =
+            new BindableCollection<ContribuyenteContabilidadDto>();
 
         public ICollectionView ContribuyentesView { get; set; }
 
@@ -168,7 +173,8 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Contabilidad
 
         public async Task BuscarContribuyentesAsync()
         {
-            var progressDialogController = await _dialogCoordinator.ShowProgressAsync(this, "Buscando Contribuyentes", "Buscando contribuyentes");
+            ProgressDialogController progressDialogController =
+                await _dialogCoordinator.ShowProgressAsync(this, "Buscando Contribuyentes", "Buscando contribuyentes");
             progressDialogController.SetIndeterminate();
             await Task.Delay(1000);
 
@@ -176,12 +182,13 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Contabilidad
             {
                 if (string.IsNullOrWhiteSpace(_configuracionAplicacion.ContpaqiContabilidadConnectionString))
                 {
-                    throw new InvalidOperationException("El connection string de Contabilidad esta vacio. Debe de asignarlo en la configuracion de aplicacion.");
+                    throw new InvalidOperationException(
+                        "El connection string de Contabilidad esta vacio. Debe de asignarlo en la configuracion de aplicacion.");
                 }
 
                 var seleccionarEmpresaContabilidadViewModel = IoC.Get<SeleccionarEmpresaContabilidadViewModel>();
                 await seleccionarEmpresaContabilidadViewModel.InicializarAsync();
-                _windowManager.ShowDialog(seleccionarEmpresaContabilidadViewModel);
+                await _windowManager.ShowDialogAsync(seleccionarEmpresaContabilidadViewModel);
                 if (!seleccionarEmpresaContabilidadViewModel.SeleccionoEmpresa)
                 {
                     return;
@@ -189,7 +196,9 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Contabilidad
 
                 _configuracionAplicacion.SetEmpresaContabilidad(seleccionarEmpresaContabilidadViewModel.EmpresaSeleccionada);
 
-                var listado = await _mediator.Send(new BuscarContribuyentesContabilidadQuery(_configuracionAplicacion.GetRutaArchivoListadoCompleto()));
+                BuscarContribuyentesContabilidadResult listado =
+                    await _mediator.Send(
+                        new BuscarContribuyentesContabilidadQuery(_configuracionAplicacion.GetRutaArchivoListadoCompleto()));
                 DisplayName = $"Contribuyentes Contabilidad - {listado.Version}";
 
                 Contribuyentes.Clear();
@@ -215,17 +224,14 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Contabilidad
 
         public async Task ExportarFiltroExcelAsync()
         {
-            var saveFileDialog = new SaveFileDialog
-            {
-                Filter = "Excel | *.xlsx",
-                FileName = "Contribuyentes.xlsx"
-            };
+            var saveFileDialog = new SaveFileDialog { Filter = "Excel | *.xlsx", FileName = "Contribuyentes.xlsx" };
             if (saveFileDialog.ShowDialog() != true)
             {
                 return;
             }
 
-            var progressDialogController = await _dialogCoordinator.ShowProgressAsync(this, "Exportando", "Exportando");
+            ProgressDialogController progressDialogController =
+                await _dialogCoordinator.ShowProgressAsync(this, "Exportando", "Exportando");
             progressDialogController.SetIndeterminate();
             await Task.Delay(1000);
 
@@ -233,7 +239,7 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Contabilidad
             {
                 using (var excelPackage = new ExcelPackage(new FileInfo(saveFileDialog.FileName)))
                 {
-                    var excelWorksheet = excelPackage.Workbook.Worksheets.Add("Contribuyentes");
+                    ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets.Add("Contribuyentes");
 
                     excelWorksheet.Cells.LoadFromCollection(ContribuyentesView.Cast<ContribuyenteContabilidadDto>(), true);
                     excelWorksheet.Cells.AutoFitColumns(20, 100);
@@ -255,7 +261,8 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Contabilidad
 
         public async Task VerComprobantesContribuyenteSeleccionadoAsync()
         {
-            var progressDialogController = await _dialogCoordinator.ShowProgressAsync(this, "Buscando comprobantes", "Buscando");
+            ProgressDialogController progressDialogController =
+                await _dialogCoordinator.ShowProgressAsync(this, "Buscando comprobantes", "Buscando");
             progressDialogController.SetIndeterminate();
             await Task.Delay(1000);
 
@@ -263,12 +270,14 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Contabilidad
             {
                 if (string.IsNullOrWhiteSpace(_configuracionAplicacion.ContpaqiAddConnetionString))
                 {
-                    throw new InvalidOperationException("El connection string del ADD esta vacio. Debe de asignarlo en la configuracion de aplicacion.");
+                    throw new InvalidOperationException(
+                        "El connection string del ADD esta vacio. Debe de asignarlo en la configuracion de aplicacion.");
                 }
 
                 var comprobantesListaViewModel = IoC.Get<ComprobantesListaViewModel>();
-                comprobantesListaViewModel.Inicializar(await _mediator.Send(new BuscarComprobantesPorRfcEmitdoQuery(ContribuyenteSeleccionado.Rfc)));
-                _windowManager.ShowWindow(comprobantesListaViewModel);
+                comprobantesListaViewModel.Inicializar(
+                    await _mediator.Send(new BuscarComprobantesPorRfcEmitdoQuery(ContribuyenteSeleccionado.Rfc)));
+                await _windowManager.ShowWindowAsync(comprobantesListaViewModel);
             }
             catch (Exception e)
             {
@@ -294,13 +303,13 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Contabilidad
                 throw new ArgumentNullException(nameof(contribuyente));
             }
 
-            var stringFilterResult = string.IsNullOrWhiteSpace(Filtro) ||
-                                     contribuyente.Codigo?.IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                                     contribuyente.RazonSocial?.IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                                     contribuyente.Rfc?.IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                                     contribuyente.ListadoNumero?.IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                                     contribuyente.ListadoNombreContribuyente?.IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                                     contribuyente.ListadoSituacion?.IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0;
+            bool stringFilterResult = string.IsNullOrWhiteSpace(Filtro) ||
+                                      contribuyente.Codigo?.IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                                      contribuyente.RazonSocial?.IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                                      contribuyente.Rfc?.IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                                      contribuyente.ListadoNumero?.IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                                      contribuyente.ListadoNombreContribuyente?.IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                                      contribuyente.ListadoSituacion?.IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0;
 
             bool senteciaResult;
             if (Equals(SituacionFiltroSeleccionada, SituacionEnumeration.Todo))

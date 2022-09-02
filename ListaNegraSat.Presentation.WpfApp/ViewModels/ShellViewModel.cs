@@ -16,7 +16,9 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels
         private readonly IDialogCoordinator _dialogCoordinator;
         private readonly IWindowManager _windowManager;
 
-        public ShellViewModel(ConfiguracionAplicacion configuracionAplicacion, IDialogCoordinator dialogCoordinator, IWindowManager windowManager)
+        public ShellViewModel(ConfiguracionAplicacion configuracionAplicacion,
+                              IDialogCoordinator dialogCoordinator,
+                              IWindowManager windowManager)
         {
             ConfiguracionAplicacion = configuracionAplicacion;
             _dialogCoordinator = dialogCoordinator;
@@ -31,7 +33,7 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels
             try
             {
                 var viewModel = IoC.Get<Articulo69BListadoCompletoViewModel>();
-                ActivateItem(viewModel);
+                await ActivateItemAsync(viewModel);
             }
             catch (Exception e)
             {
@@ -44,7 +46,7 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels
             try
             {
                 var viewModel = IoC.Get<ContribuyentesContabilidadViewModel>();
-                ActivateItem(viewModel);
+                await ActivateItemAsync(viewModel);
             }
             catch (Exception e)
             {
@@ -58,7 +60,7 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels
             {
                 var viewModel = IoC.Get<EditarConfiguracionAplicacionViewModel>();
                 viewModel.Inicializar();
-                _windowManager.ShowDialog(viewModel);
+                await _windowManager.ShowDialogAsync(viewModel);
                 ConfiguracionAplicacion.CargarConfiguracion();
             }
             catch (Exception e)
@@ -85,7 +87,7 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels
             {
                 var viewModel = IoC.Get<ActualizacionAplicacionViewModel>();
                 await viewModel.ChecarActualizacionDisponibleAsync();
-                _windowManager.ShowDialog(viewModel);
+                await _windowManager.ShowDialogAsync(viewModel);
             }
             catch (Exception ex)
             {
@@ -98,7 +100,7 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels
             try
             {
                 var viewModel = IoC.Get<AcercaDeViewModel>();
-                _windowManager.ShowDialog(viewModel);
+                await _windowManager.ShowDialogAsync(viewModel);
             }
             catch (Exception e)
             {
@@ -114,7 +116,7 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels
             await viewModel.ChecarActualizacionDisponibleAsync();
             if (viewModel.ActualizacionAplicacion.ActualizacionDisponible)
             {
-                _windowManager.ShowWindow(viewModel);
+                await _windowManager.ShowWindowAsync(viewModel);
             }
         }
     }

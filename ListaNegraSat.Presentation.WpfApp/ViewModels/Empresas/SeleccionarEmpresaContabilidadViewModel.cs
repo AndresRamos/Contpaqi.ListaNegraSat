@@ -74,16 +74,16 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Empresas
             Empresas.AddRange(await _mediator.Send(new BuscarEmpresasContabilidadQuery()));
         }
 
-        public void Seleccionar()
+        public async Task SeleccionarAsync()
         {
             SeleccionoEmpresa = true;
-            TryClose();
+            await TryCloseAsync();
         }
 
-        public void Cancelar()
+        public async Task CancelarAsync()
         {
             SeleccionoEmpresa = false;
-            TryClose();
+            await TryCloseAsync();
         }
 
         public void RaiseGuards()
@@ -99,8 +99,7 @@ namespace ListaNegraSat.Presentation.WpfApp.ViewModels.Empresas
                 throw new ArgumentNullException(nameof(empresa));
             }
 
-            return string.IsNullOrWhiteSpace(Filtro) ||
-                   empresa.Nombre.IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0;
+            return string.IsNullOrWhiteSpace(Filtro) || empresa.Nombre.IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0;
         }
     }
 }

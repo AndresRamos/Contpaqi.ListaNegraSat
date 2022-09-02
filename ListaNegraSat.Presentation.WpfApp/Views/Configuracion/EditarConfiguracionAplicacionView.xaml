@@ -35,7 +35,7 @@
                     Margin="5"
                     Style="{StaticResource MahApps.Styles.Button.Square.Accent}" />
             <Button Content="Cancelar"
-                    cal:Message.Attach="Cancelar"
+                    cal:Message.Attach="CancelarAsync"
                     Width="150"
                     VerticalContentAlignment="Center"
                     Margin="5"
