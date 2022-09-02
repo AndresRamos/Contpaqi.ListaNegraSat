@@ -51,9 +51,6 @@
     <Compile Include="Repositories\ExpedienteAddRepository.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\ListaNegraSat.Core.Application\ListaNegraSat.Core.Application.csproj">
       <Project>{ecf89a7d-f111-4654-b009-b4b8c635bb40}</Project>
       <Name>ListaNegraSat.Core.Application</Name>

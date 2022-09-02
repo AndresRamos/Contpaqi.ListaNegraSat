@@ -57,9 +57,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Contpaqi.Sql.Contabilidad.Empresa">
       <Version>1.0.4</Version>
     </PackageReference>
