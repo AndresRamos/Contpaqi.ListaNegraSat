@@ -19,7 +19,7 @@ public class BuscarContribuyentes69BQueryHandler : IRequestHandler<BuscarContrib
 
         var config = new CsvConfiguration(CultureInfo.InvariantCulture) { HasHeaderRecord = true };
 
-        using (var reader = new StreamReader(request.RutaArchivo, Encoding.Default))
+        using (var reader = new StreamReader(request.RutaArchivo, Encoding.Latin1))
         using (var csv = new CsvReader(reader, config))
         {
             csv.Context.RegisterClassMap<Contribuyente69BDtoMap>();
