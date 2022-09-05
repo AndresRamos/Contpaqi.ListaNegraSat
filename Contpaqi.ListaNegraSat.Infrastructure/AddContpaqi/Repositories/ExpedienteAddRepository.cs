@@ -8,7 +8,7 @@ using ListaNegraSat.Core.Application.Expedientes.Interfaces;
 using ListaNegraSat.Core.Application.Expedientes.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Contpaqi.ListaNegraSat.Infrastructure.AddContpaqi.Repositories;
+namespace ListaNegraSat.Infrastructure.AddContpaqi.Repositories;
 
 public class ExpedienteAddRepository : IExpedienteAddRepository
 {
@@ -19,8 +19,7 @@ public class ExpedienteAddRepository : IExpedienteAddRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<ExpedienteAddDto>> BuscarExpedientesPorGuidPertenecienteAsync(
-        Guid guidPertenece,
+    public async Task<IEnumerable<ExpedienteAddDto>> BuscarExpedientesPorGuidPertenecienteAsync(Guid guidPertenece,
         CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();

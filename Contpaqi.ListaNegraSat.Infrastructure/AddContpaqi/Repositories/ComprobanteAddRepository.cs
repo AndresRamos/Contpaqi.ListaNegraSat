@@ -7,7 +7,7 @@ using ListaNegraSat.Core.Application.Cfdis.Interfaces;
 using ListaNegraSat.Core.Application.Cfdis.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Contpaqi.ListaNegraSat.Infrastructure.AddContpaqi.Repositories;
+namespace ListaNegraSat.Infrastructure.AddContpaqi.Repositories;
 
 public class ComprobanteAddRepository : IComprobanteAddRepository
 {

@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ListaNegraSat.Core.Applicat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ListaNegraSat.Presentation.WpfApp", "ListaNegraSat.Presentation.WpfApp\ListaNegraSat.Presentation.WpfApp.csproj", "{99D6B22B-6C70-401E-90E0-799D7DD9A987}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contpaqi.ListaNegraSat.Infrastructure", "Contpaqi.ListaNegraSat.Infrastructure\Contpaqi.ListaNegraSat.Infrastructure.csproj", "{EA6AE2E0-047A-48CF-8A08-2E95B35F126D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ListaNegraSat.Infrastructure", "Contpaqi.ListaNegraSat.Infrastructure\ListaNegraSat.Infrastructure.csproj", "{EA6AE2E0-047A-48CF-8A08-2E95B35F126D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -27,7 +27,7 @@
 		<PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\Contpaqi.ListaNegraSat.Infrastructure\Contpaqi.ListaNegraSat.Infrastructure.csproj" />
+		<ProjectReference Include="..\Contpaqi.ListaNegraSat.Infrastructure\ListaNegraSat.Infrastructure.csproj" />
 		<ProjectReference Include="..\ListaNegraSat.Core.Application\ListaNegraSat.Core.Application.csproj" />
 	</ItemGroup>
 	<ItemGroup>

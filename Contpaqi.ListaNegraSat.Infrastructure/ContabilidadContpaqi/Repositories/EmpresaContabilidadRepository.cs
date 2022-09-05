@@ -8,7 +8,7 @@ using ListaNegraSat.Core.Application.Empresas.Interfaces;
 using ListaNegraSat.Core.Application.Empresas.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Contpaqi.ListaNegraSat.Infrastructure.ContabilidadContpaqi.Repositories;
+namespace ListaNegraSat.Infrastructure.ContabilidadContpaqi.Repositories;
 
 public class EmpresaContabilidadRepository : IEmpresaContabilidadRepository
 {
@@ -33,18 +33,14 @@ public class EmpresaContabilidadRepository : IEmpresaContabilidadRepository
 
             string empresaConnectionString =
                 ContpaqiContabilidadSqlConnectionStringFactory.CreateContpaqiContabilidadEmpresaConnectionString(
-                    _contabilidadGeneralesDbContext.Database.GetConnectionString(),
-                    empresa.BaseDatos);
+                    _contabilidadGeneralesDbContext.Database.GetConnectionString(), empresa.BaseDatos);
 
             DbContextOptions<ContpaqiContabilidadEmpresaDbContext> empresaOptions =
                 new DbContextOptionsBuilder<ContpaqiContabilidadEmpresaDbContext>().UseSqlServer(empresaConnectionString).Options;
 
             using (var contabilidadEmpresaDbContext = new ContpaqiContabilidadEmpresaDbContext(empresaOptions))
             {
-                if (!await contabilidadEmpresaDbContext.Database.CanConnectAsync(cancellationToken))
-                {
-                    continue;
-                }
+                if (!await contabilidadEmpresaDbContext.Database.CanConnectAsync(cancellationToken)) continue;
 
                 var parametros = await contabilidadEmpresaDbContext.Parametros.AsNoTracking()
                     .Select(p => new { p.RFC, p.GuidDSL })
