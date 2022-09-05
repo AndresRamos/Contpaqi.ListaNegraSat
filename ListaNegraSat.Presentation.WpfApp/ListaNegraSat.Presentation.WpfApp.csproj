@@ -4,6 +4,13 @@
 		<OutputType>WinExe</OutputType>
 		<UseWPF>true</UseWPF>
 		<ApplicationIcon>AR_LOGO03.ico</ApplicationIcon>
+		<Version>2.0.0</Version>
+		<Authors>AR Software</Authors>
+		<Description>Aplicacion que permite visualizar la lista negra del SAT.</Description>
+		<Copyright>Copyright © AR Software 2022</Copyright>
+		<RepositoryUrl>https://github.com/AndresRamos/Contpaqi.ListaNegraSat</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageProjectUrl>https://github.com/AndresRamos/Contpaqi.ListaNegraSat</PackageProjectUrl>
 	</PropertyGroup>
 	<ItemGroup>
 		<Resource Include="Logos\AR_LOGO03.ico" />
