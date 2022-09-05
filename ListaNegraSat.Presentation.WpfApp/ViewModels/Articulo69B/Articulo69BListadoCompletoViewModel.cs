@@ -30,9 +30,8 @@ public sealed class Articulo69BListadoCompletoViewModel : Screen
     private int _sentenciasFavorablesTotal;
     private SituacionEnumeration _situacionFiltroSeleccionada;
 
-    public Articulo69BListadoCompletoViewModel(ConfiguracionAplicacion configuracionAplicacion,
-                                               IMediator mediator,
-                                               IDialogCoordinator dialogCoordinator)
+    public Articulo69BListadoCompletoViewModel(ConfiguracionAplicacion configuracionAplicacion, IMediator mediator,
+        IDialogCoordinator dialogCoordinator)
     {
         _configuracionAplicacion = configuracionAplicacion;
         _mediator = mediator;
@@ -47,10 +46,7 @@ public sealed class Articulo69BListadoCompletoViewModel : Screen
         get => _filtro;
         set
         {
-            if (value == _filtro)
-            {
-                return;
-            }
+            if (value == _filtro) return;
 
             _filtro = value;
             NotifyOfPropertyChange(() => Filtro);
@@ -66,10 +62,7 @@ public sealed class Articulo69BListadoCompletoViewModel : Screen
         get => _situacionFiltroSeleccionada;
         set
         {
-            if (Equals(value, _situacionFiltroSeleccionada))
-            {
-                return;
-            }
+            if (Equals(value, _situacionFiltroSeleccionada)) return;
 
             _situacionFiltroSeleccionada = value;
             NotifyOfPropertyChange(() => SituacionFiltroSeleccionada);
@@ -87,10 +80,7 @@ public sealed class Articulo69BListadoCompletoViewModel : Screen
         get => _contribuyenteSeleccionado;
         set
         {
-            if (Equals(value, _contribuyenteSeleccionado))
-            {
-                return;
-            }
+            if (Equals(value, _contribuyenteSeleccionado)) return;
 
             _contribuyenteSeleccionado = value;
             NotifyOfPropertyChange(() => ContribuyenteSeleccionado);
@@ -102,10 +92,7 @@ public sealed class Articulo69BListadoCompletoViewModel : Screen
         get => _definitivosTotal;
         private set
         {
-            if (value == _definitivosTotal)
-            {
-                return;
-            }
+            if (value == _definitivosTotal) return;
 
             _definitivosTotal = value;
             NotifyOfPropertyChange(() => DefinitivosTotal);
@@ -117,10 +104,7 @@ public sealed class Articulo69BListadoCompletoViewModel : Screen
         get => _desvirtuadosTotal;
         private set
         {
-            if (value == _desvirtuadosTotal)
-            {
-                return;
-            }
+            if (value == _desvirtuadosTotal) return;
 
             _desvirtuadosTotal = value;
             NotifyOfPropertyChange(() => DesvirtuadosTotal);
@@ -132,10 +116,7 @@ public sealed class Articulo69BListadoCompletoViewModel : Screen
         get => _presuntosTotal;
         private set
         {
-            if (value == _presuntosTotal)
-            {
-                return;
-            }
+            if (value == _presuntosTotal) return;
 
             _presuntosTotal = value;
             NotifyOfPropertyChange(() => PresuntosTotal);
@@ -147,10 +128,7 @@ public sealed class Articulo69BListadoCompletoViewModel : Screen
         get => _sentenciasFavorablesTotal;
         private set
         {
-            if (value == _sentenciasFavorablesTotal)
-            {
-                return;
-            }
+            if (value == _sentenciasFavorablesTotal) return;
 
             _sentenciasFavorablesTotal = value;
             NotifyOfPropertyChange(() => SentenciasFavorablesTotal);
@@ -196,10 +174,7 @@ public sealed class Articulo69BListadoCompletoViewModel : Screen
     public async Task ExportarFiltroExcelAsync()
     {
         var saveFileDialog = new SaveFileDialog { Filter = "Excel | *.xlsx", FileName = "Contribuyentes.xlsx" };
-        if (saveFileDialog.ShowDialog() != true)
-        {
-            return;
-        }
+        if (saveFileDialog.ShowDialog() != true) return;
 
         ProgressDialogController progressDialogController = await _dialogCoordinator.ShowProgressAsync(this, "Exportando", "Exportando");
 
@@ -214,7 +189,7 @@ public sealed class Articulo69BListadoCompletoViewModel : Screen
                 excelPackage.Save();
             }
 
-            Process.Start(saveFileDialog.FileName);
+            Process.Start(new ProcessStartInfo(saveFileDialog.FileName) { UseShellExecute = true });
         }
         catch (Exception e)
         {
@@ -234,10 +209,7 @@ public sealed class Articulo69BListadoCompletoViewModel : Screen
 
     private bool ContribuyentesView_Filter(object obj)
     {
-        if (!(obj is Contribuyente69BDto contribuyente))
-        {
-            throw new ArgumentNullException(nameof(contribuyente));
-        }
+        if (!(obj is Contribuyente69BDto contribuyente)) throw new ArgumentNullException(nameof(contribuyente));
 
         bool stringFilterResult = string.IsNullOrWhiteSpace(Filtro) ||
                                   contribuyente.Numero.IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0 ||
@@ -246,29 +218,17 @@ public sealed class Articulo69BListadoCompletoViewModel : Screen
 
         bool senteciaResult;
         if (Equals(SituacionFiltroSeleccionada, SituacionEnumeration.Todo))
-        {
             senteciaResult = true;
-        }
         else if (Equals(SituacionFiltroSeleccionada, SituacionEnumeration.Definitivos))
-        {
             senteciaResult = contribuyente.Situacion == SituacionEnumeration.Definitivos.Name;
-        }
         else if (Equals(SituacionFiltroSeleccionada, SituacionEnumeration.Desvirtuados))
-        {
             senteciaResult = contribuyente.Situacion == SituacionEnumeration.Desvirtuados.Name;
-        }
         else if (Equals(SituacionFiltroSeleccionada, SituacionEnumeration.Presuntos))
-        {
             senteciaResult = contribuyente.Situacion == SituacionEnumeration.Presuntos.Name;
-        }
         else if (Equals(SituacionFiltroSeleccionada, SituacionEnumeration.SentenciaFavorable))
-        {
             senteciaResult = contribuyente.Situacion == SituacionEnumeration.SentenciaFavorable.Name;
-        }
         else
-        {
             senteciaResult = true;
-        }
 
         return stringFilterResult && senteciaResult;
     }

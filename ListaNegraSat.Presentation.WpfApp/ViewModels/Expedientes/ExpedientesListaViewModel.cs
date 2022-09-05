@@ -32,10 +32,7 @@ public sealed class ExpedientesListaViewModel : Screen
         get => _expedienteSeleccionado;
         set
         {
-            if (Equals(value, _expedienteSeleccionado))
-            {
-                return;
-            }
+            if (Equals(value, _expedienteSeleccionado)) return;
 
             _expedienteSeleccionado = value;
             NotifyOfPropertyChange(() => ExpedienteSeleccionado);
@@ -53,10 +50,7 @@ public sealed class ExpedientesListaViewModel : Screen
         var saveFileDialog = new SaveFileDialog();
         saveFileDialog.Filter = "Excel | *.xlsx";
         saveFileDialog.FileName = "Expedientes.xlsx";
-        if (saveFileDialog.ShowDialog() != true)
-        {
-            return;
-        }
+        if (saveFileDialog.ShowDialog() != true) return;
 
         ProgressDialogController progressDialogController = await _dialogCoordinator.ShowProgressAsync(this, "Exportando", "Exportando");
         progressDialogController.SetIndeterminate();
@@ -73,7 +67,7 @@ public sealed class ExpedientesListaViewModel : Screen
                 excelPackage.Save();
             }
 
-            Process.Start(saveFileDialog.FileName);
+            Process.Start(new ProcessStartInfo(saveFileDialog.FileName) { UseShellExecute = true });
         }
         catch (Exception e)
         {

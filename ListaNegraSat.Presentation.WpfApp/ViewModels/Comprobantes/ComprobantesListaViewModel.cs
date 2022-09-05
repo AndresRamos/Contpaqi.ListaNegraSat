@@ -36,10 +36,7 @@ public sealed class ComprobantesListaViewModel : Screen
         get => _filtro;
         set
         {
-            if (value == _filtro)
-            {
-                return;
-            }
+            if (value == _filtro) return;
 
             _filtro = value;
             NotifyOfPropertyChange(() => Filtro);
@@ -57,10 +54,7 @@ public sealed class ComprobantesListaViewModel : Screen
         get => _comprobanteSeleccionado;
         set
         {
-            if (Equals(value, _comprobanteSeleccionado))
-            {
-                return;
-            }
+            if (Equals(value, _comprobanteSeleccionado)) return;
 
             _comprobanteSeleccionado = value;
             NotifyOfPropertyChange(() => ComprobanteSeleccionado);
@@ -98,10 +92,7 @@ public sealed class ComprobantesListaViewModel : Screen
         var saveFileDialog = new SaveFileDialog();
         saveFileDialog.Filter = "Excel | *.xlsx";
         saveFileDialog.FileName = "Comprobantes.xlsx";
-        if (saveFileDialog.ShowDialog() != true)
-        {
-            return;
-        }
+        if (saveFileDialog.ShowDialog() != true) return;
 
         ProgressDialogController progressDialogController = await _dialogCoordinator.ShowProgressAsync(this, "Exportando", "Exportando");
         progressDialogController.SetIndeterminate();
@@ -118,7 +109,7 @@ public sealed class ComprobantesListaViewModel : Screen
                 excelPackage.Save();
             }
 
-            Process.Start(saveFileDialog.FileName);
+            Process.Start(new ProcessStartInfo(saveFileDialog.FileName) { UseShellExecute = true });
         }
         catch (Exception e)
         {
@@ -139,10 +130,7 @@ public sealed class ComprobantesListaViewModel : Screen
 
     private bool ComprbantesView_Filter(object obj)
     {
-        if (!(obj is ComprobanteAddDto comprobante))
-        {
-            throw new ArgumentNullException(nameof(comprobante));
-        }
+        if (!(obj is ComprobanteAddDto comprobante)) throw new ArgumentNullException(nameof(comprobante));
 
         return string.IsNullOrWhiteSpace(Filtro) ||
                comprobante.Fecha?.ToShortDateString().IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0 ||

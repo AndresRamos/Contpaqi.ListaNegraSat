@@ -30,6 +30,8 @@
                           cal:Message.Attach="VerEditarConfiguracionAplicacionViewAsync" />
             </MenuItem>
             <MenuItem Header="Ayuda">
+                <MenuItem Header="Documentacion"
+                          cal:Message.Attach="VerDocumentacionAsync" />
                 <MenuItem Header="Soporte Remoto"
                           cal:Message.Attach="IniciarSoporteRemotoAsync" />
                 <MenuItem Header="Buscar Actualizaciones"

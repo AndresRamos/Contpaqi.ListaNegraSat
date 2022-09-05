@@ -35,10 +35,8 @@ public sealed class ContribuyentesContabilidadViewModel : Screen
     private int _sentenciasFavorablesTotal;
     private SituacionEnumeration _situacionFiltroSeleccionada;
 
-    public ContribuyentesContabilidadViewModel(ConfiguracionAplicacion configuracionAplicacion,
-                                               IMediator mediator,
-                                               IDialogCoordinator dialogCoordinator,
-                                               IWindowManager windowManager)
+    public ContribuyentesContabilidadViewModel(ConfiguracionAplicacion configuracionAplicacion, IMediator mediator,
+        IDialogCoordinator dialogCoordinator, IWindowManager windowManager)
     {
         _configuracionAplicacion = configuracionAplicacion;
         _mediator = mediator;
@@ -54,10 +52,7 @@ public sealed class ContribuyentesContabilidadViewModel : Screen
         get => _filtro;
         set
         {
-            if (value == _filtro)
-            {
-                return;
-            }
+            if (value == _filtro) return;
 
             _filtro = value;
             NotifyOfPropertyChange(() => Filtro);
@@ -73,10 +68,7 @@ public sealed class ContribuyentesContabilidadViewModel : Screen
         get => _situacionFiltroSeleccionada;
         set
         {
-            if (Equals(value, _situacionFiltroSeleccionada))
-            {
-                return;
-            }
+            if (Equals(value, _situacionFiltroSeleccionada)) return;
 
             _situacionFiltroSeleccionada = value;
             NotifyOfPropertyChange(() => SituacionFiltroSeleccionada);
@@ -94,10 +86,7 @@ public sealed class ContribuyentesContabilidadViewModel : Screen
         get => _contribuyenteSeleccionado;
         set
         {
-            if (Equals(value, _contribuyenteSeleccionado))
-            {
-                return;
-            }
+            if (Equals(value, _contribuyenteSeleccionado)) return;
 
             _contribuyenteSeleccionado = value;
             NotifyOfPropertyChange(() => ContribuyenteSeleccionado);
@@ -110,10 +99,7 @@ public sealed class ContribuyentesContabilidadViewModel : Screen
         get => _definitivosTotal;
         private set
         {
-            if (value == _definitivosTotal)
-            {
-                return;
-            }
+            if (value == _definitivosTotal) return;
 
             _definitivosTotal = value;
             NotifyOfPropertyChange(() => DefinitivosTotal);
@@ -125,10 +111,7 @@ public sealed class ContribuyentesContabilidadViewModel : Screen
         get => _desvirtuadosTotal;
         private set
         {
-            if (value == _desvirtuadosTotal)
-            {
-                return;
-            }
+            if (value == _desvirtuadosTotal) return;
 
             _desvirtuadosTotal = value;
             NotifyOfPropertyChange(() => DesvirtuadosTotal);
@@ -140,10 +123,7 @@ public sealed class ContribuyentesContabilidadViewModel : Screen
         get => _presuntosTotal;
         private set
         {
-            if (value == _presuntosTotal)
-            {
-                return;
-            }
+            if (value == _presuntosTotal) return;
 
             _presuntosTotal = value;
             NotifyOfPropertyChange(() => PresuntosTotal);
@@ -155,10 +135,7 @@ public sealed class ContribuyentesContabilidadViewModel : Screen
         get => _sentenciasFavorablesTotal;
         private set
         {
-            if (value == _sentenciasFavorablesTotal)
-            {
-                return;
-            }
+            if (value == _sentenciasFavorablesTotal) return;
 
             _sentenciasFavorablesTotal = value;
             NotifyOfPropertyChange(() => SentenciasFavorablesTotal);
@@ -179,18 +156,13 @@ public sealed class ContribuyentesContabilidadViewModel : Screen
         try
         {
             if (string.IsNullOrWhiteSpace(_configuracionAplicacion.ContpaqiContabilidadConnectionString))
-            {
                 throw new InvalidOperationException(
                     "El connection string de Contabilidad esta vacio. Debe de asignarlo en la configuracion de aplicacion.");
-            }
 
             var seleccionarEmpresaContabilidadViewModel = IoC.Get<SeleccionarEmpresaContabilidadViewModel>();
             await seleccionarEmpresaContabilidadViewModel.InicializarAsync();
             await _windowManager.ShowDialogAsync(seleccionarEmpresaContabilidadViewModel);
-            if (!seleccionarEmpresaContabilidadViewModel.SeleccionoEmpresa)
-            {
-                return;
-            }
+            if (!seleccionarEmpresaContabilidadViewModel.SeleccionoEmpresa) return;
 
             _configuracionAplicacion.SetEmpresaContabilidad(seleccionarEmpresaContabilidadViewModel.EmpresaSeleccionada);
 
@@ -223,10 +195,7 @@ public sealed class ContribuyentesContabilidadViewModel : Screen
     public async Task ExportarFiltroExcelAsync()
     {
         var saveFileDialog = new SaveFileDialog { Filter = "Excel | *.xlsx", FileName = "Contribuyentes.xlsx" };
-        if (saveFileDialog.ShowDialog() != true)
-        {
-            return;
-        }
+        if (saveFileDialog.ShowDialog() != true) return;
 
         ProgressDialogController progressDialogController = await _dialogCoordinator.ShowProgressAsync(this, "Exportando", "Exportando");
         progressDialogController.SetIndeterminate();
@@ -243,7 +212,7 @@ public sealed class ContribuyentesContabilidadViewModel : Screen
                 excelPackage.Save();
             }
 
-            Process.Start(saveFileDialog.FileName);
+            Process.Start(new ProcessStartInfo(saveFileDialog.FileName) { UseShellExecute = true });
         }
         catch (Exception e)
         {
@@ -266,10 +235,8 @@ public sealed class ContribuyentesContabilidadViewModel : Screen
         try
         {
             if (string.IsNullOrWhiteSpace(_configuracionAplicacion.ContpaqiAddConnetionString))
-            {
                 throw new InvalidOperationException(
                     "El connection string del ADD esta vacio. Debe de asignarlo en la configuracion de aplicacion.");
-            }
 
             var comprobantesListaViewModel = IoC.Get<ComprobantesListaViewModel>();
             comprobantesListaViewModel.Inicializar(
@@ -295,10 +262,7 @@ public sealed class ContribuyentesContabilidadViewModel : Screen
 
     private bool ContribuyentesView_Filter(object obj)
     {
-        if (!(obj is ContribuyenteContabilidadDto contribuyente))
-        {
-            throw new ArgumentNullException(nameof(contribuyente));
-        }
+        if (!(obj is ContribuyenteContabilidadDto contribuyente)) throw new ArgumentNullException(nameof(contribuyente));
 
         bool stringFilterResult = string.IsNullOrWhiteSpace(Filtro) ||
                                   contribuyente.Codigo?.IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0 ||
@@ -310,29 +274,17 @@ public sealed class ContribuyentesContabilidadViewModel : Screen
 
         bool senteciaResult;
         if (Equals(SituacionFiltroSeleccionada, SituacionEnumeration.Todo))
-        {
             senteciaResult = true;
-        }
         else if (Equals(SituacionFiltroSeleccionada, SituacionEnumeration.Definitivos))
-        {
             senteciaResult = contribuyente.ListadoSituacion == SituacionEnumeration.Definitivos.Name;
-        }
         else if (Equals(SituacionFiltroSeleccionada, SituacionEnumeration.Desvirtuados))
-        {
             senteciaResult = contribuyente.ListadoSituacion == SituacionEnumeration.Desvirtuados.Name;
-        }
         else if (Equals(SituacionFiltroSeleccionada, SituacionEnumeration.Presuntos))
-        {
             senteciaResult = contribuyente.ListadoSituacion == SituacionEnumeration.Presuntos.Name;
-        }
         else if (Equals(SituacionFiltroSeleccionada, SituacionEnumeration.SentenciaFavorable))
-        {
             senteciaResult = contribuyente.ListadoSituacion == SituacionEnumeration.SentenciaFavorable.Name;
-        }
         else
-        {
             senteciaResult = true;
-        }
 
         return stringFilterResult && senteciaResult;
     }

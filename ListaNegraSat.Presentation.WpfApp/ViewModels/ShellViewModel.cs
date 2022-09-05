@@ -17,9 +17,8 @@ public sealed class ShellViewModel : Conductor<Screen>
     private readonly IDialogCoordinator _dialogCoordinator;
     private readonly IWindowManager _windowManager;
 
-    public ShellViewModel(ConfiguracionAplicacion configuracionAplicacion,
-                          IDialogCoordinator dialogCoordinator,
-                          IWindowManager windowManager)
+    public ShellViewModel(ConfiguracionAplicacion configuracionAplicacion, IDialogCoordinator dialogCoordinator,
+        IWindowManager windowManager)
     {
         ConfiguracionAplicacion = configuracionAplicacion;
         _dialogCoordinator = dialogCoordinator;
@@ -71,11 +70,23 @@ public sealed class ShellViewModel : Conductor<Screen>
         }
     }
 
+    public async Task VerDocumentacionAsync()
+    {
+        try
+        {
+            Process.Start(new ProcessStartInfo(@"https://github.com/AndresRamos/Contpaqi.ListaNegraSat") { UseShellExecute = true });
+        }
+        catch (Exception e)
+        {
+            await _dialogCoordinator.ShowMessageAsync(this, "Error", e.Message);
+        }
+    }
+
     public async Task IniciarSoporteRemotoAsync()
     {
         try
         {
-            Process.Start(@"https://get.teamviewer.com/ar_software_quick_support");
+            Process.Start(new ProcessStartInfo(@"https://www.arsoft.net/soporte/soporte-remoto") { UseShellExecute = true });
         }
         catch (Exception e)
         {
@@ -118,9 +129,6 @@ public sealed class ShellViewModel : Conductor<Screen>
             Settings.Default.ContpaqiAddConnetionString);
         var viewModel = IoC.Get<ActualizacionAplicacionViewModel>();
         await viewModel.ChecarActualizacionDisponibleAsync();
-        if (viewModel.ActualizacionAplicacion.ActualizacionDisponible)
-        {
-            await _windowManager.ShowWindowAsync(viewModel);
-        }
+        if (viewModel.ActualizacionAplicacion.ActualizacionDisponible) await _windowManager.ShowWindowAsync(viewModel);
     }
 }
