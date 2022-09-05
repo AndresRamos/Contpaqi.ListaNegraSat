@@ -26,11 +26,6 @@ public sealed class AcercaDeViewModel : Screen
         get { return GetExecutingAssemblyAttribute<AssemblyCopyrightAttribute>(a => a.Copyright); }
     }
 
-    public static string Trademark
-    {
-        get { return GetExecutingAssemblyAttribute<AssemblyTrademarkAttribute>(a => a.Trademark); }
-    }
-
     public static string Title
     {
         get { return GetExecutingAssemblyAttribute<AssemblyTitleAttribute>(a => a.Title); }
