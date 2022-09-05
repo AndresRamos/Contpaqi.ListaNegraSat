@@ -37,7 +37,12 @@ public class ActualizacionAplicacion : PropertyChangedBase
     {
         try
         {
-            var version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            var version = Assembly.GetExecutingAssembly().GetName().Version?.ToString();
+
+            if (version is null)
+            {
+                throw new Exception("No se encontro la version del progrmaa.");
+            }
 
             var container = new BlobContainerClient(new Uri("https://arsoftware.blob.core.windows.net/arsoftwaredownloads/"));
             BlobClient blobClient = container.GetBlobClient(@"ListaNegraSat\CurrentVersion.txt");

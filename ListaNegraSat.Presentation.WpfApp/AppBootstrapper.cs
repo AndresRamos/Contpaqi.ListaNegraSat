@@ -21,13 +21,14 @@ public class AppBootstrapper : BootstrapperBase
     {
         _host = Host.CreateDefaultBuilder()
             .UseServiceProviderFactory(new AutofacServiceProviderFactory())
-            .ConfigureServices((context, serviceCollection) =>
+            .ConfigureServices(serviceCollection =>
             {
                 serviceCollection.AddApplicationServices();
                 serviceCollection.AddInfrastructureServices();
             })
             .ConfigureContainer<ContainerBuilder>(containerBuilder => { containerBuilder.AddWpfAppServices(); })
             .Build();
+
         Initialize();
     }
 

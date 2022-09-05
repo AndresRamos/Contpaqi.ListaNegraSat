@@ -17,7 +17,7 @@ public class BuscarCanceladosQueryHandler : IRequestHandler<BuscarCanceladosQuer
         var config = new CsvConfiguration(CultureInfo.InvariantCulture) { HasHeaderRecord = true };
 
         using (var reader = new StreamReader(request.FileName))
-        using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+        using (var csv = new CsvReader(reader, config))
         {
             csv.Context.RegisterClassMap<CanceladoDtoCsvMap>();
 

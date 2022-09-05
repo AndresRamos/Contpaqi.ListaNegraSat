@@ -110,6 +110,7 @@ public sealed class ShellViewModel : Conductor<Screen>
         }
     }
 
+    // ReSharper disable once AsyncVoidMethod
     protected override async void OnViewLoaded(object view)
     {
         base.OnViewLoaded(view);
