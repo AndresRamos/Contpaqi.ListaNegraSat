@@ -27,8 +27,8 @@
 		<PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\Contpaqi.ListaNegraSat.Infrastructure\ListaNegraSat.Infrastructure.csproj" />
 		<ProjectReference Include="..\ListaNegraSat.Core.Application\ListaNegraSat.Core.Application.csproj" />
+		<ProjectReference Include="..\ListaNegraSat.Infrastructure\ListaNegraSat.Infrastructure.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Update="Properties\Settings.Designer.cs">
